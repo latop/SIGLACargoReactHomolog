@@ -1,0 +1,47 @@
+.react-calendar-timeline {
+  font-family: var(--font-openSans);
+}
+
+.react-calendar-timeline .rct-header-root {
+  background-color: #778098;
+  border-radius: 4px 4px 0 0;
+}
+
+.react-calendar-timeline .rct-horizontal-lines .rct-hl-odd, .react-calendar-timeline .rct-horizontal-lines .rct-hl-even, .react-calendar-timeline .rct-sidebar .rct-sidebar-row {
+  border-bottom: 0;
+}
+
+.react-calendar-timeline .rct-vertical-lines .rct-vl {
+  border-left-color: #cfd8dc;
+}
+
+.react-calendar-timeline .rct-dateHeader {
+  border-left: 1px solid #cfd8dc;
+  border-bottom: 0;
+}
+
+.react-calendar-timeline .rct-calendar-header {
+  border: 0;
+}
+
+.rct-sidebar {
+  border-right-color: #b0bec5;
+}
+
+.rct-item {
+  border-radius: 4px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.react-calendar-timeline .rct-sidebar .rct-sidebar-row {
+  font-size: 13px;
+  padding: 0 10px;
+}
+
+.timeline-trips-unallocated-header {
+  display: none !important;
+}
+
+.timeline-trips-unallocated {
+  background-color: #e7e2e1;
+}
