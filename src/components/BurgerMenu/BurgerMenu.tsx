@@ -40,6 +40,11 @@ interface RouteItem {
 const routes: RouteItem[] = [
   { text: "Home", icon: <HomeIcon />, path: "/home" },
   {
+    text: "Solicitação de Motoristas",
+    icon: <LocalShippingIcon />,
+    path: "/drivers-request",
+  },
+  {
     text: "Escala de Motoristas",
     icon: <LocalShippingIcon />,
     path: "/drivers-schedule",

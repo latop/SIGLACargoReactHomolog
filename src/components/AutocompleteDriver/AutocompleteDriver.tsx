@@ -76,6 +76,9 @@ export function AutocompleteDriver({
                   WebkitTextFillColor: "#000000",
                   opacity: 1,
                 },
+                "& .MuiInputBase-input": {
+                  textTransform: "uppercase",
+                },
               }}
               onChange={debounce((e) => {
                 setLocalValue(e.target.value);

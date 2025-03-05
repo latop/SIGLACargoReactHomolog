@@ -52,6 +52,7 @@ export function AutocompleteLocationGroup({
       onChange(value);
     } else {
       setValue("locationGroupCode", value?.code || "");
+      setValue("locationGroupId", value?.id || "");
     }
   };
 
