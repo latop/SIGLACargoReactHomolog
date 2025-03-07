@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Location } from "@/interfaces/trip";
-import { useGetLocationQuery } from "@/services/query/trips";
+import { useGetLocationReleaseQuery } from "@/services/query/trips";
 import { TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import debounce from "debounce";
@@ -31,9 +31,11 @@ export function AutocompleteLocation({
 
   const isDirty = dirtyFields[name];
 
-  const { data: { data: locations = [] } = [], error } = useGetLocationQuery({
-    code: (isDirty && watch(name)) ?? watch(name) ?? "",
+  const { data = [], error } = useGetLocationReleaseQuery({
+    code: (isDirty && watch(name)) ?? watch(name) ?? "", pageSize: 5000
   })
+
+  const locations = data?.data || [];
 
   const handleChange = (
     _: SyntheticEvent<Element, Event>,
@@ -44,6 +46,7 @@ export function AutocompleteLocation({
     } else {
       setValue(name, value?.[keyCode] || "");
       setValue(`${name.split(".")[0]}Id`, value?.id || "");
+      setValue(name, value?.id || "");
       setValue(`${name.split(".")[0]}Description`, value?.name || "");
 
     }

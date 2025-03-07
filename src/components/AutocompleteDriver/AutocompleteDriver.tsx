@@ -39,6 +39,7 @@ export function AutocompleteDriver({
     } else {
       setValue("nickName", value?.nickName || "");
       setValue("driverId", value?.id || "");
+      setValue(name, value?.id || "");
     }
   };
 

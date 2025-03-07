@@ -52,23 +52,29 @@ export const useGetLocationQuery = ({
   });
 };
 
-export const useGetLocationReleaseQuery = {
-  queryKey: ["location_release"],
-  queryFn: async ({ pageSize = 15, code }: FetchBasicParams) => {
-    try {
-      const response = await api.get(`${resource}/GetLocationRelease`, {
-        params: {
-          PageSize: pageSize,
-          filter1String: code?.toUpperCase(),
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
-  },
-  staleTime: 86400,
+export const useGetLocationReleaseQuery = ({
+  pageSize = 15,
+  code,
+}: FetchBasicParams) => {
+  return useQuery({
+    queryKey: ["location_release"],
+    queryFn: async () => {
+      try {
+        const response = await api.get(`${resource}`, {
+          params: {
+            PageSize: pageSize,
+            filter1String: code?.toUpperCase(),
+            filter1Bool: true,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error(error);
+        return error;
+      }
+    },
+    staleTime: 86400,
+  });
 };
 
 // TODO: Implement the fetchLocations function to the right place
