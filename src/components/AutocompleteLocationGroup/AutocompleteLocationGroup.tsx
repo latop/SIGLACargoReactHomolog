@@ -1,22 +1,32 @@
 /* eslint-disable prettier/prettier */
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent, useLayoutEffect, useRef } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { TextField } from "@mui/material";
+import { Skeleton, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useLocationGroup } from "@/hooks/useLocationGroup";
 import debounce from "debounce";
 import { LocationGroup } from "@/interfaces/trip";
+import { useLocationGroupQuery } from "@/hooks/useLocationGroup/useLocationGroupQuery";
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles({
+  uppercaseInput: {
+    textTransform: 'uppercase',
+    padding: '5px',
+  },
+});
 
 export function AutocompleteLocationGroup({
   name = "locationGroupCode",
   keyCode = "code",
   onChange,
   label = "Cód da localização",
+  hasSkeleton = false,
 }: {
   name?: string;
   keyCode?: keyof LocationGroup;
   onChange?: (value: LocationGroup | null) => void;
   label?: string;
+  hasSkeleton?: boolean;
 
 }) {
   const {
@@ -25,10 +35,13 @@ export function AutocompleteLocationGroup({
     setValue,
     formState: { errors },
   } = useFormContext();
-
-  const { locationGroups, error } = useLocationGroup({
+  const isFirstRender = useRef(true);
+  const { data: locationGroups = [], error, isFetching } = useLocationGroupQuery({
     pageSize: 10,
     code: watch(name),
+  }, {
+    queryKey: ["locationGroups", { code: watch(name) }],
+    staleTime: 0
   });
 
   const handleChange = (
@@ -38,9 +51,22 @@ export function AutocompleteLocationGroup({
     if (onChange) {
       onChange(value);
     } else {
-      setValue(name, value?.[keyCode] || "");
+      setValue("locationGroupCode", value?.code || "");
+      setValue("locationGroupId", value?.id || "");
     }
   };
+
+  const classes = useStyles();
+
+  useLayoutEffect(() => {
+    isFirstRender.current = false;
+  }, []);
+
+  const showSkeleton = hasSkeleton && isFetching && isFirstRender.current;
+  
+  if (showSkeleton) {
+    return <Skeleton width={"100%"} height={"100%"} />;
+  }
 
   return (
     <Controller
@@ -50,7 +76,7 @@ export function AutocompleteLocationGroup({
         <Autocomplete
           clearOnEscape
           forcePopupIcon={false}
-          options={locationGroups || []}
+          options={locationGroups as LocationGroup[] || []}
           loadingText="Carregando..."
           defaultValue={{ [keyCode]: field.value ?? "" } as LocationGroup}
           isOptionEqualToValue={(option: LocationGroup, value: LocationGroup) =>
@@ -73,6 +99,10 @@ export function AutocompleteLocationGroup({
             <TextField
               {...field}
               {...params}
+              inputProps={{
+                ...params.inputProps,
+                className: classes.uppercaseInput,
+              }}
               onChange={debounce(field.onChange, 300)}
               variant="outlined"
               fullWidth

@@ -13,12 +13,14 @@ export function AutocompleteTruck({
   keyCode = "licensePlate",
   disabled = false,
   onChange,
+  isUpperCase = false
 }: {
   name?: string;
   label?: string;
   keyCode?: keyof Truck;
   disabled?: boolean;
   onChange?: (value: Truck | null) => void;
+  isUpperCase?: boolean
 }) {
   const {
     control,
@@ -36,50 +38,57 @@ export function AutocompleteTruck({
     <Controller
       name={name}
       control={control}
-      render={({ field }) => (
-        <Autocomplete
-          forcePopupIcon={false}
-          disabled={disabled}
-          clearOnEscape
-          options={trucks || []}
-          loadingText="Carregando..."
-          defaultValue={{ [keyCode]: field.value?.[keyCode] || field.value || "" } as Truck}
-          isOptionEqualToValue={(option: Truck, value: Truck) =>
-            option[keyCode] === value[keyCode]
-          }
-          onChange={(_, value: Truck | null) => {
-            onChange && onChange(value);
-          }}
-          noOptionsText={
-            !field.value
-              ? "Digite o código"
-              : !trucks && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
-          }
-          getOptionLabel={(option: Truck) => option[keyCode] as string}
-          renderInput={(params) => (
-            <TextField
-              {...field}
-              {...params}
-              sx={{
-                "& .MuiInputBase-input.Mui-disabled": {
-                  WebkitTextFillColor: "#000000",
-                  opacity: 1,
-                },
-              }}
-              onChange={debounce((event) => {
-                setLocalValue(event.target.value);
-              }, 300)}
-              variant="outlined"
-              fullWidth
-              label={label}
-              error={!!errors[field.name]}
-              helperText={errors[field.name]?.message?.toString()}
-            />
-          )}
-        />
-      )}
+      render={({ field }) => {
+        return (
+          <Autocomplete
+            forcePopupIcon={false}
+            disabled={disabled}
+            clearOnEscape
+            options={trucks || []}
+            loadingText="Carregando..."
+            defaultValue={{ [keyCode]: field.value?.[keyCode] || field.value || "" } as Truck}
+            isOptionEqualToValue={(option: Truck, value: Truck) =>
+              option[keyCode] === value[keyCode]
+            }
+            onChange={(_, value: Truck | null) => {
+              onChange && onChange(value);
+            }}
+            noOptionsText={
+              !field.value
+                ? "Digite o código"
+                : !trucks && !error
+                  ? "Carregando..."
+                  : "Nenhum resultado encontrado"
+            }
+            getOptionLabel={(option: Truck) => option[keyCode] as string}
+            renderInput={(params) => (
+              <TextField
+                {...field}
+                {...params}
+                sx={{
+                  "& .MuiInputBase-input.Mui-disabled": {
+                    WebkitTextFillColor: "#000000",
+                    opacity: 1,
+                  },
+                  ... (isUpperCase && {
+                    "& .MuiInputBase-input": {
+                      textTransform: "uppercase",
+                    },
+                  })
+                }}
+                onChange={debounce((event) => {
+                  setLocalValue(event.target.value);
+                }, 300)}
+                variant="outlined"
+                fullWidth
+                label={label}
+                error={!!errors[field.name]}
+                helperText={errors[field.name]?.message?.toString()}
+              />
+            )}
+          />
+        )
+      }}
     />
   );
 }

@@ -71,6 +71,7 @@ export const UpdateLineForm = () => {
                 render={({ field, fieldState: { error } }) => (
                   <TextField
                     {...field}
+                    value={field.value?.toUpperCase() || ""}
                     variant="outlined"
                     fullWidth
                     label="Descrição"
@@ -172,6 +173,9 @@ export const UpdateLineForm = () => {
                     label="Aprov Hr Extra"
                     error={!!error?.message}
                     helperText={error?.message?.toString()}
+                    onChange={(e) => {
+                      field.onChange(Number(e.target.value));
+                    }}
                   />
                 )}
               />
@@ -188,6 +192,9 @@ export const UpdateLineForm = () => {
                     label="Custo"
                     error={!!error?.message}
                     helperText={error?.message?.toString()}
+                    onChange={(e) => {
+                      field.onChange(Number(e.target.value));
+                    }}
                   />
                 )}
               />
@@ -197,7 +204,7 @@ export const UpdateLineForm = () => {
 
         <Box display="flex" gap="20px">
           <Grid container spacing={1}>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <Controller
                 name="line.locationOrig"
                 control={control}
@@ -210,7 +217,7 @@ export const UpdateLineForm = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <Controller
                 name="line.locationDest"
                 control={control}

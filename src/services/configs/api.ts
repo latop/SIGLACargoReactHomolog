@@ -16,7 +16,6 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use((response) => {
   if (response.headers["x-pagination"]) {
     const pagination = JSON.parse(response.headers["x-pagination"]);
-
     const normalizeData = {
       currentPage: pagination.CurrentPage || 1,
       hasNext: pagination.HasNext,

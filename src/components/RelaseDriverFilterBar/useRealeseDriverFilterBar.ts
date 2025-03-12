@@ -58,7 +58,6 @@ export function useReleaseDriverFilterBar() {
   });
 
   const onSubmit = (data: FormFields) => {
-    console.log(data);
     if (!data?.locOrig.length) {
       methods.setError("locOrig", { message: "*Obrigatório" });
       return;

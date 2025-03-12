@@ -28,7 +28,12 @@ export const UpdateLineSectionForm = ({ seq }: { seq: number }) => {
   const handleDeleteStep = () => {
     const steps = getValues("lineSections");
     steps.splice(seq, 1);
-    setValue("lineSections", steps);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const updatedSteps = steps.map((step: any, index: number) => ({
+      ...step,
+      section: { ...step.section, seq: index },
+    }));
+    setValue("lineSections", updatedSteps);
   };
 
   return (
@@ -82,10 +87,7 @@ export const UpdateLineSectionForm = ({ seq }: { seq: number }) => {
               name={`lineSections.${seq}.locationOrig`}
               label="Origem"
               onChange={(value) => {
-                setValue(
-                  `lineSections.${seq}.locationOrig`,
-                  String(value).toUpperCase(),
-                );
+                setValue(`lineSections.${seq}.locationOrigId`, value?.id || "");
               }}
             />
           </Grid>
@@ -94,27 +96,28 @@ export const UpdateLineSectionForm = ({ seq }: { seq: number }) => {
               label="Destino"
               name={`lineSections.${seq}.locationDest`}
               onChange={(value) => {
-                setValue(
-                  `lineSections.${seq}.locationDest`,
-                  String(value).toUpperCase(),
-                );
+                setValue(`lineSections.${seq}.locationDestId`, value?.id || "");
               }}
             />
           </Grid>
           <Grid item xs={1.5}>
             <AutocompleteLocationGroup
               label="Base vinculada"
-              name={`lineSections.${seq}.locationGroup`}
+              name={`lineSections.${seq}.locationGroup.code`}
               onChange={(value) => {
-                setValue(`lineSections.${seq}.locationGroup`, value);
+                setValue(
+                  `lineSections.${seq}.locationGroupId`,
+                  value?.id || "",
+                );
+                setValue(`lineSections.${seq}.locationGroup`, value || "");
               }}
             />
           </Grid>
           <Grid item xs={1.5}>
             <AutocompleteStopType
-              name={`lineSections.${seq}.stopType`}
+              name={`lineSections.${seq}.stopType.stopTypeCode`}
               onChange={(value) => {
-                setValue(`lineSections.${seq}.stopType`, value);
+                setValue(`lineSections.${seq}.stopTypeId`, value?.id);
               }}
             />
           </Grid>

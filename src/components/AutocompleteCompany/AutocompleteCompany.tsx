@@ -9,10 +9,12 @@ import { Company } from "@/interfaces/parameters";
 export function AutocompleteCompany({
   name = "companyCode",
   label = "Transportadora",
+  keyLabel = "code",
   keyCode = "code",
 }: {
   name?: string;
   label?: string;
+  keyLabel?: keyof Company;
   keyCode?: keyof Company;
 }) {
   const {
@@ -52,7 +54,9 @@ export function AutocompleteCompany({
               ? "Carregando..."
               : "Nenhum resultado encontrado"
           }
-          getOptionLabel={(option: Company) => option.code}
+          getOptionLabel={(option: Company) =>
+            (option[keyLabel] || "") as string
+          }
           renderInput={(params) => (
             <TextField
               {...field}

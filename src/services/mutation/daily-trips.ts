@@ -54,6 +54,9 @@ export const useDailyTripMutation = () => {
           endEstimated: section.endEstimated
             ? dayjs(section.endEstimated).format("YYYY-MM-DDTHH:mm")
             : null,
+          driverId: section.driverId || null,
+          locationOrigId: section.locationOrigId || null,
+          locationDestId: section.locationDestId || null,
           truck: null,
           locationOrig: null,
           locationDest: null,

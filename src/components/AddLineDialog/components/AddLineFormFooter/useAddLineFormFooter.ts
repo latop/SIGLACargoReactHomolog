@@ -4,9 +4,9 @@ export function useAddLineFormFooter() {
   const { watch, setValue } = useFormContext();
 
   const handleAddStep = () => {
-    const lineSections = watch("lineSections");
+    const lineSections = watch("lineSections") || [];
 
-    lineSections.push({
+    lineSections?.push({
       lineId: "00000000-0000-0000-0000-000000000000",
       section: lineSections.length + 1,
       locationOrigId: lineSections.locationOrigId,

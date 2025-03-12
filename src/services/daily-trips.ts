@@ -15,6 +15,7 @@ export type FetchDailyTripsParams = {
   pageSize?: number;
   pageNumber?: number;
   licensePlate?: string;
+  tripTypeId?: string;
 };
 
 export async function fetchDailyTrips({

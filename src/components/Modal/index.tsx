@@ -6,6 +6,8 @@ interface Params {
   children?: React.ReactNode;
   handleSave?: () => void;
   handleClose?: () => void;
+  isLoading?: boolean;
+  confirmText?: string;
 }
 
 const style = {
@@ -25,6 +27,7 @@ const Modal = ({
   children,
   handleClose,
   handleSave,
+  confirmText = "Salvar",
 }: Params) => {
   return (
     <MUIModal
@@ -41,7 +44,7 @@ const Modal = ({
             Fechar
           </Button>
           <Button variant="contained" onClick={handleSave}>
-            Salvar
+            {confirmText}
           </Button>
         </Box>
       </Box>

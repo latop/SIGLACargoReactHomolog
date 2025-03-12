@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "./configs/api";
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface FetchActivitiesParams {
@@ -24,6 +25,10 @@ export interface FetchCitiesParams {
 export interface FetchStatesParams {
   stateName?: string;
   pageSize?: number;
+}
+export interface FetchResponsibleSectionsParams {
+  pageSize?: number;
+  pageNumber?: number;
 }
 
 export async function fetchAcitivities({
@@ -151,6 +156,38 @@ export async function fetchCities({
       filter1String: params.cityName?.toUpperCase(),
     };
     const response = await axios.get("/Cities", { params: citiesParams });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchResponsibleSectors({
+  args: params,
+}: {
+  args: FetchResponsibleSectionsParams;
+}) {
+  const responsibleSections = {
+    PageSize: params.pageSize,
+    PageNumber: params.pageNumber,
+  };
+  try {
+    const response = await api.get("/ResponsibleSector", {
+      params: responsibleSections,
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchResponsibleSectorsById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/ResponsibleSector/${id}`);
     const data = response.data;
     return data;
   } catch (error) {

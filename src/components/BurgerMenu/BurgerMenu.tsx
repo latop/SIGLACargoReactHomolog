@@ -7,6 +7,10 @@ import {
   ListItemIcon,
   ListItemText,
   ListItemButton,
+  Accordion,
+  AccordionSummary,
+  Typography,
+  AccordionDetails,
 } from "@mui/material";
 import Link from "next/link";
 import PersonSearchIcon from "@mui/icons-material/PersonSearch";
@@ -22,6 +26,12 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import RouteIcon from "@mui/icons-material/Route";
 import PublishIcon from "@mui/icons-material/Publish";
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { useRouter } from "next/navigation";
+import debounce from "debounce";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 
 interface BurgerMenuProps {
   isOpen: boolean;
@@ -34,10 +44,16 @@ interface RouteItem {
   text: string;
   icon: React.ReactElement;
   path: string;
+  group?: "register" | undefined;
 }
 
 const routes: RouteItem[] = [
   { text: "Home", icon: <HomeIcon />, path: "/home" },
+  {
+    text: "Solicitação de Motoristas",
+    icon: <LocalShippingIcon />,
+    path: "/drivers-request",
+  },
   {
     text: "Escala de Motoristas",
     icon: <LocalShippingIcon />,
@@ -92,20 +108,77 @@ const routes: RouteItem[] = [
     text: "Rotas",
     icon: <RouteIcon />,
     path: "/lines",
+    group: "register",
   },
   {
     text: "Motoristas",
-    icon: <PersonSearchIcon />,
+    icon: <TbSteeringWheel />,
     path: "/drivers",
+    group: "register",
   },
   {
     text: "Publicação",
     icon: <PublishIcon />,
     path: "/publish-journey",
   },
+  {
+    text: "Caminhão",
+    icon: <LocalShippingIcon />,
+    path: "/trucks",
+    group: "register",
+  },
+  {
+    text: "Localização",
+    icon: <AddLocationAltIcon />,
+    path: "/locations",
+    group: "register",
+  },
+  {
+    text: "Setor Responsável",
+    icon: <PersonSearchIcon />,
+    path: "/responsible-sector",
+    group: "register",
+  },
 ];
 
+const RegisterList = ({ router }: { router: AppRouterInstance }) => {
+  return (
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <ListItemIcon>
+          <AddCircleIcon />
+        </ListItemIcon>
+        <Typography fontWeight={500}>Cadastros</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        {routes
+          .filter(({ group }) => group === "register")
+          .sort((a: RouteItem, b: RouteItem) => a.text.localeCompare(b.text))
+          .map(({ text, icon, path }) => (
+            <ListItem key={text} disablePadding>
+              <Link
+                href={path}
+                passHref
+                style={{ width: "100%" }}
+                onMouseEnter={() => {
+                  debounce(() => router.prefetch(path), 300);
+                }}
+              >
+                <ListItemButton>
+                  <ListItemIcon>{icon}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          ))}
+      </AccordionDetails>
+    </Accordion>
+  );
+};
+
 export function BurgerMenu({ isOpen, toggleDrawer }: BurgerMenuProps) {
+  const router = useRouter();
+
   return (
     <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
       <Box
@@ -117,16 +190,26 @@ export function BurgerMenu({ isOpen, toggleDrawer }: BurgerMenuProps) {
         <img src="/pepsico-logo.png" width={144} height={40} alt="PepsiCo" />
       </Box>
       <List sx={{ display: "flex", flexDirection: "column" }}>
-        {routes.map(({ text, icon, path }) => (
-          <ListItem key={text} disablePadding>
-            <Link href={path} passHref style={{ width: "100%" }}>
-              <ListItemButton>
-                <ListItemIcon>{icon}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
+        {routes
+          .filter(({ group }) => group === undefined)
+          .map(({ text, icon, path }) => (
+            <ListItem key={text} disablePadding>
+              <Link
+                href={path}
+                passHref
+                style={{ width: "100%" }}
+                onMouseEnter={() => {
+                  void router.prefetch(path);
+                }}
+              >
+                <ListItemButton>
+                  <ListItemIcon>{icon}</ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          ))}
+        <RegisterList router={router} />
       </List>
     </Drawer>
   );
