@@ -2,36 +2,50 @@
 "use client";
 
 import { AppBar } from "@/components/AppBar";
-import { DailyTripDetailsDialog } from "./dailyTripDetails/dailyTripDetailsDialog";
 import { EmptyResult } from "@/components/EmptyResult";
 import { ErrorResult } from "@/components/ErrorResult";
 import { GenerateDailyTripDialog } from "@/components/GenerateDailyTripDialog";
 import { HeaderTitle } from "@/components/HeaderTitle/HeaderTitle";
 import { MainContainer } from "@/components/MainContainer";
 import { FetchDailyTripsParams, initialDataDailyTripsParams, useGetDailyTripsQuery } from "@/services/query/daily-trips";
-import { Avatar, Box, Button, Card, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import { Box, Button, Card, Menu, MenuItem } from "@mui/material";
 import { DataGrid, GridRowSelectionModel } from "@mui/x-data-grid";
 import { useState } from "react";
+import { DailyTripDetailsDialog } from "./dailyTripDetails/dailyTripDetailsDialog";
 import { DailyTripsFilterBar } from "./DailyTripsFilterBar";
 import IsLoadingTable from "./isLoadindCard";
 
+import ModalBatchCancelTrip from "./batch/cancel-trip";
 import config from "./configs";
-import Settings from "@mui/icons-material/Settings";
+import { FieldValues } from "react-hook-form";
+import ModalBatchAlterCompanyTrip from "./batch/change-company";
+import ModalBatchAlterFleetTrip from "./batch/change-fleet";
+import ModalBatchAlterDatesTrip from "./batch/change-dates";
+import { DailyTripBatchChangePayload, useDailyTripBatchChange } from "@/services/mutation/daily-trips";
+import { useToast } from "@/hooks/useToast";
 
 export function DailyTrips() {
   const [filters, setFilters] = useState<FetchDailyTripsParams>(initialDataDailyTripsParams)
   const [dailyTripModalIsOpen, setDailyTripModalIsOpen] = useState(false)
+  const [batchCancelModal, setBatchCancelModal] = useState(false)
+  const [batchChangeCompanyModal, setBatchChangeCompanyModal] = useState(false)
+  const [batchChangeFleetModal, setBatchChangeFleetModal] = useState(false)
+  const [batchChangeDatesModal, setBatchChangeDatesModal] = useState(false)
   const [tripId, setTripId] = useState()
   const [generateDailyTripModalIsOpen, setGenerateDailyTripModalIsOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { addToast } = useToast();
+
   const open = Boolean(anchorEl);
 
   const [currentPage, setCurrentPage] = useState(0)
   const [rowSelectionModel, setRowSelectionModel] =
     useState<GridRowSelectionModel>([]);
 
-  const { data, isLoading, refetch } = useGetDailyTripsQuery({ ...filters, pageNumber: currentPage + 1 });
+  const { data, isLoading: queryIsLoading, refetch } = useGetDailyTripsQuery({ ...filters, pageNumber: currentPage + 1 });
+  const { mutateAsync, isPending: mutationIsLoading } = useDailyTripBatchChange();
 
+  const isLoading: boolean = queryIsLoading || mutationIsLoading;
 
   const handleFilters = (filtersData: FetchDailyTripsParams) => {
     setFilters(filtersData)
@@ -44,6 +58,23 @@ export function DailyTrips() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleBulkTripAction = async (values: FieldValues) => {
+    const payload = {
+      ...values,
+      dailyTripId: rowSelectionModel
+    }
+    console.log("Bulk viagens", payload)
+
+    const response = await mutateAsync(payload as DailyTripBatchChangePayload)
+    console.log(response)
+    if (response === 'Ok') {
+      addToast("Alteração salva com sucesso");
+    } else {
+      addToast("Erro ao salvar alteração", { type: "error" });
+    }
+  }
+
   return (
     <MainContainer>
       <AppBar>
@@ -120,26 +151,19 @@ export function DailyTrips() {
                   transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-                  <MenuItem onClick={handleClose}>
-                    <Avatar /> Profile
+                  <MenuItem onClick={() => setBatchCancelModal(true)}>
+                    Cancelar Viagens
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Avatar /> My account
+                  <MenuItem onClick={() => setBatchChangeCompanyModal(true)}>
+                    Alterar Transportadora
                   </MenuItem>
-                  <Divider />
-                  <MenuItem onClick={handleClose}>
-                    Add another account
+                  <MenuItem onClick={() => setBatchChangeFleetModal(true)}>
+                    Alterar Frota
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                      <Settings fontSize="small" />
-                    </ListItemIcon>
-                    Settings
+                  <MenuItem onClick={() => setBatchChangeDatesModal(true)}>
+                    Alterar Datas e Horários
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>
 
-                    Logout
-                  </MenuItem>
                 </Menu>
               </>
             )}
@@ -162,13 +186,18 @@ export function DailyTrips() {
           {data && data.data?.length > 0 &&
             <div style={{ height: "100%", width: "100%" }}>
               <DataGrid
+                className="blueColumnGrid"
                 sx={{
                   width: '100%',
                   height: '650px',
-                  '& .blueColumnHeaders ': {
+                  '& .blueColumnHeaders, .MuiDataGrid-columnHeaderCheckbox ': {
                     backgroundColor: '#24438F',
-                    color: 'white'
+                    color: 'white',
                   },
+                  '& .MuiDataGrid-columnHeaderTitleContainerContent svg[data-testid="IndeterminateCheckBoxIcon"], .MuiDataGrid-columnHeaderTitleContainerContent svg[data-testid="CheckBoxOutlineBlankIcon"], .MuiDataGrid-columnHeaderTitleContainerContent svg[data-testid="CheckBoxIcon"]': {
+                    fill: 'white'
+                  }
+
                 }}
                 rows={data.data}
                 localeText={{
@@ -217,6 +246,27 @@ export function DailyTrips() {
         id={tripId}
       />
       <GenerateDailyTripDialog isOpen={generateDailyTripModalIsOpen} onClose={() => setGenerateDailyTripModalIsOpen(false)} />
+      {JSON.stringify(batchCancelModal)}
+      <ModalBatchCancelTrip
+        isOpen={batchCancelModal}
+        handleClose={() => setBatchCancelModal(false)}
+        handleConfirm={handleBulkTripAction}
+      />
+      <ModalBatchAlterCompanyTrip
+        isOpen={batchChangeCompanyModal}
+        handleClose={() => setBatchChangeCompanyModal(false)}
+        handleConfirm={handleBulkTripAction}
+      />
+      <ModalBatchAlterFleetTrip
+        isOpen={batchChangeFleetModal}
+        handleClose={() => setBatchChangeFleetModal(false)}
+        handleConfirm={handleBulkTripAction}
+      />
+      <ModalBatchAlterDatesTrip
+        isOpen={batchChangeDatesModal}
+        handleClose={() => setBatchChangeDatesModal(false)}
+        handleConfirm={handleBulkTripAction}
+      />
     </MainContainer >
   );
 }

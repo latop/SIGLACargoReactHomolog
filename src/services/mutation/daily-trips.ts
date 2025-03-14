@@ -83,3 +83,41 @@ export const useDailyTripMutation = () => {
     },
   });
 };
+
+export interface DailyTripBatchChangePayload {
+  dailyTripId: string[];
+  actionType: string;
+  justificationId: string;
+  justificationMessage: string;
+  companyId?: string;
+  fleetGroupId?: string;
+  deliveryDate?: string;
+  deliveryTime?: string;
+  requestDate?: string;
+  keepDriver?: boolean;
+}
+export interface DailyTripBatchChangeResponse {}
+
+export const useDailyTripBatchChange = () => {
+  return useMutation({
+    mutationKey: ["daily-trips-batch"],
+    mutationFn: async (payload: DailyTripBatchChangePayload) => {
+      console;
+      try {
+        const response = await api.post("/DailyTrip/dailytripbatchchange", {
+          ...payload,
+        });
+        console.log("response", response);
+        return response.data;
+      } catch (error) {
+        console.error(error);
+        return error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["daily-trips"],
+      });
+    },
+  });
+};

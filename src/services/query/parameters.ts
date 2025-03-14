@@ -28,3 +28,34 @@ export const useTimezoneQuery = (
     ...options,
   });
 };
+
+export interface JustificationResponse {
+  code: string;
+  description: string;
+  responsibleSectorId: string;
+  type: string;
+  id: string;
+  createAt: string;
+  updateAt: string;
+  userIdCreate: string;
+  userIdUpdate: string;
+}
+
+export const useJustificationQuery = () => {
+  return useQuery<JustificationResponse[]>({
+    queryKey: ["justification"],
+    queryFn: async () => {
+      try {
+        const {
+          data: { data },
+        } = await api.get("/Justification");
+
+        return data;
+      } catch (error) {
+        console.error(error);
+        return error;
+      }
+    },
+    staleTime: 0,
+  });
+};
