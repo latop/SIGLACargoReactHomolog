@@ -47,7 +47,7 @@ export function PublishJourneyFilterBar(
             </Grid>
             <Grid item xs={2}>
               <AutocompleteLocationGroup
-                name="locationGroupId"
+                name="locationGroup.code"
                 label="Base"
                 onChange={(value) => {
                   methods.setValue("locationGroupId", value?.id || "");

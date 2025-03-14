@@ -73,6 +73,7 @@ export const AddLineForm = () => {
                     {...field}
                     variant="outlined"
                     fullWidth
+                    value={field.value?.toUpperCase() || ""}
                     label="Descrição"
                     error={!!error?.message}
                     helperText={error?.message?.toString()}
@@ -167,6 +168,9 @@ export const AddLineForm = () => {
                     label="Aprov Hr Extra"
                     error={!!error?.message}
                     helperText={error?.message?.toString()}
+                    onChange={(e) => {
+                      field.onChange(Number(e.target.value));
+                    }}
                   />
                 )}
               />
@@ -183,6 +187,9 @@ export const AddLineForm = () => {
                     label="Custo"
                     error={!!error?.message}
                     helperText={error?.message?.toString()}
+                    onChange={(e) => {
+                      field.onChange(Number(e.target.value));
+                    }}
                   />
                 )}
               />
@@ -197,7 +204,7 @@ export const AddLineForm = () => {
                 label="Origem"
                 name="line.locationOrig"
                 onChange={(value) => {
-                  setValue("line.locationOrig", value);
+                  setValue("line.locationOrig", value || {});
                 }}
               />
             </Grid>
@@ -206,7 +213,7 @@ export const AddLineForm = () => {
                 label="Destino"
                 name="line.locationDest"
                 onChange={(value) => {
-                  setValue("line.locationDest", value);
+                  setValue("line.locationDest", value || {});
                 }}
               />
             </Grid>

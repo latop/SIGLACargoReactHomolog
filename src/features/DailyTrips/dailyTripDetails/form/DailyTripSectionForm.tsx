@@ -22,8 +22,15 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(customParseFormat);
 
-export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
+interface Params {
+  seq: number;
+  id: string;
+}
+export const DailyTripSectionForm = ({ seq, id }: Params) => {
   const { control, setValue, getValues } = useFormContext();
+
+  const insertMode =
+    !id || id === "00000000-0000-0000-0000-000000000000" ? true : false;
 
   const handleDeleteStep = () => {
     const steps = getValues("dailyTripSections");
@@ -52,6 +59,7 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
             <Controller
               name={`dailyTripSections.${seq}.truck.licensePlate`}
               control={control}
+              disabled={!insertMode}
               render={({ field, fieldState: { error } }) => (
                 <TextField
                   {...field}
@@ -66,23 +74,26 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
           </Grid>
           <Grid item xs={2}>
             <AutocompleteLocation
-              name={`dailyTripSections.${seq}.locationOrig.code`}
+              name={`dailyTripSections.${seq}.locationOrigId`}
               label="Origem"
             />
           </Grid>
           <Grid item xs={2}>
             <AutocompleteLocation
-              name={`dailyTripSections.${seq}.locationDest.code`}
+              name={`dailyTripSections.${seq}.locationDestId`}
               label="Destino"
             />
           </Grid>
           <Grid item xs={2}>
-            <AutocompleteDriver />
+            <AutocompleteStopType
+              name={`dailyTripSections.${seq}.stopTypeCode`}
+              label="Parada"
+            />
           </Grid>
           <Grid item xs={4}>
-            <AutocompleteStopType
-              name={`dailyTripSections.${seq}.stopType.stopTypeCode`}
-              label="Parada"
+            <AutocompleteDriver
+              name={`dailyTripSections.${seq}.driverId`}
+              disabled={!insertMode}
             />
           </Grid>
 
@@ -122,6 +133,7 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
             <Controller
               name={`dailyTripSections.${seq}.startEstimated`}
               control={control}
+              disabled={!insertMode}
               render={({ field, fieldState: { error } }) => (
                 <DateTimePicker
                   disabled={false}
@@ -129,7 +141,11 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
                   error={error?.message}
                   {...field}
                   value={field.value ? dayjs(field.value) : null}
-                  onChange={(date) => field.onChange(date?.format())}
+                  onChange={(date) => {
+                    console.log("estimatedDate", date);
+                    field.onChange(date?.format());
+                    console.log("estimatedDate1", field.value);
+                  }}
                 />
               )}
             />
@@ -138,6 +154,7 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
             <Controller
               name={`dailyTripSections.${seq}.endEstimated`}
               control={control}
+              disabled={!insertMode}
               render={({ field, fieldState: { error } }) => (
                 <DateTimePicker
                   disabled={false}
@@ -154,6 +171,7 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
             <Controller
               name={`dailyTripSections.${seq}.startActual`}
               control={control}
+              disabled={!insertMode}
               render={({ field, fieldState: { error } }) => (
                 <DateTimePicker
                   disabled={false}
@@ -170,6 +188,7 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
             <Controller
               name={`dailyTripSections.${seq}.endActual`}
               control={control}
+              disabled={!insertMode}
               render={({ field, fieldState: { error } }) => (
                 <DateTimePicker
                   disabled={false}

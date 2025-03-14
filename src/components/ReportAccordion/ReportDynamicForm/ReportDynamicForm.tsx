@@ -78,7 +78,12 @@ export function ReportDynamicForm({
         case "Cód. Localidade":
           return (
             <Grid item xs={2}>
-              <AutocompleteLocationGroup name="locationCode" />
+              <AutocompleteLocationGroup
+                name="locationCode"
+                onChange={(value) => {
+                  methods.setValue("locationCode", value?.code);
+                }}
+              />
             </Grid>
           );
         case "Cód. Frota":

@@ -39,6 +39,7 @@ export function AutocompleteDriver({
     } else {
       setValue("nickName", value?.nickName || "");
       setValue("driverId", value?.id || "");
+      setValue(name, value?.id || "");
     }
   };
 
@@ -75,6 +76,9 @@ export function AutocompleteDriver({
                 "& .MuiInputBase-input.Mui-disabled": {
                   WebkitTextFillColor: "#000000",
                   opacity: 1,
+                },
+                "& .MuiInputBase-input": {
+                  textTransform: "uppercase",
                 },
               }}
               onChange={debounce((e) => {

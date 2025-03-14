@@ -11,6 +11,7 @@ import {
 import { Dayjs } from "dayjs";
 import { Ref, forwardRef } from "react";
 import { Container } from "./DatePicker.styles";
+import { red } from "@mui/material/colors";
 
 interface DatePickerProps extends DatePickerBaseProps<Dayjs> {
   error?: string;
@@ -21,7 +22,7 @@ export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
     <Container>
       <DatePickerBase {...props} ref={ref as Ref<HTMLDivElement>} />
       {!!error && (
-        <Typography fontSize="12px" color="red">
+        <Typography fontSize="12px" color={red[700]}>
           {error}
         </Typography>
       )}
@@ -38,7 +39,7 @@ export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
     <Container>
       <DateTimePickerBase {...props} ref={ref as Ref<HTMLDivElement>} />
       {!!error && (
-        <Typography fontSize="12px" color="red">
+        <Typography fontSize="12px" color={red[700]}>
           {error}
         </Typography>
       )}

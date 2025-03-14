@@ -5,6 +5,7 @@ export const metadata = {
 import { Providers } from "@/providers";
 
 import { Open_Sans } from "next/font/google";
+import "./global.css";
 
 const openSans = Open_Sans({
   weight: ["400", "500", "700"],
