@@ -22,16 +22,15 @@ interface Params {
   handleClose: () => void;
 }
 export const DailyTripFormDetail = ({ initialValues, handleClose }: Params) => {
-  const { mutateAsync, isSuccess, isError, error } = useDailyTripMutation();
-
+  const { mutateAsync, isError, error } = useDailyTripMutation();
+  console.log(initialValues);
   const methods = useForm({
     defaultValues: initialValues,
   });
 
   const onSubmit = async (data: DailyTrip) => {
     const response = await mutateAsync(data);
-    console.log("response", response);
-    if (isSuccess && !isError) {
+    if (response === "Ok") {
       handleClose();
     }
   };

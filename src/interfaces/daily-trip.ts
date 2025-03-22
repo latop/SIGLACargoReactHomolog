@@ -27,6 +27,7 @@ export interface DailyTrip {
     code: string;
     description: string;
   } | null;
+  driverId: string | null;
   locationDestId: string | null;
   locationDest: {
     code: string;

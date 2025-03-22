@@ -41,3 +41,14 @@ export const formatCep = (value: string) => {
   const rawValue = value.replace(/\D/g, "");
   return rawValue.replace(/(\d{5})(\d)/, "$1-$2").slice(0, 9);
 };
+
+export const getOperationValue = (value: string | null): boolean | null => {
+  switch (value) {
+    case "true":
+      return true;
+    case "false":
+      return false;
+    default:
+      return null;
+  }
+};

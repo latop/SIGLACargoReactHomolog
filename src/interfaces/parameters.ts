@@ -58,3 +58,28 @@ export type Attribution = {
   description: string;
   id: string;
 };
+
+export interface ResponsibleSectorType {
+  code: string;
+  description: string;
+  id: string;
+}
+
+export interface JustificationType {
+  code: string;
+  description: string;
+  responsibleSectorId: string;
+  responsibleSector?: Partial<ResponsibleSectorType>;
+  type: string;
+  id: string;
+}
+
+export interface ResponsibleSectorResponse {
+  currentPage?: number;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
+  pageSize?: number;
+  totalPages?: number;
+  data: ResponsibleSectorType[];
+  totalCount?: number;
+}

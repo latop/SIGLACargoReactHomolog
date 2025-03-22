@@ -28,7 +28,12 @@ export const AddLineSectionForm = ({ seq }: { seq: number }) => {
   const handleDeleteStep = () => {
     const steps = getValues("lineSections");
     steps.splice(seq, 1);
-    setValue("lineSections", steps);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const updatedSteps = steps.map((step: any, index: number) => ({
+      ...step,
+      section: { ...step.section, seq: index },
+    }));
+    setValue("lineSections", updatedSteps);
   };
 
   return (
@@ -70,7 +75,10 @@ export const AddLineSectionForm = ({ seq }: { seq: number }) => {
                   onChange={(event) => {
                     const inputValue = event.target.value;
                     if (/^\d*$/.test(inputValue)) {
-                      setValue(`lineSections.${seq}.duration`, inputValue);
+                      setValue(
+                        `lineSections.${seq}.duration`,
+                        Number(inputValue),
+                      );
                     }
                   }}
                 />
@@ -83,7 +91,8 @@ export const AddLineSectionForm = ({ seq }: { seq: number }) => {
               name={`lineSections.${seq}.locationOrig`}
               label="Origem"
               onChange={(value) => {
-                setValue(`lineSections.${seq}.locationOrig`, value);
+                setValue(`lineSections.${seq}.locationOrig`, value || "");
+                setValue(`lineSections.${seq}.locationOrigId`, value?.id || "");
               }}
             />
           </Grid>
@@ -92,15 +101,8 @@ export const AddLineSectionForm = ({ seq }: { seq: number }) => {
               label="Destino"
               name={`lineSections.${seq}.locationDest`}
               onChange={(value) => {
-                setValue(`lineSections.${seq}.locationDest`, value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={1.5}>
-            <AutocompleteStopType
-              name={`lineSections.${seq}.stopType`}
-              onChange={(value) => {
-                setValue(`lineSections.${seq}.stopType`, value);
+                setValue(`lineSections.${seq}.locationDest`, value || "");
+                setValue(`lineSections.${seq}.locationDestId`, value?.id || "");
               }}
             />
           </Grid>
@@ -109,7 +111,19 @@ export const AddLineSectionForm = ({ seq }: { seq: number }) => {
               label="Base vinculada"
               name={`lineSections.${seq}.locationGroup`}
               onChange={(value) => {
-                setValue(`lineSections.${seq}.locationGroup`, value);
+                setValue(
+                  `lineSections.${seq}.locationGroupId`,
+                  value?.id || "",
+                );
+              }}
+            />
+          </Grid>
+          <Grid item xs={1.5}>
+            <AutocompleteStopType
+              name={`lineSections.${seq}.stopType`}
+              onChange={(value) => {
+                setValue(`lineSections.${seq}.stopType`, value || "");
+                setValue(`lineSections.${seq}.stopTypeId`, value?.id || "");
               }}
             />
           </Grid>

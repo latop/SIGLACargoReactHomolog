@@ -53,7 +53,11 @@ export function AutocompleteLine({
                 ? "Carregando..."
                 : "Nenhum resultado encontrado"
           }
-          getOptionLabel={(option: Line) => option.code}
+          getOptionLabel={(option: Line) =>
+            option.description
+              ? `${option.code} - ${option.description}`
+              : option.code
+          }
           renderInput={(params) => (
             <TextField
               {...field}

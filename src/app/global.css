@@ -1,0 +1,4 @@
+.MuiDataGrid-withBorderColor .MuiDataGrid-columnHeaderCheckbox {
+  backgroundColor: '#24438F' !important;
+  color: 'white' !important;
+}

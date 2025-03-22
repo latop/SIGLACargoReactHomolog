@@ -59,6 +59,15 @@ export function AutocompleteActivity({
             <TextField
               {...field}
               {...params}
+              sx={{
+                "& .MuiInputBase-input.Mui-disabled": {
+                  WebkitTextFillColor: "#000000",
+                  opacity: 1,
+                },
+                "& .MuiInputBase-input": {
+                  textTransform: "uppercase",
+                },
+              }}
               onChange={debounce(field.onChange, 300)}
               variant="outlined"
               fullWidth

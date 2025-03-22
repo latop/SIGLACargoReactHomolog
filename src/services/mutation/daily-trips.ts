@@ -54,6 +54,9 @@ export const useDailyTripMutation = () => {
           endEstimated: section.endEstimated
             ? dayjs(section.endEstimated).format("YYYY-MM-DDTHH:mm")
             : null,
+          driverId: section.driverId || null,
+          locationOrigId: section.locationOrigId || null,
+          locationDestId: section.locationDestId || null,
           truck: null,
           locationOrig: null,
           locationDest: null,
@@ -65,6 +68,44 @@ export const useDailyTripMutation = () => {
       try {
         const response = await api.post("/DailyTrip/updatedailyTrip", {
           ...normalizedPayload,
+        });
+        console.log("response", response);
+        return response.data;
+      } catch (error) {
+        console.error(error);
+        return error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["daily-trips"],
+      });
+    },
+  });
+};
+
+export interface DailyTripBatchChangePayload {
+  dailyTripId: string[];
+  actionType: string;
+  justificationId: string;
+  justificationMessage: string;
+  companyId?: string;
+  fleetGroupId?: string;
+  deliveryDate?: string;
+  deliveryTime?: string;
+  requestDate?: string;
+  keepDriver?: boolean;
+}
+export interface DailyTripBatchChangeResponse {}
+
+export const useDailyTripBatchChange = () => {
+  return useMutation({
+    mutationKey: ["daily-trips-batch"],
+    mutationFn: async (payload: DailyTripBatchChangePayload) => {
+      console;
+      try {
+        const response = await api.post("/DailyTrip/dailytripbatchchange", {
+          ...payload,
         });
         console.log("response", response);
         return response.data;

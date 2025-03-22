@@ -11,6 +11,7 @@ interface FormFields {
   locationOrigId: string;
   locationOrigCode: string;
   code: string;
+  submitted?: boolean;
 }
 
 const schema = z.object({
@@ -41,11 +42,18 @@ export function useLinesFilterBar() {
 
   const onSubmit = (data: FormFields) => {
     const params = new URLSearchParams();
+    let hasValues = false;
+
     Object.entries(data).forEach(([key, value]) => {
       if (value) {
         params.append(key, value);
+        hasValues = true;
       }
     });
+
+    if (!hasValues) {
+      params.append("submitted", "true");
+    }
     router.push(`/lines?${params.toString()}`);
   };
 

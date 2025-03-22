@@ -19,24 +19,19 @@ export function TripOptmizationFilterBar() {
   const {
     control,
     handleSubmit,
-    formState: { isValid },
+    formState: { errors },
   } = methods;
   const { mutate, isLoading, handleOptmizeTrip } = useTripOptimization();
   const { addToast } = useToast();
 
   const { openDialog, closeDialog } = useDialog();
-
+  console.log(errors);
   const handleDialogOptmize = (data: FieldValues) => {
     const params = {
       start: dayjs(data.start).format("YYYY-MM-DD"),
       end: dayjs(data.end).format("YYYY-MM-DD"),
       locationGroupCode: data.locationGroupCode,
     };
-
-    if (!isValid) {
-      addToast("Preencha os campos.", { type: "error" });
-      return;
-    }
 
     openDialog({
       title: "Confirmar otimização",
@@ -85,7 +80,13 @@ export function TripOptmizationFilterBar() {
               />
             </Grid>
             <Grid item xs={2}>
-              <AutocompleteLocationGroup label="Cód. Loc" />
+              <AutocompleteLocationGroup
+                name="locationGroupCode"
+                label="Cód. Loc"
+                onChange={(value) => {
+                  methods.setValue("locationGroupCode", value?.code as string);
+                }}
+              />
             </Grid>
 
             <Grid item xs={2}>

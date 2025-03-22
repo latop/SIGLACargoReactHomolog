@@ -35,6 +35,7 @@ export function Lines() {
     totalCount,
     hasData,
     refetchLines,
+    isLoadingMore,
   } = useLines();
   const { handleDeleteLine } = useLine();
 
@@ -62,14 +63,14 @@ export function Lines() {
       },
     },
     {
-      field: "tripType.code",
+      field: "tripType.description",
       headerName: "Tipo de Viagem",
       width: 300,
       sortable: false,
       filterable: false,
       valueGetter: (_, data) => {
-        return data?.line?.tripType?.code
-          ? `${data?.line?.tripType?.code}`
+        return data?.line?.tripType?.description
+          ? `${data?.line?.tripType?.description}`
           : "N/A";
       },
     },
@@ -93,7 +94,7 @@ export function Lines() {
       filterable: false,
     },
     {
-      field: "",
+      field: " ",
       headerName: "",
       sortable: false,
       filterable: false,
@@ -113,10 +114,9 @@ export function Lines() {
               }}
               onClick={() => {
                 openDialog({
-                  body: "Deseja deletar esta rota?",
+                  body: "Deseja apagar esta rota?",
                   onConfirm: () => {
                     handleDeleteLine(params?.id as string, refetchLines);
-
                     closeDialog();
                   },
                   onCancel: () => {
@@ -159,6 +159,7 @@ export function Lines() {
             variant="outlined"
             sx={{ maxWidth: "200px", alignSelf: "flex-end", width: "170px" }}
             onClick={handleAddLine}
+            disabled={isLoading}
           >
             Adicionar rotas
           </Button>
@@ -166,7 +167,7 @@ export function Lines() {
         <Card
           sx={{
             width: "100%",
-            height: "635px",
+            height: "634px",
             position: "relative",
             display: "flex",
             flexDirection: "column",
@@ -195,6 +196,7 @@ export function Lines() {
                       }`,
                   },
                 }}
+                loading={isLoadingMore}
                 rowCount={totalCount}
                 columns={columns}
                 onCellDoubleClick={(params) => {
@@ -202,13 +204,14 @@ export function Lines() {
                 }}
                 initialState={{
                   pagination: {
-                    paginationModel: { page: size - 1, pageSize: 10 },
+                    paginationModel: { page: size - 1, pageSize: 15 },
                   },
                 }}
                 onPaginationModelChange={(params) => {
                   loadMoreLines(params.page + 1);
                 }}
-                pageSizeOptions={[10]}
+                pageSizeOptions={[15]}
+                density="compact"
               />
             </div>
           )}

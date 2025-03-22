@@ -99,7 +99,13 @@ export function UploadTripFileForm() {
           </Grid>
           <Grid item xs={1.25}>
             {selectedFile && (
-              <AutocompleteLocationGroup name="Locationcode" label="Cód. Loc" />
+              <AutocompleteLocationGroup
+                name="Locationcode"
+                label="Cód. Loc"
+                onChange={(value) =>
+                  formMethods.setValue("Locationcode", value?.code || "")
+                }
+              />
             )}
           </Grid>
 

@@ -21,10 +21,10 @@ export const useLine = (
     return deleteLine(`/deleteline/${id}`, id, {
       method: "delete",
       onSuccess: () => {
-        addToast("Rota deletada com sucesso!", { type: "success" });
+        addToast("Rota apagada com sucesso!", { type: "success" });
         refreshLines?.();
       },
-      onError: () => addToast("Erro ao deletar a rota.", { type: "error" }),
+      onError: () => addToast("Erro ao apagar a rota.", { type: "error" }),
     });
   };
 
