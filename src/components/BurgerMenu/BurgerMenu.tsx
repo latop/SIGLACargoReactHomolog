@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Drawer,
   List,
@@ -7,180 +7,166 @@ import {
   ListItemIcon,
   ListItemText,
   ListItemButton,
+  Button,
+  Tooltip,
+  styled,
 } from "@mui/material";
 import Link from "next/link";
-import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-import HomeIcon from "@mui/icons-material/Home";
-import { TbSteeringWheel } from "react-icons/tb";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import SwapVertIcon from "@mui/icons-material/SwapVert";
-import MovingIcon from "@mui/icons-material/Moving";
-import { BiTrip } from "react-icons/bi";
-import NoCrashIcon from "@mui/icons-material/NoCrash";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
-import RouteIcon from "@mui/icons-material/Route";
-import PublishIcon from "@mui/icons-material/Publish";
-import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import { useRouter } from "next/navigation";
 import { BurgerMenuGroup } from "../BurgerMenuGroup";
-import EditNoteIcon from "@mui/icons-material/EditNote";
+
+import { groupments, GroupmentType, routes } from "./config";
+
+const ButtonStyled = styled(Button)`
+  transition: all 0.2s ease-in-out;
+  background-color: transparent;
+  &:hover {
+    background-color: transparent;
+    text-decoration: underline;
+  }
+`;
+
+const BoxStyled = styled(Box)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: transparent !important;
+`;
 
 interface BurgerMenuProps {
   isOpen: boolean;
-  toggleDrawer: (
+  toggleDrawer?: (
     open: boolean,
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
+  menuGroupsOpen?: Record<GroupmentType, boolean>;
+  setMenuGroupsOpen?: React.Dispatch<
+    React.SetStateAction<Record<GroupmentType, boolean>>
+  >;
 }
+const STORAGE_KEY = "burgerMenuOpenGroups";
 
-export interface RouteItem {
-  text: string;
-  icon: React.ReactElement;
-  path: string;
-  group?: "register" | undefined;
-}
+const initialState: Record<GroupmentType, boolean> = {
+  register: false,
+  coordination: false,
+  "driver-schedule": false,
+  planning: false,
+  reports: false,
+};
 
-const routes: RouteItem[] = [
-  { text: "Home", icon: <HomeIcon />, path: "/home" },
-  {
-    text: "Solicitação de Motoristas",
-    icon: <LocalShippingIcon />,
-    path: "/drivers-request",
-  },
-  {
-    text: "Escala de Motoristas",
-    icon: <LocalShippingIcon />,
-    path: "/drivers-schedule",
-  },
-  {
-    text: "Coordenação de viagens",
-    icon: <TbSteeringWheel />,
-    path: "/daily-trips-schedule",
-  },
-  {
-    text: "Partidas e chegadas",
-    icon: <SwapVertIcon />,
-    path: "/departures-and-arrivals",
-  },
-  {
-    text: "Viagens diárias",
-    icon: <MovingIcon />,
-    path: "/daily-trips",
-  },
-  {
-    text: "Planejamento de veículos",
-    icon: <TbSteeringWheel />,
-    path: "/vehicle-planning",
-  },
-  {
-    text: "Cenários",
-    icon: <BiTrip />,
-    path: "/scenarios",
-  },
-  {
-    text: "Liberação de motoristas",
-    icon: <NoCrashIcon />,
-    path: "/release-driver",
-  },
-  {
-    text: "Relatórios",
-    icon: <AssignmentIcon />,
-    path: "/reports",
-  },
-  {
-    text: "Importação de viagens",
-    icon: <UploadFileIcon />,
-    path: "/import-trips",
-  },
-  {
-    text: "Otimizacão de viagens",
-    icon: <SettingsSuggestIcon />,
-    path: "/trip-optimization",
-  },
-  {
-    text: "Rotas",
-    icon: <RouteIcon />,
-    path: "/lines",
-    group: "register",
-  },
-  {
-    text: "Motoristas",
-    icon: <TbSteeringWheel />,
-    path: "/drivers",
-    group: "register",
-  },
-  {
-    text: "Publicação",
-    icon: <PublishIcon />,
-    path: "/publish-journey",
-  },
-  {
-    text: "Caminhão",
-    icon: <LocalShippingIcon />,
-    path: "/trucks",
-    group: "register",
-  },
-  {
-    text: "Localização",
-    icon: <AddLocationAltIcon />,
-    path: "/locations",
-    group: "register",
-  },
-  {
-    text: "Setor Responsável",
-    icon: <PersonSearchIcon />,
-    path: "/responsible-sector",
-    group: "register",
-  },
-  {
-    text: "Justificativas",
-    icon: <EditNoteIcon />,
-    path: "/justifications",
-    group: "register",
-  },
-];
+const getInitialOpenState = (): Record<GroupmentType, boolean> => {
+  if (typeof window === "undefined") return initialState;
+  const stored = localStorage.getItem(STORAGE_KEY);
+  return stored ? JSON.parse(stored) : initialState;
+};
+
+const saveOpenState = (state: Record<GroupmentType, boolean>) => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+};
 
 export function BurgerMenu({ isOpen, toggleDrawer }: BurgerMenuProps) {
   const router = useRouter();
 
+  const [menuOpen, setOpenMenu] = useState(initialState);
+
+  const handleMenuOpen = ({ group }: { group: GroupmentType }) => {
+    setOpenMenu((prev) => {
+      const newState = { ...prev, [group]: !prev[group] };
+      saveOpenState(newState);
+      return newState;
+    });
+  };
+
+  const handleMenuCloseAll = () => {
+    setOpenMenu(initialState);
+    saveOpenState(initialState);
+  };
+
+  useEffect(() => {
+    const stored = getInitialOpenState();
+    setOpenMenu(stored);
+  }, []);
+
   return (
-    <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
+    <Drawer anchor="left" open={isOpen} onClose={toggleDrawer?.(false)}>
       <Box
-        display="flex"
-        justifyContent="center"
-        width="100%"
-        sx={{ padding: "20px 0 10px" }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+        }}
       >
-        <img src="/pepsico-logo.png" width={144} height={40} alt="PepsiCo" />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "auto",
+          }}
+        >
+          <Box
+            display="flex"
+            justifyContent="center"
+            width="100%"
+            sx={{ padding: "20px 0 10px" }}
+          >
+            <img
+              src="/pepsico-logo.png"
+              width={144}
+              height={40}
+              alt="PepsiCo"
+            />
+          </Box>
+          <Box
+            sx={{
+              maxHeight: "100vh",
+              overflowY: "auto",
+            }}
+          >
+            <List>
+              {routes
+                .filter(({ group }) => group === undefined)
+                .map(({ text, icon, path }) => (
+                  <ListItem key={text} disablePadding>
+                    <Link
+                      href={path}
+                      passHref
+                      style={{ width: "100%" }}
+                      onMouseEnter={() => {
+                        void router.prefetch(path);
+                      }}
+                    >
+                      <ListItemButton>
+                        <ListItemIcon>{icon}</ListItemIcon>
+                        <ListItemText primary={text} />
+                      </ListItemButton>
+                    </Link>
+                  </ListItem>
+                ))}
+
+              {groupments.map(({ groupment, name, icon: Icon }) => (
+                <BurgerMenuGroup
+                  key={groupment}
+                  routes={routes}
+                  groupment={groupment}
+                  name={name}
+                  router={router}
+                  icon={Icon}
+                  expanded={menuOpen[groupment]}
+                  onToggle={() => handleMenuOpen({ group: groupment })}
+                />
+              ))}
+            </List>
+          </Box>
+        </Box>
+
+        <BoxStyled>
+          <Tooltip title="Fecha todos os menus" placement="top">
+            <ButtonStyled variant="text" onClick={() => handleMenuCloseAll()}>
+              Fechar abas
+            </ButtonStyled>
+          </Tooltip>
+        </BoxStyled>
       </Box>
-      <List sx={{ display: "flex", flexDirection: "column" }}>
-        {routes
-          .filter(({ group }) => group === undefined)
-          .map(({ text, icon, path }) => (
-            <ListItem key={text} disablePadding>
-              <Link
-                href={path}
-                passHref
-                style={{ width: "100%" }}
-                onMouseEnter={() => {
-                  void router.prefetch(path);
-                }}
-              >
-                <ListItemButton>
-                  <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          ))}
-        <BurgerMenuGroup
-          routes={routes}
-          groupment="register"
-          name="Cadastros"
-          router={router}
-        />
-      </List>
     </Drawer>
   );
 }

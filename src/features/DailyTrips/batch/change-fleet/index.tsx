@@ -77,8 +77,15 @@ const ModalBatchAlterFleetTrip = ({
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleSubmitAndClose)}>
             <Box display="flex" flexDirection={"column"} gap="10px">
-              <AutocompleteFleetGroup name="fleetGroup.code" isRequired />
-              <AutocompleteJustification name="justificationId" />
+              <AutocompleteFleetGroup
+                name="fleetGroup.code"
+                isRequired
+                rules={{ required: "Campo obrigatório" }}
+              />
+              <AutocompleteJustification
+                name="justificationId"
+                rules={{ required: "Campo obrigatório" }}
+              />
               <Controller
                 name={"justificationMessage"}
                 control={methods.control}

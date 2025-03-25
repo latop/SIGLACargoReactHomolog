@@ -9,9 +9,11 @@ import { Activity } from "@/interfaces/parameters";
 export function AutocompleteActivity({
   onChange,
   name = "activityCode",
+  label = "Atividade",
 }: {
   onChange?: (value: Activity) => void;
   name?: string;
+  label?: string;
 }) {
   const {
     control,
@@ -71,7 +73,7 @@ export function AutocompleteActivity({
               onChange={debounce(field.onChange, 300)}
               variant="outlined"
               fullWidth
-              label="Atividade"
+              label={label}
               error={!!errors[field.name]}
               helperText={errors[field.name]?.message?.toString()}
             />

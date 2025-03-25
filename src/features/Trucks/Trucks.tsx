@@ -155,7 +155,7 @@ export function Trucks() {
         <Card
           sx={{
             width: "100%",
-            height: "635px",
+            height: "634px",
             position: "relative",
             display: "flex",
             flexDirection: "column",
@@ -195,8 +195,8 @@ export function Trucks() {
                     paginationModel: { page: currentPage - 1, pageSize: 15 },
                   },
                 }}
-                onPaginationModelChange={() => {
-                  loadMoreLines();
+                onPaginationModelChange={(params) => {
+                  loadMoreLines(params.page + 1);
                 }}
                 pageSizeOptions={[15]}
                 density="compact"
