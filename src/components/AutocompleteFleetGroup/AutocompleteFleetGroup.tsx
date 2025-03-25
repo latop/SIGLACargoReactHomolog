@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { SyntheticEvent } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, RegisterOptions } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import debounce from "debounce";
@@ -12,6 +12,7 @@ export function AutocompleteFleetGroup({
   label = "Cód da frota",
   keyCode = "code",
   isRequired = false,
+  rules,
   onChange,
 }: {
   name?: string;
@@ -19,6 +20,7 @@ export function AutocompleteFleetGroup({
   isRequired?: boolean;
   onChange?: (value: FleetGroup | null) => void;
   label?: string;
+  rules?: RegisterOptions;
 }) {
   const {
     control,
@@ -51,6 +53,7 @@ export function AutocompleteFleetGroup({
     <Controller
       name={name}
       control={control}
+      rules={rules}
       render={({ field }) => {
         return (
           <Autocomplete

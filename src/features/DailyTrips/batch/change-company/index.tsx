@@ -81,8 +81,12 @@ const ModalBatchAlterCompanyTrip = ({
                 name="companyId"
                 keyLabel="name"
                 keyCode="id"
+                rules={{ required: "Campo obrigatório" }}
               />
-              <AutocompleteJustification name="justificationId" />
+              <AutocompleteJustification
+                name="justificationId"
+                rules={{ required: "Campo obrigatório" }}
+              />
               <Controller
                 name={"justificationMessage"}
                 control={methods.control}

@@ -48,7 +48,7 @@ export const useJustificationQuery = () => {
       try {
         const {
           data: { data },
-        } = await api.get("/Justification");
+        } = await api.get("/Justification?perPage=1000");
 
         return data;
       } catch (error) {

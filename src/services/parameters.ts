@@ -1,5 +1,6 @@
 import axios from "axios";
 import api from "./configs/api";
+
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 export interface FetchActivitiesParams {
@@ -37,6 +38,22 @@ export interface FetchJustificationsParams {
   responsibleSectorId?: string; // Filter1Id
   code?: string; // Filter1String
   type?: string; // Filter2String
+}
+
+export interface FetchActivityTypeParams {
+  pageSize?: number;
+  pageNumber?: number;
+  code?: string; // Filter1String
+  type?: string; // Filter2String
+}
+
+export interface FetchActivityParams {
+  pageSize?: number;
+  pageNumber?: number;
+  code?: string; // Filter1String
+  activityTypeId?: string; // Filter1Id
+  flgActive?: boolean | string; // Filter1Bool
+  flgRequest?: boolean | string; // Filter1Bool
 }
 
 export async function fetchAcitivities({
@@ -232,6 +249,78 @@ export async function fetchJustifications({
 export async function fetchJustificationById({ id }: { id: string }) {
   try {
     const response = await api.get(`/Justification/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchActivityType({
+  args: params,
+}: {
+  args: FetchActivityTypeParams;
+}) {
+  const activityTypeParams = {
+    PageSize: params.pageSize,
+    PageNumber: params.pageNumber,
+    Filter1String: params?.code,
+    Filter2String: params?.type,
+  };
+  try {
+    const response = await api.get("/ActivityType", {
+      params: activityTypeParams,
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchActivityTypeById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/ActivityType/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchActivity({
+  args: params,
+}: {
+  args: FetchActivityParams;
+}) {
+  const activityParams = {
+    PageSize: params.pageSize,
+    PageNumber: params.pageNumber,
+    Filter1String: params?.code,
+    Filter1Id: params?.activityTypeId,
+    Filter1Bool: params?.flgRequest !== "all" ? params?.flgRequest : undefined,
+    Filter2Bool:
+      params?.flgActive !== "undefined" ? params?.flgActive : undefined,
+  };
+
+  try {
+    const response = await api.get("/Activity", {
+      params: activityParams,
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchActivityById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/Activity/${id}`);
     const data = response.data;
     return data;
   } catch (error) {

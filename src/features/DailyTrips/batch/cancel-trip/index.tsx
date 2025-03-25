@@ -74,7 +74,10 @@ const ModalBatchCancelTrip = ({
         </Typography>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleSubmitAndClose)}>
-            <AutocompleteJustification name="justificativa" />
+            <AutocompleteJustification
+              name="justificativa"
+              rules={{ required: "Campo obrigatório" }}
+            />
             <Controller
               name={"justificationMessage"}
               control={methods.control}

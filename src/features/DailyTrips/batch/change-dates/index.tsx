@@ -111,7 +111,7 @@ const ModalBatchAlterDatesTrip = ({
                     render={({ field, fieldState: { error } }) => (
                       <DateTimePicker
                         format="DD/MM/YYYY HH:mm"
-                        label="Nova Data/Hora de Entrega"
+                        label="Data/Hora de Entrega"
                         error={error?.message}
                         {...field}
                         value={field.value ? dayjs(field.value) : null}
@@ -124,7 +124,7 @@ const ModalBatchAlterDatesTrip = ({
                     render={({ field, fieldState: { error } }) => (
                       <DatePicker
                         format="DD/MM/YYYY"
-                        label="Nova Data de Solicitação"
+                        label="Data de Solicitação"
                         error={error?.message}
                         {...field}
                         value={field.value ? dayjs(field.value) : null}
@@ -153,7 +153,10 @@ const ModalBatchAlterDatesTrip = ({
                     />
                   )}
                 />
-                <AutocompleteJustification name="justificationId" />
+                <AutocompleteJustification
+                  name="justificationId"
+                  rules={{ required: "Campo obrigatório" }}
+                />
                 <Controller
                   name={"justificationMessage"}
                   control={methods.control}

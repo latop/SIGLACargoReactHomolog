@@ -155,7 +155,7 @@ export function Trucks() {
         <Card
           sx={{
             width: "100%",
-            height: "635px",
+            height: "634px",
             position: "relative",
             display: "flex",
             flexDirection: "column",

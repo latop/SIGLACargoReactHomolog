@@ -182,54 +182,57 @@ export function ImportTripsDialog({ open, onClose }: LocationsDialogProps) {
           dividers
           sx={{
             padding: "16px",
-            position: "relative",
             display: "flex",
             flexDirection: "column",
             height: "100%",
+            overflow: "hidden",
           }}
         >
           {isLoading ? (
             <LoadingTableSkeleton length={10} />
           ) : (
-            <Box>
-              {
-                <Box
-                  sx={{
-                    opacity: isPinned ? 1 : 0,
-                    height: isPinned ? "auto" : 0,
-                    pointerEvents: isPinned ? "auto" : "none",
-                    transition: "all 0.2s ease",
-                    marginBottom: isPinned ? 2 : 0,
-                  }}
-                >
-                  <DataGrid
-                    columns={columnsHeader}
-                    rows={tripGTMS ? [tripGTMS] : []}
-                    getRowId={(row) => row.id}
-                    density="compact"
-                    pageSizeOptions={[1]}
-                    hideFooter
-                    autoHeight
-                  />
-                </Box>
-              }
+            <Box
+              sx={{
+                flex: 1,
+                overflow: "auto",
+                position: "relative",
+              }}
+            >
+              {/* Fixed Header Table (conditionally sticky) */}
               <Box
                 sx={{
-                  flex: 1,
-                  overflow: "auto",
-                  minWidth: "100%",
+                  position: isPinned ? "sticky" : "static",
+                  top: isPinned ? 0 : "auto",
+                  zIndex: isPinned ? 10 : "auto",
+                  backgroundColor: "background.paper",
+                  opacity: isPinned ? 1 : 0,
+                  height: isPinned ? "auto" : 0,
+                  pointerEvents: isPinned ? "auto" : "none",
+                  transition: "all 0.2s ease",
+                  marginBottom: isPinned ? 2 : 0,
                 }}
               >
-                <Box sx={{ minWidth: "1200px" }}>
-                  <DataGrid
-                    columns={columns}
-                    rows={tripGTMSDetails || []}
-                    getRowId={(row) => row.id}
-                    density="compact"
-                    hideFooter
-                    autoHeight
-                  />
-                </Box>
+                <DataGrid
+                  columns={columnsHeader}
+                  rows={tripGTMS ? [tripGTMS] : []}
+                  getRowId={(row) => row.id}
+                  density="compact"
+                  pageSizeOptions={[1]}
+                  hideFooter
+                  autoHeight
+                />
+              </Box>
+
+              <Box sx={{ minWidth: "1200px" }}>
+                <DataGrid
+                  columns={columns}
+                  rows={tripGTMSDetails || []}
+                  getRowId={(row) => row.id}
+                  density="compact"
+                  hideFooter
+                  autoHeight={false}
+                  sx={{ height: "100%" }}
+                />
               </Box>
             </Box>
           )}

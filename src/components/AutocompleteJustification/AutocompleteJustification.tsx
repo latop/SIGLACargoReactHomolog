@@ -6,13 +6,14 @@ import {
 import { Skeleton, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useCallback } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, RegisterOptions } from "react-hook-form";
 
 interface Params {
   name?: string;
   label?: string;
   keyCode?: keyof JustificationResponse;
   onChange?: (value: JustificationResponse | null) => void;
+  rules?: RegisterOptions;
   hasSkeleton?: boolean;
   hasMock?: boolean;
 }
@@ -22,6 +23,7 @@ export function AutocompleteJustification({
   label = "Justificativa",
   keyCode = "code",
   onChange,
+  rules,
 }: Params) {
   const { data, isLoading } = useJustificationQuery();
 
@@ -50,6 +52,7 @@ export function AutocompleteJustification({
     <Controller
       name={name}
       control={control}
+      rules={rules}
       render={({ field }) => (
         <Autocomplete
           forcePopupIcon={false}
@@ -69,7 +72,9 @@ export function AutocompleteJustification({
           noOptionsText={
             isLoading ? "Carregando..." : "Nenhum resultado encontrado"
           }
-          getOptionLabel={(option: Timezone) => option?.code}
+          getOptionLabel={(option: Timezone) =>
+            option?.description || "Selecionar uma opção"
+          }
           renderInput={(params) => (
             <TextField
               {...field}

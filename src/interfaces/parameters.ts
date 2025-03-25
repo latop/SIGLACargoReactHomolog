@@ -83,3 +83,58 @@ export interface ResponsibleSectorResponse {
   data: ResponsibleSectorType[];
   totalCount?: number;
 }
+
+export interface ActivityType {
+  code: string;
+  description: string;
+  function: string;
+  flgJourney: boolean;
+  flgPayroll: boolean;
+  color: string;
+  id: string;
+}
+
+export interface ActivityTypeResponse {
+  currentPage?: number;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
+  pageSize?: number;
+  totalPages?: number;
+  data: ActivityType[];
+  totalCount?: number;
+}
+
+export interface Activity {
+  id: string;
+  code: string;
+  description: string;
+  activityTypeId: string;
+  activityType: ActivityType;
+  start: string; // ISO datetime string
+  end: string; // ISO datetime string
+  flgActive: boolean;
+  flgMeal: boolean;
+  flgLunch: boolean;
+  flgRest: boolean;
+  flgRequest: boolean;
+}
+
+export interface ActivityeResponse {
+  currentPage?: number;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
+  pageSize?: number;
+  totalPages?: number;
+  data: Activity[];
+  totalCount?: number;
+}
+
+export interface PaginatedResponse<T> {
+  currentPage?: number;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
+  pageSize?: number;
+  totalPages?: number;
+  data: T[];
+  totalCount?: number;
+}
