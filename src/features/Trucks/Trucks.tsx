@@ -195,8 +195,8 @@ export function Trucks() {
                     paginationModel: { page: currentPage - 1, pageSize: 15 },
                   },
                 }}
-                onPaginationModelChange={(params) => {
-                  loadMoreLines(params.page + 1);
+                onPaginationModelChange={() => {
+                  loadMoreLines();
                 }}
                 pageSizeOptions={[15]}
                 density="compact"
