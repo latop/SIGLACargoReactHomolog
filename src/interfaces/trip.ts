@@ -37,6 +37,7 @@ export interface LocationType {
   description: string;
   isOperation: boolean;
   id: string;
+  color: string;
 }
 
 export interface TripType {
