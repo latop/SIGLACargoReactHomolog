@@ -1,6 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import api from "../configs/api";
 import { FetchBasicParams } from "./types";
+import {
+  FetchLocationsParams,
+  Locations,
+  LocationsPaginationResponse,
+} from "@/interfaces/trip";
 
 const resource = "Location";
 
@@ -47,23 +52,29 @@ export const useGetLocationQuery = ({
   });
 };
 
-export const useGetLocationReleaseQuery = {
-  queryKey: ["location_release"],
-  queryFn: async ({ pageSize = 15, code }: FetchBasicParams) => {
-    try {
-      const response = await api.get(`${resource}/GetLocationRelease`, {
-        params: {
-          PageSize: pageSize,
-          filter1String: code?.toUpperCase(),
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
-  },
-  staleTime: 86400,
+export const useGetLocationReleaseQuery = ({
+  pageSize = 15,
+  code,
+}: FetchBasicParams) => {
+  return useQuery({
+    queryKey: ["location_release"],
+    queryFn: async () => {
+      try {
+        const response = await api.get(`${resource}`, {
+          params: {
+            PageSize: pageSize,
+            filter1String: code?.toUpperCase(),
+            filter1Bool: true,
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error(error);
+        return error;
+      }
+    },
+    staleTime: 86400,
+  });
 };
 
 // TODO: Implement the fetchLocations function to the right place
@@ -167,7 +178,6 @@ export const useGetLinesQuery = ({
   locationDestId,
   locationOrigId,
   code,
-  pageSize,
   pageNumber,
 }: FetchLines) => {
   return useQuery({
@@ -180,7 +190,7 @@ export const useGetLinesQuery = ({
             filter2Id: locationDestId,
             filter3Id: fleetGroupId,
             filter1String: code,
-            PageSize: pageSize,
+            PageSize: 9999,
             PageNumber: pageNumber,
           },
         });
@@ -223,5 +233,94 @@ export const useGetStopTypeQuery = ({
       }
     },
     staleTime: 86400,
+  });
+};
+
+export const useGetLocationsQuery = (params: Partial<FetchLocationsParams>) => {
+  const hasAdditionalParameters = !!Object.keys(params).filter(
+    (key) => key !== "isEnabled",
+  ).length;
+
+  return useInfiniteQuery<LocationsPaginationResponse>({
+    queryKey: ["locations", params],
+    queryFn: async ({ pageParam = 0 }) => {
+      try {
+        const response = await api.get("/Location", {
+          params: {
+            PageSize: params?.pageSize || 15,
+            PageNumber: pageParam || 0,
+            filter1Id: params?.locationGroupId,
+            filter2Id: params?.locationTypeId,
+            filter3Id: params?.cityId,
+            filter1String: params?.code,
+            filter2String: params?.codeIntegration1,
+            filter3String: params?.codeIntegration2,
+            filter1Bool: params?.isOperation,
+          },
+        });
+
+        return response?.data;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+    getNextPageParam: (lastPage) => {
+      if (lastPage.hasNext) {
+        return lastPage.currentPage + 1;
+      }
+      return undefined;
+    },
+    getPreviousPageParam: (firstPage) => {
+      if (firstPage.hasPrevious) {
+        return firstPage.currentPage - 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
+    staleTime: 86400,
+    enabled: !!params.isEnabled || hasAdditionalParameters || false,
+  });
+};
+
+export const useGetLocationTypeQuery = ({
+  pageSize = 20,
+  code,
+}: FetchBasicParams) => {
+  return useQuery({
+    queryKey: ["location_type", code],
+    queryFn: async () => {
+      try {
+        const response = await api.get("/LocationType", {
+          params: {
+            PageSize: pageSize,
+            filter1String: code?.toUpperCase(),
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error(error);
+        return error;
+      }
+    },
+    staleTime: 0,
+  });
+};
+
+export const useGetLocationByIdQuery = (id?: string) => {
+  return useQuery<Locations>({
+    queryKey: ["location", { id }],
+    queryFn: async () => {
+      try {
+        const response = await api.get(`/Location/${id}`);
+        return response.data;
+      } catch (error) {
+        console.error(error);
+        return error;
+      }
+    },
+    placeholderData: id ? undefined : ({} as Locations),
+    staleTime: 0,
+    enabled: !!id,
   });
 };

@@ -2,9 +2,9 @@ import React, { SyntheticEvent } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useFleetGroup } from "@/hooks/useFleetGroup";
 import debounce from "debounce";
 import { FleetGroup } from "@/interfaces/vehicle";
+import { useGetFleetGroupQuery } from "@/services/query/vehicles";
 
 export function AutocompleteFleetGroup({
   name = "fleetGroupCode",
@@ -24,10 +24,11 @@ export function AutocompleteFleetGroup({
 
   const isDirty = dirtyFields[name];
 
-  const { fleetGroups, error } = useFleetGroup({
-    pageSize: 10,
-    code: isDirty ? watch(name) : "",
-  });
+  const { data: { data: fleetGroups = [] } = [], error } =
+    useGetFleetGroupQuery({
+      pageSize: 20,
+      code: isDirty ? watch(name) : "",
+    });
 
   const handleChange = (
     _: SyntheticEvent<Element, Event>,

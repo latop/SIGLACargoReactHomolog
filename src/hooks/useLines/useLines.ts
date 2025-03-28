@@ -11,6 +11,7 @@ export const useLines = (options?: SWRConfiguration) => {
     locationDestId: searchParams.get("locationDestId"),
     locationOrigId: searchParams.get("locationOrigId"),
     code: searchParams.get("code"),
+    submitted: searchParams.get("submitted"),
   };
 
   const getKey = (pageIndex: number, previousPageData: LinesPaginated) => {
@@ -19,7 +20,7 @@ export const useLines = (options?: SWRConfiguration) => {
 
     return {
       url: "/lines",
-      args: { ...params, pageSize: 10, pageNumber: pageIndex + 1 },
+      args: { ...params, pageSize: 15, pageNumber: pageIndex + 1 },
     };
   };
   const { data, error, isLoading, mutate, size, setSize, isValidating } =
@@ -43,8 +44,8 @@ export const useLines = (options?: SWRConfiguration) => {
       setSize(page);
     }
   };
+  const hasData = !!lines?.length && !isLoading;
 
-  const hasData = !isEmpty && !isLoading && !error && !isLoadingMore;
   return {
     lines,
     error,
@@ -53,10 +54,11 @@ export const useLines = (options?: SWRConfiguration) => {
     loadMoreLines,
     size,
     isReachingEnd,
-    isLoading: isLoadingMore || isLoading,
+    isLoading,
     setSize,
     isValidating,
     totalCount,
+    isLoadingMore,
     hasData,
   };
 };

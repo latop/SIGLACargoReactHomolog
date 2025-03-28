@@ -4,23 +4,42 @@ import { HeaderTitle } from "@/components/HeaderTitle/HeaderTitle";
 import { ImportTripsFilterBar } from "@/components/ImportTripsFilterBar";
 import { MainContainer } from "@/components/MainContainer";
 import { useImportTrips } from "@/hooks/useImportTrips";
-import { ImportTripsResponseItem } from "@/interfaces/import-trips";
-import { Box, Button, Card, CircularProgress } from "@mui/material";
+import { ImportGtms } from "@/interfaces/import-trips";
+import { Box, Button, Card, CircularProgress, styled } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import { UploadTripFileForm } from "@/components/UploadTripFileForm/UploadTripForm";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import { EmptyResult } from "@/components/EmptyResult";
+import { ImportTripsDialog } from "@/components/ImportTripsDialog/ImportTripsDialog";
+
+const CustomTableButton = styled(Button)(() => ({
+  padding: 0,
+  width: "10px",
+  minWidth: "30px",
+  "&:hover": {
+    opacity: 0.7,
+  },
+}));
 
 export function ImportTrips() {
-  const { data, isLoading, hasParamsToSearch, handleDeleteDemand } =
-    useImportTrips();
+  const {
+    data,
+    isLoading,
+    hasParamsToSearch,
+    handleDeleteDemand,
+    importedTripId,
+    handleImportedTrip,
+    handleCloseDialog,
+  } = useImportTrips();
 
   const columns: GridColDef[] = [
     {
       field: "FileName",
       headerName: "Nome do Arquivo",
       width: 300,
-      valueGetter: (_, data: ImportTripsResponseItem) => {
+      valueGetter: (_, data: ImportGtms) => {
         return data.FileName ? data.FileName.split(".xlsx")[0] : "";
       },
     },
@@ -33,22 +52,32 @@ export function ImportTrips() {
       field: "CreateAt",
       headerName: "Data criação",
       width: 200,
-      valueGetter: (_, data: ImportTripsResponseItem) => {
+      valueGetter: (_, data: ImportGtms) => {
         return dayjs(data.CreateAt).format("DD-MM-YY HH:mm");
       },
     },
     {
       field: "action",
       headerName: "Ações",
-      width: 200,
+      width: 100,
       renderCell: (params) => {
         return (
-          <Button
-            onClick={() => handleDeleteDemand(params.id as string)}
-            variant="text"
-          >
-            <DeleteIcon color="error" />
-          </Button>
+          <Box>
+            <CustomTableButton
+              onClick={() => handleImportedTrip(params.id as string)}
+              size="small"
+              variant="text"
+            >
+              <ListAltIcon color="success" />
+            </CustomTableButton>
+            <CustomTableButton
+              onClick={() => handleDeleteDemand(params.id as string)}
+              variant="text"
+              size="small"
+            >
+              <DeleteIcon color="error" />
+            </CustomTableButton>
+          </Box>
         );
       },
     },
@@ -62,9 +91,18 @@ export function ImportTrips() {
           columns={columns}
           rows={data || []}
           getRowId={(row) => row.Id}
+          density="compact"
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 15 },
+            },
+          }}
+          onCellDoubleClick={(params) =>
+            handleImportedTrip(params.id as string)
+          }
         />
       );
-    return null;
+    if (!data?.length) return <EmptyResult />;
   };
   return (
     <MainContainer
@@ -79,7 +117,8 @@ export function ImportTrips() {
         sx={{
           width: "100%",
           padding: "20px",
-          height: "100vh",
+          minHeight: "790px",
+          height: "auto",
         }}
       >
         <Box
@@ -111,6 +150,7 @@ export function ImportTrips() {
           </Box>
         </Card>
       </Box>
+      <ImportTripsDialog open={!!importedTripId} onClose={handleCloseDialog} />
     </MainContainer>
   );
 }

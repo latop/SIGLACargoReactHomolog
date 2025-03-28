@@ -11,6 +11,7 @@ import useSWR from "swr";
 
 export function useUpdateLineDialog() {
   const [hash] = useHash();
+  const { refetchLines } = useLines();
   const match = (hash as string)?.match(/#line-id-(.+)/);
   const lineId = match?.[1];
 
@@ -35,18 +36,20 @@ export function useUpdateLineDialog() {
         tripTypeId: data?.line.tripType?.id,
         fleetGroupId: data?.line.fleetGroupId,
       },
-      lineSections: data?.lineSections?.map((section) => ({
-        ...section,
-        locationOrig: section.locationOrig.code,
-        locationDest: section.locationDest.code,
-        stopType: section.stopType.stopTypeCode,
-      })),
+      lineSections: data?.lineSections?.map((section) => {
+        return {
+          ...section,
+          locationOrig: section.locationOrig.code,
+          locationDest: section.locationDest.code,
+          locationGroupId: section.locationGroupId,
+        }
+      }),
     };
 
     return lineDefaultValues;
   };
 
-  const { data: lineData, isLoading: isLoadingLine } = useSWR<Line>(
+  const { data: lineData, isLoading: isLoadingLine, mutate: refreshLine } = useSWR<Line>(
     lineId
       ? {
         id: lineId,
@@ -55,18 +58,21 @@ export function useUpdateLineDialog() {
       : null,
     fetchLineById,
     {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
       onSuccess: (data) => {
         methods.reset(normalizeData(data));
       },
     },
   );
-  const { refetchLines } = useLines();
 
   const methods = useForm();
 
   const { addToast } = useToast();
   const [lineCreate, { loading: loadingCreate }] = useFetch();
   const [, setHash] = useHash();
+
   const handleSubmit = async (data: FieldValues) => {
     const body = {
       line: {
@@ -87,17 +93,21 @@ export function useUpdateLineDialog() {
         locationOrigId: data.line.locationOrigId,
         locationDestId: data.line.locationDestId,
         fleetGroupId: data.line.fleetGroupId,
+        overtimeAllowed: data?.line.overtimeAllowed,
+        cost: data?.line.cost,
       },
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       lineSections: data?.lineSections?.map((section: any) => {
+        console.log(section);
         return {
           id: section?.id,
           lineId: section?.lineId,
-          locationOrigId: section?.locationOrigId || section.locationOrig.id,
-          locationDestId: section?.locationDestId || section.locationDest.id,
-          stopTypeId: section?.stopTypeId || section?.stopType?.id,
+          locationOrigId: section?.locationOrigId,
+          locationDestId: section?.locationDestId,
+          stopTypeId: section?.stopTypeId,
           duration: Number(section?.duration),
+          locationGroupId: section?.locationGroupId,
         };
       }),
     };
@@ -108,6 +118,8 @@ export function useUpdateLineDialog() {
         refetchLines();
         setHash("");
         methods.reset({});
+        refetchLines()
+        refreshLine()
       },
       onError: (error) => addToast(error.message, { type: "error" }),
     });

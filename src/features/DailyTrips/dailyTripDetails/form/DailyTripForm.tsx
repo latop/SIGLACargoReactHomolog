@@ -1,4 +1,4 @@
-import { DateTimePicker } from "@/components/DatePicker";
+import { DatePicker, DateTimePicker } from "@/components/DatePicker";
 import {
   Box,
   Chip,
@@ -9,7 +9,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { DateField } from "@mui/x-date-pickers/DateField";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { AutocompleteCompany } from "@/components/AutocompleteCompany";
@@ -42,7 +41,6 @@ export const DailyTripForm = () => {
   const dailyTripSections = watch("dailyTripSections");
 
   const countSections = dailyTripSections?.length;
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
       <Box display="flex" flexDirection="column" gap="20px" mt="5px">
@@ -69,10 +67,15 @@ export const DailyTripForm = () => {
                 name="tripDate"
                 control={control}
                 render={({ field }) => (
-                  <DateField
+                  <DatePicker
                     label="Data da viagem"
-                    required
+                    format="DD/MM/YYYY"
                     {...field}
+                    slotProps={{
+                      textField: {
+                        required: true,
+                      },
+                    }}
                     value={field.value ? dayjs(field.value) : null}
                     onChange={(date) => field.onChange(date?.format())}
                   />
@@ -80,7 +83,7 @@ export const DailyTripForm = () => {
               />
             </Grid>
             <Grid item xs={4}>
-              <AutocompleteCompany />
+              <AutocompleteCompany name="company.name" />
             </Grid>
             <Grid item xs={2}>
               <Controller
@@ -96,8 +99,8 @@ export const DailyTripForm = () => {
                     error={!!error?.message}
                     helperText={error?.message?.toString()}
                   >
-                    <MenuItem value="C">Cancelado</MenuItem>
                     <MenuItem value="N">Ativo</MenuItem>
+                    <MenuItem value="C">Cancelado</MenuItem>
                   </TextField>
                 )}
               />
@@ -108,6 +111,7 @@ export const DailyTripForm = () => {
 
             <Grid item xs={4}>
               <AutocompleteLine
+                name="line.code"
                 isRequired
                 onChange={(value) => {
                   setValue("lineId", value?.id);
@@ -217,20 +221,10 @@ export const DailyTripForm = () => {
                 )}
               />
             </Grid>
-            {/* <Grid item xs={1.5} marginLeft="10px">
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleSearchInfos}
-              >
-                <IoIosSearch />
-              </IconButton>
-            </Grid> */}
           </Grid>
         </Box>
       </Box>
-      <Box gap="10px" display="flex" flexDirection="column">
+      <Box gap="10px" display="flex" flexDirection="column" mt={3}>
         <Box display="flex" alignItems="center" gap="8px">
           <Typography variant="subtitle2">Seções da viagem</Typography>
           {countSections > 0 && (
@@ -246,8 +240,8 @@ export const DailyTripForm = () => {
         )}
 
         <Box gap="8px" display="flex" flexDirection="column">
-          {dailyTripSections?.map((_: DailyTrip, index: number) => (
-            <DailyTripSectionForm key={index} seq={index} />
+          {dailyTripSections?.map((dailytrip: DailyTrip, index: number) => (
+            <DailyTripSectionForm key={index} seq={index} id={dailytrip.id} />
           ))}
         </Box>
       </Box>

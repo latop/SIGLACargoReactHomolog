@@ -23,7 +23,7 @@ export function AddLineDialog({ open, onClose }: DailyTripDetailsProps) {
   const { methods, handleSubmit } = useAddLineDialog();
 
   const handleClose = () => {
-    methods.reset();
+    methods.reset({});
     onClose();
   };
 

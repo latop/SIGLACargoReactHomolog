@@ -55,6 +55,7 @@ export function Drivers() {
     size,
     totalCount,
     hasData,
+    isLoadingMore,
   } = useDriversPaginated();
   const [hash, setHash] = useHash();
   const driverId = (hash as string)?.match(/#driver-id-(.+)/)?.[1];
@@ -87,7 +88,7 @@ export function Drivers() {
         <Card
           sx={{
             width: "100%",
-            height: "635px",
+            height: "634px",
             position: "relative",
             display: "flex",
             flexDirection: "column",
@@ -103,6 +104,7 @@ export function Drivers() {
               <DataGrid
                 rows={drivers}
                 getRowId={(row) => row.id}
+                loading={isLoadingMore}
                 localeText={{
                   noRowsLabel: "Nenhum registro encontrado",
                   columnMenuHideColumn: "Ocultar coluna",
@@ -123,13 +125,14 @@ export function Drivers() {
                 }}
                 initialState={{
                   pagination: {
-                    paginationModel: { page: size - 1, pageSize: 10 },
+                    paginationModel: { page: size - 1, pageSize: 15 },
                   },
                 }}
                 onPaginationModelChange={(params) => {
                   loadMoreLines(params.page + 1);
                 }}
-                pageSizeOptions={[10]}
+                pageSizeOptions={[15]}
+                density="compact"
               />
             </div>
           )}

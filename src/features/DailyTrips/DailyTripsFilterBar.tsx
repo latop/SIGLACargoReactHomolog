@@ -34,26 +34,30 @@ const schema = z.object({
   sto: z.string().optional(),
   flgStatus: z.string().optional(),
   licensePlate: z.string().optional(),
+  tripTypeId: z.string().optional(),
 });
 
-interface FormFields extends FetchDailyTripsParams {}
+// eslint-disable-next-line prettier/prettier
+interface FormFields extends FetchDailyTripsParams { }
 
 interface Params {
   onChange: (value: FormFields) => void;
 }
 
+const initialValues = {
+  fleetGroupId: "",
+  locationDestId: "",
+  locationOrigId: "",
+  startDate: "",
+  sto: "",
+  flgStatus: "",
+  licensePlate: "",
+  tripTypeId: "",
+};
 export function DailyTripsFilterBar({ onChange }: Params) {
   const methods = useForm<FormFields>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      fleetGroupId: "",
-      locationDestId: "",
-      locationOrigId: "",
-      startDate: "",
-      sto: "",
-      flgStatus: "",
-      licensePlate: "",
-    },
+    defaultValues: initialValues,
   });
 
   const { control, handleSubmit } = methods;
@@ -73,7 +77,7 @@ export function DailyTripsFilterBar({ onChange }: Params) {
             width="100%"
             gap="16px"
           >
-            <Grid item xs={1.6}>
+            <Grid item xs={1.4}>
               <Controller
                 name="tripDate"
                 control={control}
@@ -82,14 +86,63 @@ export function DailyTripsFilterBar({ onChange }: Params) {
                     label="Data da viagem *"
                     error={error?.message}
                     {...field}
-                    value={dayjs(field.value)}
+                    value={field.value ? dayjs(field.value) : null}
                   />
                 )}
               />
             </Grid>
-
-            <Grid item xs={2} paddingLeft="0">
-              {/* <AutocompleteFleetGroup /> */}
+            <Grid item xs={1.3} paddingLeft="0">
+              <Controller
+                name="sto"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    {...field}
+                    variant="outlined"
+                    fullWidth
+                    label="STO"
+                    error={!!error?.message}
+                    helperText={error?.message?.toString()}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={1} paddingLeft="0">
+              <Controller
+                name="flgStatus"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    {...field}
+                    variant="outlined"
+                    fullWidth
+                    label="Status"
+                    select
+                    error={!!error?.message}
+                    helperText={error?.message?.toString()}
+                  >
+                    <MenuItem value="N">Ativo</MenuItem>
+                    <MenuItem value="C">Cancelado</MenuItem>
+                  </TextField>
+                )}
+              />
+            </Grid>
+            <Grid item xs={1.3} paddingLeft="0">
+              <AutocompleteLocation
+                name="locationOrigId"
+                label="Origem"
+                keyCode="id"
+              />
+            </Grid>
+            <Grid item xs={1.3} paddingLeft="0">
+              <AutocompleteLocation
+                //       ref={locationOrigRef}
+                name="locationDestId"
+                label="Destino"
+                keyCode="id"
+              />
+            </Grid>
+            <Grid item xs={1.3} paddingLeft="0">
               <Controller
                 name="licensePlate"
                 control={control}
@@ -113,7 +166,7 @@ export function DailyTripsFilterBar({ onChange }: Params) {
                           opacity: 1,
                         },
                       }}
-                      label="Placa da Carreta"
+                      label="Placa do Caminhão"
                       {...field}
                       value={field.value}
                       inputProps={{ maxLength: 50 }}
@@ -125,58 +178,28 @@ export function DailyTripsFilterBar({ onChange }: Params) {
                 }}
               />
             </Grid>
-            <Grid item xs={1.7} paddingLeft="0">
+            <Grid item xs={1.2} paddingLeft="0">
               <AutocompleteTripType
-                name="tripTypeCode"
+                // ref={locationOrigRef}
+                name="tripTypeId"
                 label="Tipo da viagem"
                 keyCode="id"
               />
             </Grid>
-            <Grid item xs={1.6} paddingLeft="0">
-              <Controller
-                name="sto"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    variant="outlined"
-                    fullWidth
-                    label="STO"
-                    error={!!error?.message}
-                    helperText={error?.message?.toString()}
-                  />
-                )}
-              />
+            <Grid item xs={1}>
+              <Button
+                type="reset"
+                size="large"
+                variant="outlined"
+                color="primary"
+                fullWidth
+                onClick={() => {
+                  window.location.reload();
+                }}
+              >
+                Limpar
+              </Button>
             </Grid>
-
-            <Grid item xs={1.6} paddingLeft="0">
-              <AutocompleteLocation
-                name="locationDestId"
-                label="Destino"
-                keyCode="id"
-              />
-            </Grid>
-            <Grid item xs={1.6} paddingLeft="0">
-              <Controller
-                name="flgStatus"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    variant="outlined"
-                    fullWidth
-                    label="Status"
-                    select
-                    error={!!error?.message}
-                    helperText={error?.message?.toString()}
-                  >
-                    <MenuItem value="C">Cancelado</MenuItem>
-                    <MenuItem value="N">Ativo</MenuItem>
-                  </TextField>
-                )}
-              />
-            </Grid>
-
             <Grid item xs={1}>
               <Button
                 type="submit"

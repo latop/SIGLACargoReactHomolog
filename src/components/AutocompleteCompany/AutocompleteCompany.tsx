@@ -1,5 +1,5 @@
 import React from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFormContext, RegisterOptions } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useCompany } from "@/hooks/useCompany";
@@ -9,11 +9,15 @@ import { Company } from "@/interfaces/parameters";
 export function AutocompleteCompany({
   name = "companyCode",
   label = "Transportadora",
+  keyLabel = "code",
   keyCode = "code",
+  rules,
 }: {
   name?: string;
   label?: string;
+  keyLabel?: keyof Company;
   keyCode?: keyof Company;
+  rules?: RegisterOptions;
 }) {
   const {
     control,
@@ -32,6 +36,7 @@ export function AutocompleteCompany({
     <Controller
       name={name}
       control={control}
+      rules={rules}
       render={({ field }) => (
         <Autocomplete
           forcePopupIcon={false}
@@ -43,7 +48,8 @@ export function AutocompleteCompany({
             option[keyCode] === value[keyCode]
           }
           onChange={(_, value) => {
-            setValue(name, value?.[keyCode] || "");
+            setValue(name, value?.[keyCode] ?? "");
+            setValue("companyId", value?.id ?? "");
           }}
           noOptionsText={
             !field.value
@@ -52,7 +58,9 @@ export function AutocompleteCompany({
               ? "Carregando..."
               : "Nenhum resultado encontrado"
           }
-          getOptionLabel={(option: Company) => option.code}
+          getOptionLabel={(option: Company) =>
+            (option[keyLabel] || "") as string
+          }
           renderInput={(params) => (
             <TextField
               {...field}

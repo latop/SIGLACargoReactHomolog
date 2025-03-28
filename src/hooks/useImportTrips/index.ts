@@ -1,1 +1,1 @@
-export * from "./useImportTrips";
+export * from "../../features/ImportTrips/useImportTrips";

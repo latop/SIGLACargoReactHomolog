@@ -31,6 +31,16 @@ const GlobalStyles = () => (
           color-scheme: dark;
         }
       }
+
+      & .MuiDataGrid-columnHeader {
+        color: white;
+        background-color: #24438f;
+
+        & + .MuiDataGrid-filler {
+          color: white;
+          background-color: #24438f;
+        }
+      }
     `}
   />
 );

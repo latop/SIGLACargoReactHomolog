@@ -9,9 +9,11 @@ import { Activity } from "@/interfaces/parameters";
 export function AutocompleteActivity({
   onChange,
   name = "activityCode",
+  label = "Atividade",
 }: {
   onChange?: (value: Activity) => void;
   name?: string;
+  label?: string;
 }) {
   const {
     control,
@@ -59,10 +61,19 @@ export function AutocompleteActivity({
             <TextField
               {...field}
               {...params}
+              sx={{
+                "& .MuiInputBase-input.Mui-disabled": {
+                  WebkitTextFillColor: "#000000",
+                  opacity: 1,
+                },
+                "& .MuiInputBase-input": {
+                  textTransform: "uppercase",
+                },
+              }}
               onChange={debounce(field.onChange, 300)}
               variant="outlined"
               fullWidth
-              label="Atividade"
+              label={label}
               error={!!errors[field.name]}
               helperText={errors[field.name]?.message?.toString()}
             />

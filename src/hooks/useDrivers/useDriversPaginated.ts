@@ -26,7 +26,7 @@ export const useDriversPaginated = (options?: SWRConfiguration) => {
 
     return {
       url: "/drivers",
-      args: { ...params, pageSize: 10, pageNumber: pageIndex + 1 },
+      args: { ...params, pageSize: 15, pageNumber: pageIndex + 1 },
     };
   };
 
@@ -62,5 +62,6 @@ export const useDriversPaginated = (options?: SWRConfiguration) => {
     loadMoreLines,
     totalCount,
     hasData,
+    isLoadingMore,
   };
 };
