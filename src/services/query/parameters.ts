@@ -48,11 +48,7 @@ export const useJustificationQuery = () => {
       try {
         const {
           data: { data },
-        } = await api.get("/Justification", {
-          params: {
-            PageSize: 1000,
-          },
-        });
+        } = await api.get("/Justification?perPage=1000");
 
         return data;
       } catch (error) {

@@ -62,7 +62,7 @@ export const columnsConfig = ({
       headerName: "Ativo",
       width: 100,
       valueGetter: (_: unknown, row: Activity) => {
-        return row?.flgActive ? "Sim" : "Nao";
+        return row?.flgActive ? "Sim" : "Não";
       },
     },
     {
@@ -70,7 +70,7 @@ export const columnsConfig = ({
       headerName: "Paga Ref.",
       width: 100,
       valueGetter: (_: unknown, row: Activity) => {
-        return row?.flgMeal ? "Sim" : "Nao";
+        return row?.flgMeal ? "Sim" : "Não";
       },
     },
     {
@@ -78,7 +78,7 @@ export const columnsConfig = ({
       headerName: " Desc. Ref.",
       width: 100,
       valueGetter: (_: unknown, row: Activity) => {
-        return row?.flgLunch ? "Sim" : "Nao";
+        return row?.flgLunch ? "Sim" : "Não";
       },
     },
     {
@@ -86,7 +86,7 @@ export const columnsConfig = ({
       headerName: "Pedido",
       width: 100,
       valueGetter: (_: unknown, row: Activity) => {
-        return row?.flgRequest ? "Sim" : "Nao";
+        return row?.flgRequest ? "Sim" : "Não";
       },
     },
     {
@@ -94,7 +94,7 @@ export const columnsConfig = ({
       headerName: "Descanso",
       width: 100,
       valueGetter: (_: unknown, row: Activity) => {
-        return row?.flgRest ? "Sim" : "Nao";
+        return row?.flgRest ? "Sim" : "Não";
       },
     },
     {

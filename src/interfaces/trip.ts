@@ -37,12 +37,15 @@ export interface LocationType {
   description: string;
   isOperation: boolean;
   id: string;
+  color: string;
 }
 
 export interface TripType {
   code: string;
   description: string;
   id: string;
+  isLoaded: boolean;
+  coloRGB: string;
 }
 
 export interface FetchOptmizedTripsData {

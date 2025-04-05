@@ -21,6 +21,9 @@ import AutoGraphIcon from "@mui/icons-material/AutoGraph";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import CategoryIcon from "@mui/icons-material/Category";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import ReduceCapacityIcon from "@mui/icons-material/ReduceCapacity";
+import StreetviewIcon from "@mui/icons-material/Streetview";
+import RoomIcon from "@mui/icons-material/Room";
 
 export type GroupmentType =
   | "register"
@@ -88,6 +91,30 @@ const routes: RouteItem[] = [
     text: "Atividades",
     icon: <EventNoteIcon />,
     path: "/activities",
+    group: "register",
+  },
+  {
+    text: "Grupos de Localizacão",
+    icon: <ReduceCapacityIcon />,
+    path: "/location-groups",
+    group: "register",
+  },
+  {
+    text: "Tipo de Parada",
+    icon: <RoomIcon />,
+    path: "/stop-types",
+    group: "register",
+  },
+  {
+    text: "Tipo de Localizacão",
+    icon: <StreetviewIcon />,
+    path: "/location-types",
+    group: "register",
+  },
+  {
+    text: "Tipo de viagem",
+    icon: <StreetviewIcon />,
+    path: "/trip-type",
     group: "register",
   },
 

@@ -25,6 +25,7 @@ const ColorCircle = styled("div")<ColorCircleProps>(({ color }) => ({
   height: 20,
   borderRadius: "50%",
   backgroundColor: color,
+  border: `1px solid ${grey[300]}`,
 }));
 
 export const ColorPicker = forwardRef<HTMLInputElement>(

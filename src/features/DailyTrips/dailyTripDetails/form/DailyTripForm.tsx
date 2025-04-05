@@ -41,6 +41,7 @@ export const DailyTripForm = () => {
   const dailyTripSections = watch("dailyTripSections");
 
   const countSections = dailyTripSections?.length;
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
       <Box display="flex" flexDirection="column" gap="20px" mt="5px">
@@ -83,7 +84,7 @@ export const DailyTripForm = () => {
               />
             </Grid>
             <Grid item xs={4}>
-              <AutocompleteCompany name="company.name" />
+              <AutocompleteCompany keyLabel="name" />
             </Grid>
             <Grid item xs={2}>
               <Controller

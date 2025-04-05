@@ -36,13 +36,14 @@ export function AutocompleteLocationGroup({
     formState: { errors },
   } = useFormContext();
   const isFirstRender = useRef(true);
-  const { data: locationGroups = [], error, isFetching } = useLocationGroupQuery({
+  const { data: { data: locationGroups = [] } = {}, error, isFetching } = useLocationGroupQuery({
     pageSize: 10,
     code: watch(name),
   }, {
     queryKey: ["locationGroups", { code: watch(name) }],
     staleTime: 0
   });
+  console.log(locationGroups)
 
   const handleChange = (
     _: SyntheticEvent<Element, Event>,
@@ -63,7 +64,7 @@ export function AutocompleteLocationGroup({
   }, []);
 
   const showSkeleton = hasSkeleton && isFetching && isFirstRender.current;
-  
+
   if (showSkeleton) {
     return <Skeleton width={"100%"} height={"100%"} />;
   }

@@ -21,7 +21,7 @@ export const useActivityType = () => {
   const handleClose = () => setHash("");
 
   const activityTypeId = (hash as string)?.match(/#activity-type-id-(.+)/)?.[1];
-  console.log(activityTypeId);
+
   const getKey = (pageIndex: number, params: ActivityTypeResponse) => {
     return {
       url: "/activity-type",
