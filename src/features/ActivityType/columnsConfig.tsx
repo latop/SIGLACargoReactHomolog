@@ -64,7 +64,7 @@ export const columnsConfig = ({
     {
       field: "color",
       headerName: "Cor",
-      width: 100,
+      width: 50,
       renderCell: (params: { row: { color: string } }) => {
         return (
           <div

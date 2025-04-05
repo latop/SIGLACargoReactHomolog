@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import api from "./configs/api";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -19,20 +18,9 @@ export async function fetchLocationGroup({
       PageSize: params.pageSize,
       filter1String: params.code?.toUpperCase(),
     };
-    const response = await api.get("/LocationGroup", {
+    const response = await axios.get("/LocationGroup", {
       params: locationGroupParams,
     });
-    const data = response.data;
-    return data;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-}
-
-export async function fetchLocationGroupById({ id }: { id: string }) {
-  try {
-    const response = await api.get(`/LocationGroup/${id}`);
     const data = response.data;
     return data;
   } catch (error) {
@@ -245,65 +233,3 @@ export async function fetchStopType({
     return error;
   }
 }
-
-export const fetchLocationType = async ({
-  pageSize = 20,
-  code,
-}: {
-  pageSize?: number;
-  code?: string;
-}) => {
-  try {
-    const response = await api.get("/LocationType", {
-      params: {
-        PageSize: pageSize,
-        filter1String: code?.toUpperCase(),
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-};
-
-export const fetchLocationTypeById = async ({ id }: { id: string }) => {
-  try {
-    const response = await api.get(`/LocationType/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-};
-
-export const fetchStopTypeList = async ({
-  pageSize = 20,
-  code,
-}: {
-  pageSize?: number;
-  code?: string;
-}) => {
-  try {
-    const response = await api.get("/StopType", {
-      params: {
-        PageSize: pageSize,
-        filter1String: code?.toUpperCase(),
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-};
-
-export const fetchStopTypeById = async ({ id }: { id: string }) => {
-  try {
-    const response = await api.get(`/StopType/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
-};

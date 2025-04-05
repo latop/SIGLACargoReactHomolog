@@ -36,7 +36,7 @@ export function AutocompleteLocationGroup({
     formState: { errors },
   } = useFormContext();
   const isFirstRender = useRef(true);
-  const { data: { data: locationGroups = [] } = {}, error, isFetching } = useLocationGroupQuery({
+  const { data: locationGroups = [], error, isFetching } = useLocationGroupQuery({
     pageSize: 10,
     code: watch(name),
   }, {
