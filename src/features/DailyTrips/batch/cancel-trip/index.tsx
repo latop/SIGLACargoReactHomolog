@@ -39,13 +39,13 @@ const ModalBatchCancelTrip = ({
   });
 
   const handleModalClose = () => {
-    methods.reset(); // Reseta os valores do form
-    handleClose(); // Fecha o modal
+    methods.reset();
+    handleClose();
   };
 
   const handleSubmitAndClose = (data: FieldValues) => {
-    handleConfirm(data); // Passa os dados para o handler de confirmação
-    methods.reset(); // Limpa os dados do formulário após o submit
+    handleConfirm(data);
+    methods.reset();
     handleClose();
   };
 

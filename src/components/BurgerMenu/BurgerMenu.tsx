@@ -10,12 +10,14 @@ import {
   Button,
   Tooltip,
   styled,
+  Typography,
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BurgerMenuGroup } from "../BurgerMenuGroup";
 
 import { groupments, GroupmentType, routes } from "./config";
+import { getVersion } from "@/utils/getVersion";
 
 const ButtonStyled = styled(Button)`
   transition: all 0.2s ease-in-out;
@@ -105,7 +107,8 @@ export function BurgerMenu({ isOpen, toggleDrawer }: BurgerMenuProps) {
         >
           <Box
             display="flex"
-            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
             width="100%"
             sx={{ padding: "20px 0 10px" }}
           >
@@ -115,6 +118,9 @@ export function BurgerMenu({ isOpen, toggleDrawer }: BurgerMenuProps) {
               height={40}
               alt="PepsiCo"
             />
+            <Typography fontSize={8} align="center">
+              {getVersion()}
+            </Typography>
           </Box>
           <Box
             sx={{

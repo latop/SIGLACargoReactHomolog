@@ -63,7 +63,6 @@ export function DailyTripsFilterBar({ onChange }: Params) {
   const { control, handleSubmit } = methods;
 
   const onSubmit = (data: FormFields) => {
-    console.log("formData", data);
     onChange(data);
   };
 

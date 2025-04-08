@@ -48,6 +48,7 @@ export const ColorPicker = forwardRef<HTMLInputElement>(
             fontSize: "12px",
             color: grey[600],
             width: "120px",
+            cursor: "pointer",
           }}
         >
           Cor

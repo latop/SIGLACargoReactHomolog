@@ -178,7 +178,6 @@ export const useGetLinesQuery = ({
   locationDestId,
   locationOrigId,
   code,
-  pageSize,
   pageNumber,
 }: FetchLines) => {
   return useQuery({
@@ -191,7 +190,7 @@ export const useGetLinesQuery = ({
             filter2Id: locationDestId,
             filter3Id: fleetGroupId,
             filter1String: code,
-            PageSize: pageSize,
+            PageSize: 9999,
             PageNumber: pageNumber,
           },
         });

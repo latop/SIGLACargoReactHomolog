@@ -65,10 +65,8 @@ export function DailyTrips() {
       ...values,
       dailyTripId: rowSelectionModel
     }
-    console.log("Bulk viagens", payload)
 
     const response = await mutateAsync(payload as DailyTripBatchChangePayload)
-    console.log(response)
     if (response === 'Ok') {
       setRowSelectionModel([])
       addToast("Alteração salva com sucesso");

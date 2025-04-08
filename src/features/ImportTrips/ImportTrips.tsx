@@ -6,13 +6,15 @@ import { MainContainer } from "@/components/MainContainer";
 import { useImportTrips } from "@/hooks/useImportTrips";
 import { ImportGtms } from "@/interfaces/import-trips";
 import { Box, Button, Card, CircularProgress, styled } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridAddIcon, GridColDef } from "@mui/x-data-grid";
 import dayjs from "dayjs";
-import { UploadTripFileForm } from "@/components/UploadTripFileForm/UploadTripForm";
+// import { UploadTripFileForm } from "@/components/UploadTripFileForm/UploadTripForm";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import { EmptyResult } from "@/components/EmptyResult";
 import { ImportTripsDialog } from "@/components/ImportTripsDialog/ImportTripsDialog";
+import { ImportTripsCheckDialog } from "@/components/ImportTripsCheckDialog/ImportTripsCheckDialog";
+import { useState } from "react";
 
 const CustomTableButton = styled(Button)(() => ({
   padding: 0,
@@ -33,7 +35,7 @@ export function ImportTrips() {
     handleImportedTrip,
     handleCloseDialog,
   } = useImportTrips();
-
+  const [openDialog, setOpenDialog] = useState(false);
   const columns: GridColDef[] = [
     {
       field: "FileName",
@@ -130,7 +132,16 @@ export function ImportTrips() {
           alignItems={"flex-start"}
         >
           <ImportTripsFilterBar />
-          <UploadTripFileForm />
+          {/* <UploadTripFileForm /> */}
+          <Button
+            color="primary"
+            variant="outlined"
+            size="large"
+            onClick={() => setOpenDialog(true)}
+          >
+            Importar Viagem
+            <GridAddIcon fontSize="small" />
+          </Button>
         </Box>
 
         <Card
@@ -151,6 +162,10 @@ export function ImportTrips() {
         </Card>
       </Box>
       <ImportTripsDialog open={!!importedTripId} onClose={handleCloseDialog} />
+      <ImportTripsCheckDialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+      />
     </MainContainer>
   );
 }

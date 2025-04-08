@@ -59,7 +59,6 @@ export const useGetDailyTripsQuery = ({
     pageNumber,
   };
 
-  console.log(tripTypeId, params);
   const runQuery = !tripDate;
 
   return useQuery({
@@ -77,7 +76,7 @@ export const useGetDailyTripsQuery = ({
       }
     },
     enabled: !runQuery,
-    staleTime: 5000,
+    staleTime: 0,
   });
 };
 
@@ -104,6 +103,6 @@ export const useGetDailyTripDetailQuery = (
       }
     },
     enabled: params?.dailyTripId ? true : false,
-    staleTime: 1,
+    staleTime: 0,
   });
 };

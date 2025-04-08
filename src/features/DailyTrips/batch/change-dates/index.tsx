@@ -1,4 +1,4 @@
-import { DatePicker, DateTimePicker } from "@/components/DatePicker";
+import { DatePicker } from "@/components/DatePicker";
 import {
   Box,
   Button,
@@ -19,6 +19,9 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AutocompleteJustification } from "@/components/AutocompleteJustification";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TimePicker } from "@/components/TimePicker";
 
 interface Params {
   isOpen: boolean;
@@ -38,12 +41,29 @@ const style = {
   p: 4,
 };
 
+const dateOrDayjsSchema = z.custom(
+  (val) => val instanceof Date || dayjs.isDayjs(val),
+  {
+    message: "Data é obrigatório",
+  },
+);
+const schema = z.object({
+  justificationId: z.string().optional(),
+  justificationMessage: z.string(),
+  deliveryDate: dateOrDayjsSchema,
+  deliveryTime: dateOrDayjsSchema,
+  requestDate: dateOrDayjsSchema,
+  keepDriver: z.boolean().optional(),
+  actionType: z.string().optional(),
+});
+
 const ModalBatchAlterDatesTrip = ({
   isOpen = false,
   handleClose,
   handleConfirm,
 }: Params) => {
   const methods = useForm({
+    resolver: zodResolver(schema),
     defaultValues: {
       justificationId: undefined,
       justificationMessage: undefined,
@@ -56,8 +76,8 @@ const ModalBatchAlterDatesTrip = ({
   });
 
   const handleModalClose = () => {
-    methods.reset(); // Reseta os valores do form
-    handleClose(); // Fecha o modal
+    methods.reset();
+    handleClose();
   };
 
   const handleSubmitAndClose = (data: FieldValues) => {
@@ -66,16 +86,16 @@ const ModalBatchAlterDatesTrip = ({
       deliveryDate: `${dayjs(data.deliveryDate).format(
         "YYYY-MM-DD",
       )}T00:00:00.000Z`,
-      deliveryTime: `1970-01-01T${dayjs(data.deliveryDate).format(
-        "HH:mm:ss.sss",
-      )}Z`,
+      deliveryTime: dayjs(data.deliveryTime).format("1970-01-01THH:mm:ss.sss"),
       requestDate: dayjs(data.requestDate).format("YYYY-MM-DD"),
     };
-
-    handleConfirm(newData); // Passa os dados para o handler de confirmação
-    methods.reset(); // Limpa os dados do formulário após o submit
+    console.log(newData);
+    handleConfirm(newData);
+    methods.reset();
     handleClose();
   };
+
+  console.log(methods.getValues());
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
@@ -109,12 +129,28 @@ const ModalBatchAlterDatesTrip = ({
                     name="deliveryDate"
                     control={methods.control}
                     render={({ field, fieldState: { error } }) => (
-                      <DateTimePicker
-                        format="DD/MM/YYYY HH:mm"
-                        label="Data/Hora de Entrega"
+                      <DatePicker
+                        format="DD/MM/YYYY"
+                        label="Data"
                         error={error?.message}
                         {...field}
                         value={field.value ? dayjs(field.value) : null}
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="deliveryTime"
+                    control={methods.control}
+                    render={({ field, fieldState: { error } }) => (
+                      <TimePicker
+                        label="Hora"
+                        error={error?.message}
+                        ampm={false}
+                        {...field}
+                        value={field.value ? dayjs(field.value) : null}
+                        onChange={(time) => {
+                          field.onChange(dayjs(time?.format()));
+                        }}
                       />
                     )}
                   />

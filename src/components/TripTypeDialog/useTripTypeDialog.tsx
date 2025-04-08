@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import useSWR from "swr";
 import { useTripType } from "@/features/TripType/useTripType";
-import { colorHex } from "@/utils";
+import { colorHex, colorDecimal } from "@/utils";
 
 export const tripTypeSchema = z.object({
   code: z
@@ -28,7 +28,6 @@ export const useTripTypeDialog = () => {
   const { addToast } = useToast();
   const [handleTripType, { error: errorTripType }] = useFetch();
   const [hash, setHash] = useHash();
-
   const isToAddTripType = !!(hash as string)?.match(/#add-trip-type/);
   const tripTypeId = (hash as string)?.match(/#trip-type-id-(.+)/)?.[1];
 
@@ -51,7 +50,7 @@ export const useTripTypeDialog = () => {
     fetchTripTypeById,
     {
       onSuccess: (data) => {
-        console.log(colorHex(data.colorRGB));
+        console.log(data.colorRGB);
         if (tripTypeId) {
           methods.reset({
             ...data,
@@ -69,7 +68,7 @@ export const useTripTypeDialog = () => {
     if (isToAddTripType) {
       await handleTripType(
         "/TripType",
-        { ...data, colorRGB: colorHex(data.colorRGB) },
+        { ...data, colorRGB: colorDecimal(data.colorRGB) },
         {
           method: "post",
           onSuccess: () => {
@@ -83,10 +82,16 @@ export const useTripTypeDialog = () => {
           },
         },
       );
-    } else if (tripTypeId) {
+    }
+    if (tripTypeId) {
+      console.log(data.colorRGB);
       await handleTripType(
-        `/TripType/${tripTypeId}`,
-        { ...data, id: tripTypeId, colorRGB: colorHex(data.colorRGB) },
+        `/TripType`,
+        {
+          ...data,
+          id: tripTypeId,
+          colorRGB: colorDecimal(data.colorRGB),
+        },
         {
           method: "put",
           onSuccess: () => {
