@@ -24,6 +24,9 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import ReduceCapacityIcon from "@mui/icons-material/ReduceCapacity";
 import StreetviewIcon from "@mui/icons-material/Streetview";
 import RoomIcon from "@mui/icons-material/Room";
+import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 
 export type GroupmentType =
   | "register"
@@ -45,6 +48,8 @@ const routes: RouteItem[] = [
     icon: <HomeIcon />,
     path: "/home",
   },
+
+  // Cadastros
   {
     text: "Rotas",
     icon: <RouteIcon />,
@@ -94,7 +99,7 @@ const routes: RouteItem[] = [
     group: "register",
   },
   {
-    text: "Grupos de Localizacão",
+    text: "Grupos de Localização",
     icon: <ReduceCapacityIcon />,
     path: "/location-groups",
     group: "register",
@@ -106,7 +111,7 @@ const routes: RouteItem[] = [
     group: "register",
   },
   {
-    text: "Tipo de Localizacão",
+    text: "Tipo de Localização",
     icon: <StreetviewIcon />,
     path: "/location-types",
     group: "register",
@@ -115,6 +120,43 @@ const routes: RouteItem[] = [
     text: "Tipo de viagem",
     icon: <StreetviewIcon />,
     path: "/trip-type",
+    group: "register",
+  },
+  {
+    text: "Atribuição",
+    icon: <PersonSearchIcon />,
+    group: "register",
+    path: "/attribution",
+  },
+
+  {
+    text: "Cargos",
+    icon: <LinearScaleIcon />,
+    group: "register",
+    path: "/position",
+  },
+  {
+    text: "Modelos de Frota",
+    icon: <DirectionsCarIcon />,
+    path: "/fleet-model",
+    group: "register",
+  },
+  {
+    text: "Grupos de Frota",
+    icon: <DirectionsCarIcon />,
+    path: "/fleet-group",
+    group: "register",
+  },
+  {
+    text: "Tipo de Frota",
+    icon: <LocalShippingIcon />,
+    path: "/fleet-type",
+    group: "register",
+  },
+  {
+    text: "Marca de Frota",
+    icon: <BrandingWatermarkIcon />,
+    path: "/fleet-brand",
     group: "register",
   },
 

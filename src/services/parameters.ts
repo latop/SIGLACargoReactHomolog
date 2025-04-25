@@ -16,6 +16,7 @@ export interface FetchPositionParams {
 export interface FetchAttribuitionParams {
   pageSize?: number;
   code?: string;
+  pageNumber?: number;
 }
 
 export interface FetchCitiesParams {
@@ -138,7 +139,7 @@ export async function fetchPositions({
       PageSize: params.pageSize,
       filter1String: params.code?.toUpperCase(),
     };
-    const response = await axios.get("/Position", {
+    const response = await api.get("/Position", {
       params: positionParams,
     });
     const data = response.data;
@@ -158,8 +159,9 @@ export async function fetchAttribuitions({
     const attributionParams = {
       PageSize: params.pageSize,
       filter1String: params.code?.toUpperCase(),
+      PageNumber: params.pageNumber,
     };
-    const response = await axios.get("/Attribution", {
+    const response = await api.get("/Attribution", {
       params: attributionParams,
     });
     const data = response.data;
@@ -321,6 +323,28 @@ export async function fetchActivity({
 export async function fetchActivityById({ id }: { id: string }) {
   try {
     const response = await api.get(`/Activity/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchAttribuitionById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/Attribution/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchPositionById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/Position/${id}`);
     const data = response.data;
     return data;
   } catch (error) {

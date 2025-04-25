@@ -1,3 +1,4 @@
+import { Attribution } from "@/interfaces/parameters";
 import {
   FetchAttribuitionParams,
   fetchAttribuitions,
@@ -9,13 +10,15 @@ export const useAttribution = (
   options?: SWRConfiguration,
 ) => {
   const { data, error, isLoading } = useSWR(
-    { url: "/attribution", args: params },
+    { url: "/attributions", args: params },
     fetchAttribuitions,
     options,
   );
 
+  const attribution: Attribution[] = data?.data || [];
+
   return {
-    attribution: data as unknown,
+    attribution,
     error,
     isLoading,
   };

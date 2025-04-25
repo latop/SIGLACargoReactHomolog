@@ -71,6 +71,7 @@ export function TimelineDailyTrips() {
     return (
       <TimelineItem
         {...itemProps}
+        key={itemContext.title}
         style={style}
         className="giantt-item"
         data-id={itemContext.title}

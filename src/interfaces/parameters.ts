@@ -138,3 +138,11 @@ export interface PaginatedResponse<T> {
   data: T[];
   totalCount?: number;
 }
+
+export interface Position {
+  id: string;
+  code: string;
+  description: string;
+  priority: number;
+  colorRGB: number;
+}

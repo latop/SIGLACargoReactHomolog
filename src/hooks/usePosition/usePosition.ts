@@ -3,7 +3,7 @@ import { FetchPositionParams, fetchPositions } from "@/services/parameters";
 import useSWR from "swr";
 
 export const usePosition = (params: FetchPositionParams) => {
-  const { data, error, isLoading } = useSWR<Position[]>(
+  const { data, error, isLoading } = useSWR(
     { url: "/position", args: params },
     fetchPositions,
     {
@@ -11,9 +11,10 @@ export const usePosition = (params: FetchPositionParams) => {
       revalidateOnFocus: false,
     },
   );
+  const positions: Position[] = data?.data || [];
 
   return {
-    positions: data,
+    positions,
     error,
     isLoading,
   };

@@ -6,7 +6,10 @@ interface ColorCircleProps {
   color: string;
 }
 
-interface ColorPickerProps extends InputProps {}
+interface ColorPickerProps extends Omit<InputProps, "type"> {
+  value?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
 const ColorInput = styled(Input)`
   visibility: hidden;
@@ -28,9 +31,9 @@ const ColorCircle = styled("div")<ColorCircleProps>(({ color }) => ({
   border: `1px solid ${grey[300]}`,
 }));
 
-export const ColorPicker = forwardRef<HTMLInputElement>(
-  ({ onChange, ...props }: ColorPickerProps, ref) => {
-    const [color, setColor] = React.useState(props.value as string);
+export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
+  ({ onChange, value, ...props }, ref) => {
+    const [color, setColor] = React.useState(value);
     const handleColorChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         setColor(() => {
@@ -52,10 +55,11 @@ export const ColorPicker = forwardRef<HTMLInputElement>(
           }}
         >
           Cor
-          <ColorCircle color={color} />
+          <ColorCircle color={color || "#000000"} />
           <ColorInput
             ref={ref}
             type="color"
+            value={value}
             onChange={handleColorChange}
             {...props}
           />

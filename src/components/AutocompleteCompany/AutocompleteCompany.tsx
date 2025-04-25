@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Controller, useFormContext, RegisterOptions } from "react-hook-form";
 import { TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -12,12 +12,14 @@ export function AutocompleteCompany({
   keyLabel = "code",
   keyCode = "code",
   rules,
+  onChange,
 }: {
   name?: string;
   label?: string;
   keyLabel?: keyof Company;
   keyCode?: keyof Company;
   rules?: RegisterOptions;
+  onChange?: (value: Company | null) => void;
 }) {
   const {
     control,
@@ -31,6 +33,18 @@ export function AutocompleteCompany({
     pageSize: 10,
     code: isDirty ? watch(name) : "",
   });
+
+  const handleChange = useCallback(
+    (_: unknown, value: Company | null) => {
+      if (onChange) {
+        onChange(value);
+      } else {
+        setValue(name, value?.[keyCode] ?? "");
+        setValue("companyId", value?.id ?? "");
+      }
+    },
+    [onChange, setValue],
+  );
 
   return (
     <Controller
@@ -47,10 +61,7 @@ export function AutocompleteCompany({
           isOptionEqualToValue={(option: Company, value: Company) =>
             option[keyCode] === value[keyCode]
           }
-          onChange={(_, value) => {
-            setValue(name, value?.[keyCode] ?? "");
-            setValue("companyId", value?.id ?? "");
-          }}
+          onChange={handleChange}
           noOptionsText={
             !field.value
               ? "Digite o código"
