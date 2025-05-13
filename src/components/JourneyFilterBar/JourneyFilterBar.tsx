@@ -63,7 +63,11 @@ export function JourneyFilterBar(props: React.HTMLProps<HTMLFormElement>) {
             </Grid>
 
             <Grid item xs={1.1}>
-              <AutocompleteDriver />
+              <AutocompleteDriver
+                onChange={(value) => {
+                  methods.setValue("nickName", value?.nickName || "");
+                }}
+              />
             </Grid>
 
             <Grid item xs={1.1}>

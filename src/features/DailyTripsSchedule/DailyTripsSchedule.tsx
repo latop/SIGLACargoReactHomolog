@@ -6,7 +6,7 @@ import { AppBar } from "@/components/AppBar";
 import { GianttTable } from "@/components/GianttTable";
 import { HeaderTitle } from "@/components/HeaderTitle/HeaderTitle";
 import { GianttZoom } from "@/components/GianttZoom";
-import { DailyTripDetailsDialog } from "@/components/DailyTripDetailsDialog";
+// import { DailyTripDetailsDialog } from "@/components/DailyTripDetailsDialog";
 import { GianttProvider } from "@/hooks/useGiantt";
 import { useDailyTripsSchedule } from "./useDailyTripsSchedule";
 import { Box, Button } from "@mui/material";
@@ -27,7 +27,7 @@ export function DailyTripsSchedule() {
 
   const hasShowTruckAssignment = params.get("showTruckAssignment") === "true";
 
-  const isDailyTripDialogOpen = !hasShowTruckAssignment && !!dailyTripId;
+  // const isDailyTripDialogOpen = !hasShowTruckAssignment && !!dailyTripId;
   const isTruckAssignmentDialogOpen = hasShowTruckAssignment && !!dailyTripId;
 
   const handleCloseDialog = () => {
@@ -91,10 +91,11 @@ export function DailyTripsSchedule() {
           </GianttProvider>
         </MainContainer.Content>
       )}
-      <DailyTripDetailsDialog
+
+      {/* <DailyTripDetailsDialog
         open={isDailyTripDialogOpen}
         onClose={handleCloseDialog}
-      />
+      /> */}
       <TruckAssignmentDialog
         isOpen={isTruckAssignmentDialogOpen}
         onClose={handleCloseDialog}

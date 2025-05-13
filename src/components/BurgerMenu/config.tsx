@@ -24,6 +24,9 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import ReduceCapacityIcon from "@mui/icons-material/ReduceCapacity";
 import StreetviewIcon from "@mui/icons-material/Streetview";
 import RoomIcon from "@mui/icons-material/Room";
+import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 
 export type GroupmentType =
   | "register"
@@ -45,6 +48,8 @@ const routes: RouteItem[] = [
     icon: <HomeIcon />,
     path: "/home",
   },
+
+  // Cadastros
   {
     text: "Rotas",
     icon: <RouteIcon />,
@@ -94,7 +99,7 @@ const routes: RouteItem[] = [
     group: "register",
   },
   {
-    text: "Grupos de Localizacão",
+    text: "Grupos de Localização",
     icon: <ReduceCapacityIcon />,
     path: "/location-groups",
     group: "register",
@@ -106,7 +111,7 @@ const routes: RouteItem[] = [
     group: "register",
   },
   {
-    text: "Tipo de Localizacão",
+    text: "Tipo de Localização",
     icon: <StreetviewIcon />,
     path: "/location-types",
     group: "register",

@@ -5,7 +5,7 @@ import { TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import debounce from "debounce";
 import { FleetGroup } from "@/interfaces/vehicle";
-import { useGetFleetGroupQuery } from "@/services/query/vehicles";
+import { useFleetGroup } from "@/hooks/useFleetGroup";
 
 export function AutocompleteFleetGroup({
   name = "fleetGroupCode",
@@ -31,8 +31,8 @@ export function AutocompleteFleetGroup({
 
   const isDirty = dirtyFields[name];
 
-  const { data: { data: fleetGroups = [] } = [], error } =
-    useGetFleetGroupQuery({
+  const { fleetGroups, error } =
+    useFleetGroup({
       code: isDirty ? watch(name) : "",
     });
 
