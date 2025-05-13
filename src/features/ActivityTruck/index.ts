@@ -1,0 +1,1 @@
+export { ActivityTruck } from "./ActivityTruck";

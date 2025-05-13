@@ -26,7 +26,7 @@ export function AutocompleteLine({
     formState: { errors },
   } = useFormContext();
 
-  const { data: lines, error } = useGetLinesQuery({})
+  const { data: lines, error } = useGetLinesQuery({});
 
   return (
     <Controller
@@ -48,10 +48,10 @@ export function AutocompleteLine({
           }}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !lines && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: Line) =>
             option.description

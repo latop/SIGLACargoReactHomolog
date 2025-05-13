@@ -1,4 +1,4 @@
-import { PaginatedResponse } from "@/interfaces/parameters";
+import { PaginatedResponse } from "@/interfaces/pagination";
 import { LocationGroup } from "@/interfaces/trip";
 import { fetchLocationGroup, FetchLocationGroupParams } from "@/services/trips";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";

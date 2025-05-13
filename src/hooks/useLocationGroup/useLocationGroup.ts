@@ -1,7 +1,7 @@
 import { fetchLocationGroup, FetchLocationGroupParams } from "@/services/trips";
 import useSWR from "swr";
 import { LocationGroup } from "@/interfaces/trip";
-import { PaginatedResponse } from "@/interfaces/parameters";
+import { PaginatedResponse } from "@/interfaces/pagination";
 
 export const useLocationGroup = (params: FetchLocationGroupParams) => {
   const { data, error, isLoading } = useSWR<PaginatedResponse<LocationGroup>>(

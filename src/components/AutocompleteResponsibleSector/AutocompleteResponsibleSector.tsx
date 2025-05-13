@@ -31,9 +31,8 @@ export function AutocompleteResponsibleSector({
   const { responsibleSectors, error } = useResponsibleSector({
     pageNumber: 0,
     pageSize: 0,
-  })
-  console.log(errors)
-
+  });
+  console.log(errors);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (_: any, value: ResponsibleSectorType | null) => {
@@ -57,18 +56,20 @@ export function AutocompleteResponsibleSector({
           forcePopupIcon={false}
           options={responsibleSectors || []}
           loadingText="Carregando..."
-          defaultValue={{ [keyCode]: field.value ?? "" } as ResponsibleSectorType}
-          isOptionEqualToValue={(option: ResponsibleSectorType, value: ResponsibleSectorType) =>
-            option[keyCode] === value[keyCode]
+          defaultValue={
+            { [keyCode]: field.value ?? "" } as ResponsibleSectorType
           }
+          isOptionEqualToValue={(
+            option: ResponsibleSectorType,
+            value: ResponsibleSectorType,
+          ) => option[keyCode] === value[keyCode]}
           onChange={handleChange}
-
           noOptionsText={
             !field.value
-              ? "Digite o nome do motorista"
+              ? "Digite..."
               : !responsibleSectors && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: ResponsibleSectorType) => option.description}
           renderInput={(params) => (

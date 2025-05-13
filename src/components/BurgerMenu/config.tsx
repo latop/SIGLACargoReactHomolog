@@ -27,6 +27,10 @@ import RoomIcon from "@mui/icons-material/Room";
 import LinearScaleIcon from "@mui/icons-material/LinearScale";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
+import SouthAmericaIcon from "@mui/icons-material/SouthAmerica";
+import BusinessIcon from "@mui/icons-material/Business";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 export type GroupmentType =
   | "register"
@@ -53,25 +57,25 @@ const routes: RouteItem[] = [
   {
     text: "Rotas",
     icon: <RouteIcon />,
-    path: "/lines",
+    path: "/line",
     group: "register",
   },
   {
     text: "Motoristas",
     icon: <TbSteeringWheel />,
-    path: "/drivers",
+    path: "/driver",
     group: "register",
   },
   {
     text: "Caminhão",
     icon: <LocalShippingIcon />,
-    path: "/trucks",
+    path: "/truck",
     group: "register",
   },
   {
     text: "Localização",
     icon: <AddLocationAltIcon />,
-    path: "/locations",
+    path: "/location",
     group: "register",
   },
   {
@@ -83,43 +87,128 @@ const routes: RouteItem[] = [
   {
     text: "Justificativas",
     icon: <EditNoteIcon />,
-    path: "/justifications",
+    path: "/justification",
     group: "register",
   },
   {
     text: "Tipo de Atividade",
     icon: <CategoryIcon />,
-    path: "/activity-types",
+    path: "/activity-type",
     group: "register",
   },
   {
     text: "Atividades",
     icon: <EventNoteIcon />,
-    path: "/activities",
+    path: "/activity",
     group: "register",
   },
   {
     text: "Grupos de Localização",
     icon: <ReduceCapacityIcon />,
-    path: "/location-groups",
+    path: "/location-group",
     group: "register",
   },
   {
     text: "Tipo de Parada",
     icon: <RoomIcon />,
-    path: "/stop-types",
+    path: "/stop-type",
     group: "register",
   },
   {
     text: "Tipo de Localização",
     icon: <StreetviewIcon />,
-    path: "/location-types",
+    path: "/location-type",
     group: "register",
   },
   {
     text: "Tipo de viagem",
     icon: <StreetviewIcon />,
     path: "/trip-type",
+    group: "register",
+  },
+  {
+    text: "Atribuição",
+    icon: <PersonSearchIcon />,
+    group: "register",
+    path: "/attribution",
+  },
+
+  {
+    text: "Cargos",
+    icon: <LinearScaleIcon />,
+    group: "register",
+    path: "/position",
+  },
+  {
+    text: "Modelos de Frota",
+    icon: <DirectionsCarIcon />,
+    path: "/fleet-model",
+    group: "register",
+  },
+  {
+    text: "Grupos de Frota",
+    icon: <DirectionsCarIcon />,
+    path: "/fleet-group",
+    group: "register",
+  },
+  {
+    text: "Tipo de Frota",
+    icon: <LocalShippingIcon />,
+    path: "/fleet-type",
+    group: "register",
+  },
+  {
+    text: "Marca de Frota",
+    icon: <BrandingWatermarkIcon />,
+    path: "/fleet-brand",
+    group: "register",
+  },
+  {
+    text: "Atividades de Veículo",
+    icon: <LocalShippingIcon />,
+    path: "/activity-truck",
+    group: "register",
+  },
+  {
+    text: "Cidades",
+    icon: <LocationCityIcon />,
+    path: "/city",
+    group: "register",
+  },
+  {
+    text: "Estados",
+    icon: <SouthAmericaIcon />,
+    path: "/state",
+    group: "register",
+  },
+  {
+    text: "Regiões",
+    icon: <SouthAmericaIcon />,
+    path: "/region",
+    group: "register",
+  },
+  {
+    text: "Países",
+    icon: <SouthAmericaIcon />,
+    path: "/country",
+    group: "register",
+  },
+  {
+    text: "Empresas",
+    icon: <BusinessIcon />,
+    path: "/company",
+    group: "register",
+  },
+  {
+    text: "Fuso horário",
+    icon: <AccessTimeIcon />,
+    path: "/timezone",
+    group: "register",
+  },
+  {
+    text: "Fuso horário - Valores",
+    icon: <AccessTimeIcon />,
+    path: "/timezone-value",
     group: "register",
   },
 
@@ -139,7 +228,7 @@ const routes: RouteItem[] = [
   {
     text: "Viagens diárias",
     icon: <MovingIcon />,
-    path: "/daily-trips",
+    path: "/daily-trip",
     group: "coordination",
   },
 

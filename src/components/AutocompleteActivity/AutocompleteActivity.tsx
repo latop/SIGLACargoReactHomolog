@@ -51,7 +51,7 @@ export function AutocompleteActivity({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o nome do motorista"
+              ? "Digite..."
               : !activities && !error
               ? "Carregando..."
               : "Nenhum resultado encontrado"

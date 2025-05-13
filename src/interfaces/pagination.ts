@@ -6,3 +6,13 @@ export interface PaginationResponse {
   totalCount: number;
   hasPrevious: boolean;
 }
+
+export interface PaginatedResponse<T> {
+  currentPage?: number;
+  hasNext?: boolean;
+  hasPrevious?: boolean;
+  pageSize?: number;
+  totalPages?: number;
+  data: T[];
+  totalCount?: number;
+}

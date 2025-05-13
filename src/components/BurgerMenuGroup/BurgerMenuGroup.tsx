@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   ListItemIcon,
   ListItemText,
@@ -13,7 +13,6 @@ import {
 import Link from "next/link";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MenuIcon from "@mui/icons-material/Menu";
-import debounce from "debounce";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { GroupmentType, RouteItem } from "../BurgerMenu/config";
 import { usePathname } from "next/navigation";
@@ -21,7 +20,7 @@ import { blue } from "@mui/material/colors";
 
 type BurgerMenuGroupProps = {
   routes: RouteItem[];
-  router: AppRouterInstance;
+  router?: AppRouterInstance;
   groupment: GroupmentType;
   name?: string;
   icon?: React.ElementType;
@@ -45,7 +44,6 @@ const AccordionSummaryStyled = styled(AccordionSummary)`
 
 export const BurgerMenuGroup = ({
   routes,
-  router,
   name,
   groupment,
   icon: Icon = MenuIcon,
@@ -54,9 +52,13 @@ export const BurgerMenuGroup = ({
 }: BurgerMenuGroupProps) => {
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
-  const hasActiveItem = routes
-    .filter(({ group }) => group === groupment)
-    .some(({ path }) => isActive(path));
+  const hasActiveItem = useMemo(
+    () =>
+      routes
+        .filter(({ group }) => group === groupment)
+        .some(({ path }) => isActive(path)),
+    [routes, groupment, pathname],
+  );
 
   return (
     <AccordionStyled
@@ -93,14 +95,7 @@ export const BurgerMenuGroup = ({
           .sort((a: RouteItem, b: RouteItem) => a.text.localeCompare(b.text))
           .map(({ text, icon, path }) => (
             <ListItem key={text} disablePadding>
-              <Link
-                href={path}
-                passHref
-                style={{ width: "100%" }}
-                onMouseEnter={() => {
-                  debounce(() => router.prefetch(path), 300)();
-                }}
-              >
+              <Link href={path} passHref style={{ width: "100%" }}>
                 <ListItemButton
                   sx={{
                     color: isActive(path) ? blue[800] : "inherit",

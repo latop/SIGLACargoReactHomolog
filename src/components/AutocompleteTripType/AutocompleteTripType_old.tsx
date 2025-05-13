@@ -17,12 +17,12 @@ export function AutocompleteTripType({
   label?: string;
   keyCode?: keyof TripType;
   onChange?: (value: TripType | null) => void;
-
 }) {
   const {
     control,
     watch,
-    setValue, formState: { errors, dirtyFields },
+    setValue,
+    formState: { errors, dirtyFields },
   } = useFormContext();
 
   const isDirty = dirtyFields[name];
@@ -39,7 +39,6 @@ export function AutocompleteTripType({
       onChange(value);
     } else {
       setValue(name, value?.[keyCode] || "");
-
     }
   };
 
@@ -60,10 +59,10 @@ export function AutocompleteTripType({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !tripTypes && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: TripType) => option.code}
           renderInput={(params) => (

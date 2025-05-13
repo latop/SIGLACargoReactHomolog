@@ -13,14 +13,14 @@ export function AutocompleteTruck({
   keyCode = "licensePlate",
   disabled = false,
   onChange,
-  isUpperCase = false
+  isUpperCase = false,
 }: {
   name?: string;
   label?: string;
   keyCode?: keyof Truck;
   disabled?: boolean;
   onChange?: (value: Truck | null) => void;
-  isUpperCase?: boolean
+  isUpperCase?: boolean;
 }) {
   const {
     control,
@@ -46,7 +46,11 @@ export function AutocompleteTruck({
             clearOnEscape
             options={trucks || []}
             loadingText="Carregando..."
-            defaultValue={{ [keyCode]: field.value?.[keyCode] || field.value || "" } as Truck}
+            defaultValue={
+              {
+                [keyCode]: field.value?.[keyCode] || field.value || "",
+              } as Truck
+            }
             isOptionEqualToValue={(option: Truck, value: Truck) =>
               option[keyCode] === value[keyCode]
             }
@@ -55,10 +59,10 @@ export function AutocompleteTruck({
             }}
             noOptionsText={
               !field.value
-                ? "Digite o código"
+                ? "Digite..."
                 : !trucks && !error
-                  ? "Carregando..."
-                  : "Nenhum resultado encontrado"
+                ? "Carregando..."
+                : "Nenhum resultado encontrado"
             }
             getOptionLabel={(option: Truck) => option[keyCode] as string}
             renderInput={(params) => (
@@ -70,11 +74,11 @@ export function AutocompleteTruck({
                     WebkitTextFillColor: "#000000",
                     opacity: 1,
                   },
-                  ... (isUpperCase && {
+                  ...(isUpperCase && {
                     "& .MuiInputBase-input": {
                       textTransform: "uppercase",
                     },
-                  })
+                  }),
                 }}
                 onChange={debounce((event) => {
                   setLocalValue(event.target.value);
@@ -87,7 +91,7 @@ export function AutocompleteTruck({
               />
             )}
           />
-        )
+        );
       }}
     />
   );

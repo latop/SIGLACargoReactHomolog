@@ -69,7 +69,7 @@ export function AutocompleteFleetType({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !fleetTypes && !error
               ? "Carregando..."
               : "Nenhum resultado encontrado"

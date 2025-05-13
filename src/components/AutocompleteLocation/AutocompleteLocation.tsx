@@ -32,8 +32,9 @@ export function AutocompleteLocation({
   const isDirty = dirtyFields[name];
 
   const { data = [], error } = useGetLocationReleaseQuery({
-    code: (isDirty && watch(name)) ?? watch(name) ?? "", pageSize: 5000
-  })
+    code: (isDirty && watch(name)) ?? watch(name) ?? "",
+    pageSize: 5000,
+  });
 
   const locations = data?.data || [];
 
@@ -48,7 +49,6 @@ export function AutocompleteLocation({
       setValue(`${name.split(".")[0]}Id`, value?.id || "");
       setValue(name, value?.id || "");
       setValue(`${name.split(".")[0]}Description`, value?.name || "");
-
     }
   };
 
@@ -69,17 +69,16 @@ export function AutocompleteLocation({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !locations && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: Location) => option.code}
           renderInput={(params) => (
             <TextField
               {...field}
               {...params}
-
               onChange={debounce(field.onChange, 300)}
               variant="outlined"
               fullWidth
@@ -91,7 +90,7 @@ export function AutocompleteLocation({
                 ...params.InputProps,
                 inputProps: {
                   ...params.inputProps,
-                  style: { textTransform: 'uppercase' }, // Apply uppercase style
+                  style: { textTransform: "uppercase" }, // Apply uppercase style
                 },
               }}
             />

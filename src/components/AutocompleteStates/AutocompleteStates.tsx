@@ -5,17 +5,14 @@ import { Skeleton, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import debounce from "debounce";
 import { State } from "@/interfaces/parameters";
-import { useStatesQuery } from "@/hooks/useStates/useStatesQuery";
-
-
+import { useStates } from "@/hooks/useStates";
 
 export function AutocompleteStates({
   name = "name",
-  label = "Estados",
+  label = "Estado",
   keyCode = "name",
   onChange,
-  hasSkeleton = false
-
+  hasSkeleton = false,
 }: {
   name?: string;
   label?: string;
@@ -31,11 +28,13 @@ export function AutocompleteStates({
   } = useFormContext();
 
   const isDirty = dirtyFields[name];
-  const { data: states = [], error, isFetching } = useStatesQuery({
+  const {
+    states,
+    error,
+    isLoading: isFetching,
+  } = useStates({
     stateName: isDirty ? watch(name) : "",
-  }, {
-    queryKey: ["states", { stateName: isDirty ? watch(name) : "" }],
-    staleTime: 0
+    pageSize: 0,
   });
 
   const handleChange = (_: unknown, value: State | null) => {
@@ -48,8 +47,8 @@ export function AutocompleteStates({
     }
   };
 
-  if (hasSkeleton && isFetching) return <Skeleton width={"100%"} height={"100%"} />;
-
+  if (hasSkeleton && isFetching)
+    return <Skeleton width={"100%"} height={"100%"} />;
 
   return (
     <Controller
@@ -59,19 +58,21 @@ export function AutocompleteStates({
         <Autocomplete
           forcePopupIcon={false}
           clearOnEscape
-          options={states as State[] || []}
+          options={(states as State[]) || []}
           loadingText="Carregando..."
-          defaultValue={{ [keyCode]: field.value?.[keyCode] || field.value || "" } as State}
+          defaultValue={
+            { [keyCode]: field.value?.[keyCode] || field.value || "" } as State
+          }
           isOptionEqualToValue={(option: State, value: State) =>
             option[keyCode] === value[keyCode]
           }
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !states && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: State) => option?.name}
           renderInput={(params) => (
@@ -84,7 +85,14 @@ export function AutocompleteStates({
               label={label}
               error={!!errors[field.name]}
               helperText={errors[field.name]?.message?.toString()}
-              value={field.value ?? ""} />
+              value={field.value ?? ""}
+              inputProps={{
+                ...params.inputProps,
+                style: {
+                  textTransform: "uppercase",
+                },
+              }}
+            />
           )}
         />
       )}

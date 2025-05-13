@@ -1,4 +1,4 @@
-import { PaginatedResponse } from "@/interfaces/parameters";
+import { PaginatedResponse } from "@/interfaces/pagination";
 import { FleetBrand } from "@/interfaces/vehicle";
 import { FetchFleetBrandParams, fetchFleetBrands } from "@/services/vehicles";
 import useSWR from "swr";

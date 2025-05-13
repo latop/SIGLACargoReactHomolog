@@ -22,12 +22,16 @@ export interface FetchAttribuitionParams {
 export interface FetchCitiesParams {
   cityName?: string;
   pageSize?: number;
+  stateId?: string;
+  pageNumber?: number;
 }
 
 export interface FetchStatesParams {
   stateName?: string;
   pageSize?: number;
+  pageNumber?: number;
 }
+
 export interface FetchResponsibleSectionsParams {
   pageSize?: number;
   pageNumber?: number;
@@ -55,6 +59,29 @@ export interface FetchActivityParams {
   activityTypeId?: string; // Filter1Id
   flgActive?: boolean | string; // Filter1Bool
   flgRequest?: boolean | string; // Filter1Bool
+}
+
+export interface FetchActivityTruckParams {
+  pageSize?: number;
+  code?: string;
+}
+
+export interface FetchStates {
+  stateName?: string;
+  pageSize?: number;
+  pageNumber?: number;
+}
+
+export interface FetchRegionsParams {
+  pageSize?: number;
+  pageNumber?: number;
+  regionName?: string;
+}
+
+export interface FetchTimezoneValueParams {
+  pageSize?: number;
+  pageNumber?: number;
+  timezoneId?: string;
 }
 
 export async function fetchAcitivities({
@@ -89,7 +116,7 @@ export async function fetchCompanies({ args }: { args: FetchCompanyParams }) {
       filter1String: args.code?.toUpperCase(),
     };
 
-    const response = await axios.get("/Companies", { params });
+    const response = await api.get("/Companies", { params });
     const data = response.data;
     return data;
   } catch (error) {
@@ -100,7 +127,7 @@ export async function fetchCompanies({ args }: { args: FetchCompanyParams }) {
 
 export const fetchCountries = async () => {
   try {
-    const response = await axios.get("/Countries");
+    const response = await api.get("/Countries");
     const data = response.data;
     return data;
   } catch (error) {
@@ -110,16 +137,18 @@ export const fetchCountries = async () => {
 };
 
 export const fetchStates = async ({
-  args: { pageSize = 0 },
+  args: params,
 }: {
   args: FetchStatesParams;
 }) => {
   const statesParams = {
-    pageSize,
+    pageSize: params.pageSize,
+    stateName: params.stateName,
+    pageNumber: params.pageNumber,
   };
 
   try {
-    const response = await axios.get("/States", { params: statesParams });
+    const response = await api.get("/States", { params: statesParams });
 
     const data = response.data;
     return data;
@@ -177,12 +206,15 @@ export async function fetchCities({
 }: {
   args: FetchCitiesParams;
 }) {
+  console.log("fetchCities", params);
   try {
     const citiesParams = {
       PageSize: params.pageSize,
+      PageNumber: params.pageNumber,
       filter1String: params.cityName?.toUpperCase(),
+      filter2Id: params.stateId,
     };
-    const response = await axios.get("/Cities", { params: citiesParams });
+    const response = await api.get("/Cities", { params: citiesParams });
     const data = response.data;
     return data;
   } catch (error) {
@@ -345,6 +377,164 @@ export async function fetchAttribuitionById({ id }: { id: string }) {
 export async function fetchPositionById({ id }: { id: string }) {
   try {
     const response = await api.get(`/Position/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchActivityTrucks({
+  args: params,
+}: {
+  args: FetchActivityTruckParams;
+}) {
+  try {
+    const activityTruckParams = {
+      PageSize: params.pageSize,
+      filter1String: params.code?.toUpperCase(),
+    };
+    const response = await api.get("/ActivityTruck", {
+      params: activityTruckParams,
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchActivityTruckById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/ActivityTruck/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchCityById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/Cities/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchStateById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/States/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchRegionById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/Regions/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchRegions({
+  args: params,
+}: {
+  args: FetchRegionsParams;
+}) {
+  try {
+    const response = await api.get("/Regions", {
+      params: params,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchCountryById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/Countries/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export async function fetchCompanyById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/Companies/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export const fetchTimezones = async () => {
+  try {
+    const response = await api.get("/Timezone");
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+
+export async function fetchTimezoneById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/Timezone/${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export const fetchTimezoneValues = async ({
+  args: params,
+}: {
+  args: FetchTimezoneValueParams;
+}) => {
+  try {
+    const timezoneValueParams = {
+      PageSize: params.pageSize,
+      PageNumber: params.pageNumber,
+      Filter1Id: params.timezoneId,
+    };
+    const response = await api.get("/TimezoneValue", {
+      params: timezoneValueParams,
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+
+export async function fetchTimezoneValueById({ id }: { id: string }) {
+  try {
+    const response = await api.get(`/TimezoneValue/${id}`);
     const data = response.data;
     return data;
   } catch (error) {

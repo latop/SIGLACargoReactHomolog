@@ -53,10 +53,10 @@ export function AutocompleteAttribution({
           }}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !attribution && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: Attribution) => option.code}
           renderInput={(params) => (

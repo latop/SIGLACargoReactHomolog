@@ -6,12 +6,12 @@ import Autocomplete from "@mui/material/Autocomplete";
 import debounce from "debounce";
 import { LocationGroup } from "@/interfaces/trip";
 import { useLocationGroupQuery } from "@/hooks/useLocationGroup/useLocationGroupQuery";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   uppercaseInput: {
-    textTransform: 'uppercase',
-    padding: '5px',
+    textTransform: "uppercase",
+    padding: "5px",
   },
 });
 
@@ -27,7 +27,6 @@ export function AutocompleteLocationGroup({
   onChange?: (value: LocationGroup | null) => void;
   label?: string;
   hasSkeleton?: boolean;
-
 }) {
   const {
     control,
@@ -36,14 +35,20 @@ export function AutocompleteLocationGroup({
     formState: { errors },
   } = useFormContext();
   const isFirstRender = useRef(true);
-  const { data: { data: locationGroups = [] } = {}, error, isFetching } = useLocationGroupQuery({
-    pageSize: 10,
-    code: watch(name),
-  }, {
-    queryKey: ["locationGroups", { code: watch(name) }],
-    staleTime: 0
-  });
-  console.log(locationGroups)
+  const {
+    data: { data: locationGroups = [] } = {},
+    error,
+    isFetching,
+  } = useLocationGroupQuery(
+    {
+      pageSize: 10,
+      code: watch(name),
+    },
+    {
+      queryKey: ["locationGroups", { code: watch(name) }],
+      staleTime: 0,
+    },
+  );
 
   const handleChange = (
     _: SyntheticEvent<Element, Event>,
@@ -77,7 +82,7 @@ export function AutocompleteLocationGroup({
         <Autocomplete
           clearOnEscape
           forcePopupIcon={false}
-          options={locationGroups as LocationGroup[] || []}
+          options={(locationGroups as LocationGroup[]) || []}
           loadingText="Carregando..."
           defaultValue={{ [keyCode]: field.value ?? "" } as LocationGroup}
           isOptionEqualToValue={(option: LocationGroup, value: LocationGroup) =>
@@ -86,10 +91,10 @@ export function AutocompleteLocationGroup({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !locationGroups && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: LocationGroup) =>
             option.description

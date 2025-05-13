@@ -59,13 +59,12 @@ export function AutocompleteDriver({
             option[keyCode] === value[keyCode]
           }
           onChange={handleChange}
-
           noOptionsText={
             !field.value
-              ? "Digite o nome do motorista"
+              ? "Digite..."
               : !drivers && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: Driver) => option.nickName}
           renderInput={(params) => (

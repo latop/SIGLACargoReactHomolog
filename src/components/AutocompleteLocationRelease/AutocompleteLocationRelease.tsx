@@ -48,7 +48,7 @@ export function AutocompleteLocationRelease({
           }}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !locations && !error
               ? "Carregando..."
               : "Nenhum resultado encontrado"

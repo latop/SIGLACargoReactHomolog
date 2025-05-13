@@ -6,12 +6,12 @@ import Autocomplete from "@mui/material/Autocomplete";
 import debounce from "debounce";
 import { FleetBrand } from "@/interfaces/vehicle";
 import { useFleetBrand } from "@/hooks/useFleetBrand";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   uppercaseInput: {
-    textTransform: 'uppercase',
-    padding: '5px',
+    textTransform: "uppercase",
+    padding: "5px",
   },
 });
 
@@ -70,15 +70,13 @@ export function AutocompleteFleetBrand({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !fleetBrands && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: FleetBrand) =>
-            option.name
-              ? `${option.code} - ${option.name}`
-              : option.code
+            option.name ? `${option.code} - ${option.name}` : option.code
           }
           renderInput={(params) => (
             <TextField
@@ -101,4 +99,4 @@ export function AutocompleteFleetBrand({
       )}
     />
   );
-} 
+}

@@ -13,7 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { BurgerMenuGroup } from "../BurgerMenuGroup";
 
 import { groupments, GroupmentType, routes } from "./config";
@@ -67,8 +66,6 @@ const saveOpenState = (state: Record<GroupmentType, boolean>) => {
 };
 
 export function BurgerMenu({ isOpen, toggleDrawer }: BurgerMenuProps) {
-  const router = useRouter();
-
   const [menuOpen, setOpenMenu] = useState(initialState);
 
   const handleMenuOpen = ({ group }: { group: GroupmentType }) => {
@@ -133,14 +130,7 @@ export function BurgerMenu({ isOpen, toggleDrawer }: BurgerMenuProps) {
                 .filter(({ group }) => group === undefined)
                 .map(({ text, icon, path }) => (
                   <ListItem key={text} disablePadding>
-                    <Link
-                      href={path}
-                      passHref
-                      style={{ width: "100%" }}
-                      onMouseEnter={() => {
-                        void router.prefetch(path);
-                      }}
-                    >
+                    <Link href={path} passHref style={{ width: "100%" }}>
                       <ListItemButton>
                         <ListItemIcon>{icon}</ListItemIcon>
                         <ListItemText primary={text} />
@@ -155,7 +145,6 @@ export function BurgerMenu({ isOpen, toggleDrawer }: BurgerMenuProps) {
                   routes={routes}
                   groupment={groupment}
                   name={name}
-                  router={router}
                   icon={Icon}
                   expanded={menuOpen[groupment]}
                   onToggle={() => handleMenuOpen({ group: groupment })}

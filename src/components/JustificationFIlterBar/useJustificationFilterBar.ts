@@ -49,12 +49,12 @@ export const useJustificationFilterBar = () => {
       params.append("submitted", "true");
     }
 
-    router.push(`/justifications?${params.toString()}`);
+    router.push(`/justification?${params.toString()}`);
   };
 
   const onClearParams = () => {
     methods.reset({});
-    router.push("/justifications");
+    router.push("/justification");
     setTimeout(() => window.location.reload(), 500);
   };
 

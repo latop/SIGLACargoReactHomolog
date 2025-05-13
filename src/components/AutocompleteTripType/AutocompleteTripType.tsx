@@ -19,19 +19,19 @@ export function AutocompleteTripType({
   keyCode?: keyof TripType;
   isRequired?: boolean;
   onChange?: (value: TripType | null) => void;
-
 }) {
   const {
     control,
     watch,
-    setValue, formState: { errors, dirtyFields },
+    setValue,
+    formState: { errors, dirtyFields },
   } = useFormContext();
 
   const isDirty = dirtyFields[name];
 
   const { data: { data: tripTypes = [] } = [], error } = useGetTripTypesQuery({
-    code: (isDirty && watch(name)) ?? watch(name) ?? ""
-  })
+    code: (isDirty && watch(name)) ?? watch(name) ?? "",
+  });
 
   const handleChange = (
     _: SyntheticEvent<Element, Event>,
@@ -63,10 +63,10 @@ export function AutocompleteTripType({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !tripTypes && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: TripType) => option.code}
           renderInput={(params) => (
@@ -81,8 +81,7 @@ export function AutocompleteTripType({
               error={!!errors[field.name]}
               helperText={errors[field.name]?.message?.toString()}
             />
-          )
-          }
+          )}
         />
       )}
     />

@@ -52,12 +52,12 @@ export const useActivityFilterBar = () => {
       params.append("submitted", "true");
     }
 
-    router.push(`/activities?${params.toString()}`);
+    router.push(`/activity?${params.toString()}`);
   };
 
   const onClearParams = () => {
     methods.reset({});
-    router.push("/activities");
+    router.push("/activity");
     setTimeout(() => window.location.reload(), 500);
   };
 

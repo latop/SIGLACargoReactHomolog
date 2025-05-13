@@ -17,12 +17,12 @@ export function AutocompleteStopType({
   label?: string;
   keyCode?: keyof StopType;
   onChange?: (value: StopType | null) => void;
-
 }) {
   const {
     control,
     watch,
-    setValue, formState: { errors, dirtyFields },
+    setValue,
+    formState: { errors, dirtyFields },
   } = useFormContext();
 
   const isDirty = dirtyFields[name];
@@ -39,7 +39,6 @@ export function AutocompleteStopType({
       onChange(value);
     } else {
       setValue(name, value?.[keyCode] || "");
-
     }
   };
 
@@ -60,10 +59,10 @@ export function AutocompleteStopType({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !stopTypes && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: StopType) => option.stopTypeCode}
           renderInput={(params) => (

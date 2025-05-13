@@ -54,12 +54,12 @@ export function useLinesFilterBar() {
     if (!hasValues) {
       params.append("submitted", "true");
     }
-    router.push(`/lines?${params.toString()}`);
+    router.push(`/line?${params.toString()}`);
   };
 
   const onClearParams = () => {
     methods.reset({});
-    router.push("/lines");
+    router.push("/line");
     setTimeout(() => window.location.reload(), 500);
   };
 

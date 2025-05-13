@@ -3,7 +3,8 @@ import {
   FetchActivitiesParams,
   fetchActivityType,
 } from "@/services/parameters";
-import { ActivityType, PaginatedResponse } from "@/interfaces/parameters";
+import { ActivityType } from "@/interfaces/parameters";
+import { PaginatedResponse } from "@/interfaces/pagination";
 
 export const useActivityTypes = (
   params?: FetchActivitiesParams,

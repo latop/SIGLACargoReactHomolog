@@ -52,7 +52,7 @@ export function useDriversFilterBar() {
         params.append(key, value);
       }
     });
-    router.push(`/drivers?${params.toString()}`);
+    router.push(`/driver?${params.toString()}`);
   };
 
   const onClearParams = () => {
@@ -65,7 +65,7 @@ export function useDriversFilterBar() {
       locationGroupId: "",
       positionId: "",
     });
-    router.push(`/drivers`);
+    router.push(`/driver`);
     setTimeout(() => window.location.reload(), 500);
   };
 

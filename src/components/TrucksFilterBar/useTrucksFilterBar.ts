@@ -48,12 +48,12 @@ export const useTrucksFilterBar = () => {
       params.append("submitted", "true");
     }
 
-    router.push(`/trucks?${params.toString()}`);
+    router.push(`/truck?${params.toString()}`);
   };
 
   const onClearParams = () => {
     methods.reset({});
-    router.push("/trucks");
+    router.push("/truck");
     setTimeout(() => window.location.reload(), 500);
   };
 

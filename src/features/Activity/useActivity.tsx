@@ -3,7 +3,8 @@
 import { useFetch } from "@/hooks/useFetch";
 import { useHash } from "@/hooks/useHash";
 import { useToast } from "@/hooks/useToast";
-import { Activity, PaginatedResponse } from "@/interfaces/parameters";
+import { PaginatedResponse } from "@/interfaces/pagination";
+import { Activity } from "@/interfaces/parameters";
 import { fetchActivity } from "@/services/parameters";
 import { useSearchParams } from "next/navigation";
 import useSWRInfinite from "swr/infinite";

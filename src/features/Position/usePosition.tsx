@@ -1,7 +1,8 @@
 import { useFetch } from "@/hooks/useFetch";
 import { useHash } from "@/hooks/useHash";
 import { useToast } from "@/hooks/useToast";
-import { Position, PaginatedResponse } from "@/interfaces/parameters";
+import { PaginatedResponse } from "@/interfaces/pagination";
+import { Position } from "@/interfaces/parameters";
 import { fetchPositions } from "@/services/parameters";
 import useSWRInfinite from "swr/infinite";
 

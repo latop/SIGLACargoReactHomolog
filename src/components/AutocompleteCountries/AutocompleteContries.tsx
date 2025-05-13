@@ -12,7 +12,6 @@ export function AutocompleteContries({
   label = "País",
   keyCode = "name",
   onChange,
-
 }: {
   name?: string;
   label?: string;
@@ -27,7 +26,7 @@ export function AutocompleteContries({
   } = useFormContext();
 
   const isDirty = dirtyFields[name];
-  const { contries, error } = useCountries({
+  const { countries, error } = useCountries({
     code: isDirty ? watch(name) : "",
   });
 
@@ -37,7 +36,6 @@ export function AutocompleteContries({
     } else {
       setValue("id", value?.id || "");
       setValue("code", value?.code || "");
-
     }
   };
 
@@ -49,7 +47,7 @@ export function AutocompleteContries({
         <Autocomplete
           forcePopupIcon={false}
           clearOnEscape
-          options={contries || []}
+          options={countries || []}
           loadingText="Carregando..."
           defaultValue={{ name: field.value || "" } as Country}
           isOptionEqualToValue={(option: Country, value: Country) =>
@@ -58,10 +56,10 @@ export function AutocompleteContries({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o código"
-              : !contries && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Digite..."
+              : !countries && !error
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: Country) => option.name}
           renderInput={(params) => (

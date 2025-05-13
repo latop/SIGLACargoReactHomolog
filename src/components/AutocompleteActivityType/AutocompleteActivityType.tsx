@@ -52,10 +52,10 @@ export function AutocompleteActivityType({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o nome do motorista"
+              ? "Digite..."
               : !activityTypes && !error
-                ? "Carregando..."
-                : "Nenhum resultado encontrado"
+              ? "Carregando..."
+              : "Nenhum resultado encontrado"
           }
           getOptionLabel={(option: ActivityType) => option.code}
           renderInput={(params) => (

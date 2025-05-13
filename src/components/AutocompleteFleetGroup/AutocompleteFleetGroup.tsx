@@ -31,10 +31,9 @@ export function AutocompleteFleetGroup({
 
   const isDirty = dirtyFields[name];
 
-  const { fleetGroups, error } =
-    useFleetGroup({
-      code: isDirty ? watch(name) : "",
-    });
+  const { fleetGroups, error } = useFleetGroup({
+    code: isDirty ? watch(name) : "",
+  });
 
   const handleChange = (
     _: SyntheticEvent<Element, Event>,
@@ -61,17 +60,21 @@ export function AutocompleteFleetGroup({
             forcePopupIcon={false}
             options={fleetGroups}
             loadingText="Carregando..."
-            defaultValue={{ [keyCode]: field.value?.[keyCode] || field.value || "" } as FleetGroup}
+            defaultValue={
+              {
+                [keyCode]: field.value?.[keyCode] || field.value || "",
+              } as FleetGroup
+            }
             isOptionEqualToValue={(option: FleetGroup, value: FleetGroup) =>
               option[keyCode] === value[keyCode]
             }
             onChange={handleChange}
             noOptionsText={
               !field.value
-                ? "Digite o código"
+                ? "Digite..."
                 : !fleetGroups && !error
-                  ? "Carregando..."
-                  : "Nenhum resultado encontrado"
+                ? "Carregando..."
+                : "Nenhum resultado encontrado"
             }
             getOptionLabel={(option: FleetGroup) =>
               option.description
@@ -93,7 +96,7 @@ export function AutocompleteFleetGroup({
               />
             )}
           />
-        )
+        );
       }}
     />
   );

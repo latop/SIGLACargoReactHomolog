@@ -64,7 +64,7 @@ export function AutocompleteCompany({
           onChange={handleChange}
           noOptionsText={
             !field.value
-              ? "Digite o código"
+              ? "Digite..."
               : !companies && !error
               ? "Carregando..."
               : "Nenhum resultado encontrado"

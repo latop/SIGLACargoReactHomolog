@@ -26,6 +26,9 @@ export interface Company {
   regionId: null | string;
   countryId: string;
   isSupplier: boolean;
+  country: Country;
+  state: State;
+  city: City;
 }
 
 export interface Country {
@@ -43,7 +46,9 @@ export interface State {
   countryId: string;
   country: Country;
   id: string;
+  region: Region;
 }
+
 export interface City {
   id: string;
   code: string;
@@ -51,6 +56,16 @@ export interface City {
   stateId: string;
   countryId: string;
   capital: boolean;
+  latitude?: number;
+  longitude?: number;
+  state?: State;
+  country?: Country;
+}
+
+export interface Region {
+  id: string;
+  code: string;
+  name: string;
 }
 
 export type Attribution = {
@@ -129,20 +144,33 @@ export interface ActivityeResponse {
   totalCount?: number;
 }
 
-export interface PaginatedResponse<T> {
-  currentPage?: number;
-  hasNext?: boolean;
-  hasPrevious?: boolean;
-  pageSize?: number;
-  totalPages?: number;
-  data: T[];
-  totalCount?: number;
-}
-
 export interface Position {
   id: string;
   code: string;
   description: string;
   priority: number;
   colorRGB: number;
+}
+
+export interface ActivityTruck {
+  id: string;
+  code: string;
+  description: string;
+  flgDriverRequired: boolean;
+  color: string;
+}
+
+export interface Timezone {
+  code: string;
+  description: string;
+  id: string;
+}
+
+export interface TimezoneValue {
+  timezoneId: string;
+  start: string;
+  end: string;
+  value: number;
+  timezone: Timezone;
+  id: string;
 }

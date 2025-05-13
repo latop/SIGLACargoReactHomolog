@@ -1,3 +1,4 @@
+import { PaginatedResponse } from "@/interfaces/pagination";
 import { City } from "@/interfaces/parameters";
 import { fetchCities, FetchCitiesParams } from "@/services/parameters";
 import useSWR, { SWRConfiguration } from "swr";
@@ -6,7 +7,7 @@ export const useCities = (
   params?: FetchCitiesParams,
   options?: SWRConfiguration,
 ) => {
-  const { data, error, isLoading } = useSWR<City[]>(
+  const { data, error, isLoading } = useSWR<PaginatedResponse<City>>(
     { url: "/cities", args: params },
     fetchCities,
     {
@@ -16,8 +17,10 @@ export const useCities = (
     },
   );
 
+  const cities = data?.data || [];
+
   return {
-    cities: data,
+    cities,
     error,
     isLoading,
   };
