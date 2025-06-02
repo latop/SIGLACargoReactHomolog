@@ -1,11 +1,12 @@
 "use client";
 
+import { AccordionSkeleton } from "@/components/AccordionSkeleton";
 import { AppBar } from "@/components/AppBar";
 import { HeaderTitle } from "@/components/HeaderTitle/HeaderTitle";
 import { MainContainer } from "@/components/MainContainer";
 import { ReportAccordion } from "@/components/ReportAccordion";
 import { useReports } from "@/hooks/useReports";
-import { Box, CircularProgress } from "@mui/material";
+import { Box } from "@mui/material";
 
 export function Reports() {
   const { data, isLoading } = useReports();
@@ -35,7 +36,7 @@ export function Reports() {
         </Box>
 
         {isLoading ? (
-          <CircularProgress style={{ margin: "auto" }} />
+          <AccordionSkeleton count={10} />
         ) : (
           <ReportAccordion data={data} />
         )}

@@ -177,24 +177,28 @@ export function Login() {
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
               {isLoading}
             </Button>
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3 }}
-              onClick={handleSSO}
-            >
-              Entrar com SSO
-            </Button>
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3 }}
-              onClick={handleWhoAmI}
-            >
-              Who Am I
-            </Button>
+            {process.env.NEXT_PUBLIC_NODE_ENV === "development" && (
+              <>
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3 }}
+                  onClick={handleSSO}
+                >
+                  Entrar com SSO
+                </Button>
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3 }}
+                  onClick={handleWhoAmI}
+                >
+                  Who Am I
+                </Button>
+              </>
+            )}
           </Box>
         </CardContent>
       </Card>

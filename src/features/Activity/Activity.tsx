@@ -92,7 +92,8 @@ export function Activity() {
                     labelRowsPerPage: "Registros por página",
                     labelDisplayedRows: ({ from, to, count }) =>
                       // eslint-disable-next-line prettier/prettier
-                      `${from}-${to} de ${count !== -1 ? count : `mais de ${to}`
+                      `${from}-${to} de ${
+                        count !== -1 ? count : `mais de ${to}`
                       }`,
                   },
                 }}

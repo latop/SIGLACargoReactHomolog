@@ -12,7 +12,6 @@ import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import { z } from "zod";
 
-
 const justificationSchema = z.object({
   code: z
     .string()
@@ -22,20 +21,22 @@ const justificationSchema = z.object({
     .max(10, {
       message: "Máximo 10 caracteres.",
     }),
-  description: z.string().min(1, {
-    message: "Obrigatório",
-  }).max(100, {
-    message: "Máximo 100 caracteres.",
-  }),
+  description: z
+    .string()
+    .min(1, {
+      message: "Obrigatório",
+    })
+    .max(100, {
+      message: "Máximo 100 caracteres.",
+    }),
   responsibleSectorId: z.string().min(1, {
     message: "Obrigatório",
   }),
-  responsibleSector:
-    z.object({
-      description: z.string().min(1, { message: "Obrigatório", })
-    }),
-  type: z.enum(['A', 'C'], { errorMap: () => ({ message: "Obrigatório" }) }),
-})
+  responsibleSector: z.object({
+    description: z.string().min(1, { message: "Obrigatório" }),
+  }),
+  type: z.enum(["A", "C"], { errorMap: () => ({ message: "Obrigatório" }) }),
+});
 
 type JustificationsFormType = z.infer<typeof justificationSchema>;
 
@@ -51,8 +52,7 @@ export const useJustificationsDialog = () => {
     },
   });
   const { addToast } = useToast();
-  const [handleJustification, { error: errorJustification }] =
-    useFetch();
+  const [handleJustification, { error: errorJustification }] = useFetch();
 
   const [hash, setHash] = useHash();
 
@@ -70,9 +70,9 @@ export const useJustificationsDialog = () => {
   } = useSWR<JustificationsFormType>(
     justificationId
       ? {
-        url: `justification`,
-        id: justificationId,
-      }
+          url: `justification`,
+          id: justificationId,
+        }
       : null,
     fetchJustificationById,
     {
@@ -89,7 +89,7 @@ export const useJustificationsDialog = () => {
           description: data.description,
           type: data.type,
           responsibleSector: data?.responsibleSector,
-          responsibleSectorId: data?.responsibleSectorId
+          responsibleSectorId: data?.responsibleSectorId,
         });
       },
       onError: () => {
@@ -105,7 +105,7 @@ export const useJustificationsDialog = () => {
         code: data?.code,
         type: data?.type,
         id: justificationId,
-        responsibleSectorId: data?.responsibleSectorId
+        responsibleSectorId: data?.responsibleSectorId,
       };
       await handleJustification("/Justification", body, {
         method: "post",
@@ -127,7 +127,7 @@ export const useJustificationsDialog = () => {
         code: data?.code,
         type: data?.type,
         id: justificationId,
-        responsibleSectorId: data?.responsibleSectorId
+        responsibleSectorId: data?.responsibleSectorId,
       };
 
       await handleJustification("/Justification", body, {

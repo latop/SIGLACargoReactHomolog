@@ -14,11 +14,22 @@ import "dayjs/locale/pt-br";
 import { AutocompleteFleetGroup } from "../AutocompleteFleetGroup";
 import { AutocompleteLocation } from "../AutocompleteLocation";
 import { FleetGroup } from "@/interfaces/vehicle";
-import { Location } from "@/interfaces/trip";
+import { Location, TripType } from "@/interfaces/trip";
+import { AutocompleteTripType } from "../AutocompleteTripType";
+import debounce from "debounce";
 
 dayjs.extend(customParseFormat);
 
-export function LinesFilterBar(props: React.HTMLProps<HTMLFormElement>) {
+interface LinesFilterBarProps extends React.HTMLProps<HTMLFormElement> {
+  onAddLine: () => void;
+  isLoading: boolean;
+}
+
+export function LinesFilterBar({
+  onAddLine,
+  isLoading,
+  ...props
+}: LinesFilterBarProps) {
   const { methods, onSubmit, onClearParams } = useLinesFilterBar();
   const { control, handleSubmit, setValue } = methods;
 
@@ -35,6 +46,11 @@ export function LinesFilterBar(props: React.HTMLProps<HTMLFormElement>) {
   const handleChangeLocationDest = (value?: Location | null) => {
     setValue("locationDestId", value?.id || "");
     setValue("locationDestCode", value?.code || "");
+  };
+
+  const handleChangeTripType = (value: TripType | null) => {
+    setValue("tripTypeId", value?.id || "");
+    setValue("tripTypeCode", value?.code || "");
   };
 
   return (
@@ -87,21 +103,31 @@ export function LinesFilterBar(props: React.HTMLProps<HTMLFormElement>) {
                   onChange={handleChangeLocationDest}
                 />
               </Grid>
+              <Grid item xs={1.6} paddingLeft="0">
+                <AutocompleteTripType
+                  name="tripTypeCode"
+                  label="Tipo de Viagem"
+                  onChange={handleChangeTripType}
+                />
+              </Grid>
             </Grid>
           </form>
-          <Box
-            display="flex"
-            justifyContent={"space-between"}
-            maxWidth={"170px"}
-            width={"100%"}
-          >
-            <Button variant="outlined" color="primary" onClick={onClearParams}>
+          <Box display="flex" gap="16px">
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={onClearParams}
+              disabled={isLoading}
+            >
               Limpar
+            </Button>
+            <Button variant="outlined" onClick={onAddLine} disabled={isLoading}>
+              Adicionar
             </Button>
             <Button
               variant="contained"
               color="primary"
-              onClick={handleSubmit(onSubmit)}
+              onClick={debounce(handleSubmit(onSubmit), 300)}
             >
               <SearchIcon />
             </Button>

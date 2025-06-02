@@ -14,19 +14,21 @@ import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import { z } from "zod";
 
-
-
-
 export const activitySchema = z.object({
-  id: z.string().uuid({
-    message: "ID deve ser um UUID válido.",
-  }).optional(),
+  id: z
+    .string()
+    .uuid({
+      message: "ID deve ser um UUID válido.",
+    })
+    .optional(),
   code: z
     .string()
     .min(1, { message: "Obrigatório" })
     .max(10, { message: "Máximo 10 caracteres." }),
   description: z.string().min(1, { message: "Obrigatório" }),
-  activityTypeId: z.string().uuid({ message: "Id inválido para o tipo de atividade" }),
+  activityTypeId: z
+    .string()
+    .uuid({ message: "Id inválido para o tipo de atividade" }),
   activityType: z.object({
     code: z.string().optional(),
   }),
@@ -37,6 +39,10 @@ export const activitySchema = z.object({
   flgLunch: z.boolean().default(false),
   flgRest: z.boolean().default(false),
   flgRequest: z.boolean().default(false),
+  flgAllowTimeChange: z.boolean().default(false),
+  qtyMaxMinutes: z.number().default(0),
+  qtyBlockBefore: z.number().default(0),
+  qtyBlockAfter: z.number().default(0),
 });
 
 export type ActivityFormType = z.infer<typeof activitySchema>;
@@ -59,21 +65,16 @@ export const useActivityTypeDialog = () => {
       activityTypeId: "",
       start: dayjs().format(),
       end: dayjs().add(1, "hour").format(),
-
+      flgAllowTimeChange: true,
     },
   });
   const { addToast } = useToast();
-  const [handleActivityType, { error: errorActivityType }] =
-    useFetch();
+  const [handleActivityType, { error: errorActivityType }] = useFetch();
 
   const [hash, setHash] = useHash();
 
-  const isToAddActivity = !!(hash as string)?.match(
-    /#add-activity/,
-  )?.[0];
-  const activityId = (hash as string)?.match(
-    /#activity-id-(.+)/,
-  )?.[1];
+  const isToAddActivity = !!(hash as string)?.match(/#add-activity/)?.[0];
+  const activityId = (hash as string)?.match(/#activity-id-(.+)/)?.[1];
   const {
     data: activity,
     error,
@@ -81,9 +82,9 @@ export const useActivityTypeDialog = () => {
   } = useSWR<Activity>(
     activityId
       ? {
-        url: `activity-${activityId}`,
-        id: activityId,
-      }
+          url: `activity-${activityId}`,
+          id: activityId,
+        }
       : null,
     fetchActivityById,
     {
@@ -150,8 +151,7 @@ export const useActivityTypeDialog = () => {
       methods.reset();
     }
   }, [methods.reset, isToAddActivity]);
-
-
+  console.log(methods.formState.errors);
   return {
     isToAddActivityType: isToAddActivity,
     activityTypeId: activityId,

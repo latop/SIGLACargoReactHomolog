@@ -30,12 +30,12 @@ export const columnsConfig = ({
     {
       field: "code",
       headerName: "Código",
-      width: 200,
+      width: 120,
     },
     {
       field: "description",
       headerName: "Descrição",
-      width: 300,
+      width: 150,
     },
     {
       field: "activityType.code",
@@ -98,6 +98,38 @@ export const columnsConfig = ({
       },
     },
     {
+      field: "flgAllowTimeChange",
+      headerName: "Alt. Horário",
+      width: 100,
+      valueGetter: (_: unknown, row: Activity) => {
+        return row?.flgAllowTimeChange ? "Sim" : "Não";
+      },
+    },
+    {
+      field: "qtyMaxMinutes",
+      headerName: "Duração Máx",
+      width: 50,
+      valueGetter: (_: unknown, row: Activity) => {
+        return row?.qtyMaxMinutes ? row?.qtyMaxMinutes : "0";
+      },
+    },
+    {
+      field: "qtyBlockBefore",
+      headerName: "Blq. Antes",
+      width: 50,
+      valueGetter: (_: unknown, row: Activity) => {
+        return row?.qtyBlockBefore ? row?.qtyBlockBefore : "0";
+      },
+    },
+    {
+      field: "qtyBlockAfter",
+      headerName: "Blq. Depois",
+      width: 50,
+      valueGetter: (_: unknown, row: Activity) => {
+        return row?.qtyBlockAfter ? row?.qtyBlockAfter : "0";
+      },
+    },
+    {
       field: " ",
       headerName: "",
       width: 50,
@@ -106,7 +138,7 @@ export const columnsConfig = ({
           <button
             disabled={isLoadingDelete}
             style={{
-              paddingTop: 12,
+              paddingTop: 3,
               display: "flex",
               gap: "8px",
               border: "none",

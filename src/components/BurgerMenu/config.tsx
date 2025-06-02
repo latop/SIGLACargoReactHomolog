@@ -283,6 +283,18 @@ const routes: RouteItem[] = [
     path: "/trip-optimization",
     group: "planning",
   },
+  {
+    text: "Modelos de Planejamento",
+    icon: <SettingsSuggestIcon />,
+    path: "/planning-model",
+    group: "planning",
+  },
+  {
+    text: "Nova otimização de viagens",
+    icon: <SettingsSuggestIcon />,
+    path: "/new-trip-optimization",
+    group: "planning",
+  },
 
   // Relatórios
   {

@@ -8,11 +8,12 @@ import { useUpdateLineFormFooter } from "./useUpdateLineFormFooter";
 import { useUpdateLineDialog } from "../../useUpdateLineDialog";
 import { useDialog } from "@/hooks/useDialog/useDialog";
 
-export function UpdateLineFormFooter() {
-  const {
-    getValues,
-    formState: { isSubmitting },
-  } = useFormContext();
+export function UpdateLineFormFooter({
+  loadingCreate,
+}: {
+  loadingCreate: boolean;
+}) {
+  const { getValues } = useFormContext();
   const { handleAddStep } = useUpdateLineFormFooter();
   const { handleSubmit } = useUpdateLineDialog();
 
@@ -28,6 +29,7 @@ export function UpdateLineFormFooter() {
       >
         <Box display="flex" gap="10px">
           <Button
+            disabled={loadingCreate}
             variant="outlined"
             onClick={handleAddStep}
             color="primary"
@@ -45,25 +47,29 @@ export function UpdateLineFormFooter() {
         </Box>
         <Box display="flex" gap="10px">
           <Button
+            disabled={loadingCreate}
             variant="contained"
             onClick={() => {
               openDialog({
                 title: "Atualizar a rota",
                 message: "Deseja realmente atualizar essa rota?",
                 onConfirm: async () => {
-                  await handleSubmit(getValues());
+                  await handleSubmit({
+                    line: getValues("line"),
+                    lineSections: getValues("lineSections"),
+                  });
                 },
               });
             }}
           >
-            {isSubmitting && (
+            {loadingCreate && (
               <CircularProgress
                 color="inherit"
                 size={20}
                 sx={{ margin: "2px 11.45px" }}
               />
             )}
-            {!isSubmitting && `Salvar`}
+            {!loadingCreate && `Salvar`}
           </Button>
         </Box>
       </Box>

@@ -1,6 +1,5 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import api from "../configs/api";
-import { FetchBasicParams } from "./types";
 import {
   FetchLocationsParams,
   Locations,
@@ -8,6 +7,12 @@ import {
 } from "@/interfaces/trip";
 
 const resource = "Location";
+
+export interface FetchBasicParams {
+  pageSize?: number;
+  code?: string;
+  filter1Bool?: boolean | null | undefined;
+}
 
 export const useGetLocationGroupQuery = {
   queryKey: ["location_group"],
@@ -53,18 +58,19 @@ export const useGetLocationQuery = ({
 };
 
 export const useGetLocationReleaseQuery = ({
-  pageSize = 15,
+  pageSize = 0,
   code,
+  filter1Bool = true,
 }: FetchBasicParams) => {
   return useQuery({
-    queryKey: ["location_release"],
+    queryKey: ["location_release", code],
     queryFn: async () => {
       try {
         const response = await api.get(`${resource}`, {
           params: {
             PageSize: pageSize,
             filter1String: code?.toUpperCase(),
-            filter1Bool: true,
+            filter1Bool,
           },
         });
         return response.data;
@@ -73,7 +79,6 @@ export const useGetLocationReleaseQuery = ({
         return error;
       }
     },
-    staleTime: 86400,
   });
 };
 

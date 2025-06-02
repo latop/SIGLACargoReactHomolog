@@ -1,6 +1,6 @@
 {
   "name": "sigla-cargo-react",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -44,6 +44,7 @@
     "react-number-format": "^5.4.2",
     "react-toastify": "^10.0.4",
     "react-waypoint": "^10.3.0",
+    "react-window": "1.8.11",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
     "swr": "^2.2.0",
@@ -62,6 +63,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.5.3",
     "@types/react-calendar-timeline": "^0.28.6",
+    "@types/react-window": "1.8.8",
     "@typescript-eslint/eslint-plugin": "6.9.1",
     "eslint": "8.55.0",
     "eslint-config-next": "14.0.3",

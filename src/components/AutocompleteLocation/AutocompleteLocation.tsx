@@ -26,14 +26,12 @@ export function AutocompleteLocation({
     control,
     watch,
     setValue,
-    formState: { errors, dirtyFields },
+    formState: { errors },
   } = useFormContext();
 
-  const isDirty = dirtyFields[name];
-
   const { data = [], error } = useGetLocationReleaseQuery({
-    code: (isDirty && watch(name)) ?? watch(name) ?? "",
-    pageSize: 5000,
+    code: watch(name),
+    filter1Bool: null,
   });
 
   const locations = data?.data || [];
