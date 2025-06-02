@@ -6,22 +6,12 @@ import { MainContainer } from "@/components/MainContainer";
 import { NewTripOptmizationFilterBar } from "@/components/NewTripOptimizationFilterBar";
 import { Box, Card } from "@mui/material";
 
-import { useHash } from "@/hooks/useHash";
 import { useNewTripOptimization } from "./useNewTripOptmization";
-import { NewTripOptimizationDialog } from "@/components/TripOptimizationDialog/TripOptmizationDialog";
 import { OptimizeAccordionTable } from "./components/OptmizeAccordionTable";
 import { AccordionSkeleton } from "@/components/AccordionSkeleton";
 
 export function NewTripOptimization() {
   const { optimizationData, isLoading } = useNewTripOptimization();
-  const [hash, setHash] = useHash();
-  const match = (hash as string)?.match(/#otmId-(.+)/);
-  const otmId = match?.[1];
-  const isOpen = !!otmId?.length;
-
-  const handleOnClose = () => {
-    setHash("");
-  };
 
   return (
     <MainContainer>
@@ -62,7 +52,6 @@ export function NewTripOptimization() {
           )}
         </Card>
       </Box>
-      <NewTripOptimizationDialog open={isOpen} onClose={handleOnClose} />
     </MainContainer>
   );
 }
