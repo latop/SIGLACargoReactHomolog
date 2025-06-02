@@ -3,54 +3,50 @@
 import { Button, Grid } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Controller, FieldValues, FormProvider } from "react-hook-form";
+import { Controller, FormProvider } from "react-hook-form";
+import { useNewTripOptmizationFilterBar } from "./useNewTripOptmizationFilterBar";
+import { AutocompleteLocationGroup } from "../AutocompleteLocationGroup";
+import { useState } from "react";
+
+import SearchIcon from "@mui/icons-material/Search";
 import SettingsIcon from "@mui/icons-material/Settings";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import { useTripOptmizationFilterBar } from "@/hooks/useTripOptimizationFilterBar";
-import { AutocompleteLocationGroup } from "../AutocompleteLocationGroup";
-import { useTripOptimization } from "@/hooks/useTripOptimization";
-import { useToast } from "@/hooks/useToast";
-import { useDialog } from "@/hooks/useDialog/useDialog";
-import dayjs from "dayjs";
 
-export function TripOptmizationFilterBar() {
-  const { methods, onSubmit } = useTripOptmizationFilterBar();
+export function NewTripOptmizationFilterBar() {
+  const { methods, onSubmit } = useNewTripOptmizationFilterBar();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isOptimizing, setIsOptimizing] = useState(false);
 
   const { control, handleSubmit } = methods;
-  const { mutate, isLoading, handleOptmizeTrip } = useTripOptimization();
-  const { addToast } = useToast();
 
-  const { openDialog, closeDialog } = useDialog();
-  const handleDialogOptmize = (data: FieldValues) => {
-    const params = {
-      start: dayjs(data.start).format("YYYY-MM-DD"),
-      end: dayjs(data.end).format("YYYY-MM-DD"),
-      locationGroupCode: data.locationGroupCode,
-    };
+  //TODO: Implementar a lógica de atualização
+  const handleUpdate = async () => {
+    setIsUpdating(true);
+    try {
+      // Mock API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Add your success handling here
+    } catch (error) {
+      // Add your error handling here
+      console.error("Update failed:", error);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
-    openDialog({
-      title: "Confirmar otimização",
-      message: "Deseja realmente otimizar essa viagem?",
-      onConfirm: async () => {
-        await handleOptmizeTrip(params, {
-          onSuccess: () => {
-            addToast("Otimizando viagem", { type: "success" });
-            closeDialog();
-            mutate();
-          },
-          onError: () => {
-            addToast(
-              "Possivelmente sem demandas para otimização, tente novamente mais tarde.",
-              { type: "error" },
-            );
-            closeDialog();
-          },
-        });
-      },
-      onCancel: () => {
-        closeDialog();
-      },
-    });
+  //TODO: Implementar a lógica de otimização
+  const handleOptimize = async () => {
+    setIsOptimizing(true);
+    try {
+      // Mock API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Add your success handling here
+    } catch (error) {
+      // Add your error handling here
+      console.error("Optimization failed:", error);
+    } finally {
+      setIsOptimizing(false);
+    }
   };
 
   return (
@@ -88,25 +84,30 @@ export function TripOptmizationFilterBar() {
                 size="large"
                 variant="contained"
                 color="primary"
-                onClick={methods.handleSubmit(handleDialogOptmize)}
+                type="submit"
               >
-                Otimizar
-                <SettingsIcon fontSize="inherit" sx={{ ml: "5px" }} />
+                <SearchIcon />
               </Button>
+              {/* TODO: Implementar a lógica de otimização */}
               <Button
-                onClick={() => mutate()}
                 size="large"
                 variant="contained"
                 color="primary"
+                onClick={handleOptimize}
+                disabled={isOptimizing}
               >
-                {isLoading ? (
-                  "Carregando..."
-                ) : (
-                  <>
-                    Atualizar
-                    <RefreshIcon fontSize="inherit" sx={{ ml: "5px" }} />
-                  </>
-                )}
+                {isOptimizing ? "Otimizando..." : "Otimizar"}
+                <SettingsIcon fontSize="inherit" sx={{ ml: "5px" }} />
+              </Button>
+              <Button
+                onClick={handleUpdate}
+                size="large"
+                variant="contained"
+                color="primary"
+                disabled={isUpdating}
+              >
+                {isUpdating ? "Atualizando..." : "Atualizar"}
+                <RefreshIcon fontSize="inherit" sx={{ ml: "5px" }} />
               </Button>
             </Grid>
           </Grid>

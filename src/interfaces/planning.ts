@@ -41,3 +41,24 @@ export interface ScenarioCapacity extends WeekSchedule {
 export interface ScenarioResponse extends PaginationResponse {
   scenarios: Scenario[];
 }
+
+export interface PlanningModel {
+  id: string;
+  startDate: string;
+  endDate: string;
+  locationOrig: {
+    id: string;
+    code: string;
+  };
+  locationDest: {
+    id: string;
+    code: string;
+  };
+  freqMon: number;
+  freqTue: number;
+  freqWed: number;
+  freqThu: number;
+  freqFri: number;
+  freqSat: number;
+  freqSun: number;
+}

@@ -68,7 +68,6 @@ export const useFleetGroupDialog = () => {
       revalidateOnReconnect: false,
       onSuccess: (data) => {
         if (fleetGroupId) {
-          console.log(data);
           methods.reset({
             code: data.code,
             description: data.description,

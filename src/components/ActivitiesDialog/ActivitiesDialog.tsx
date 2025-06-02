@@ -180,6 +180,63 @@ export function ActivitiesDialog({ open, onClose }: ActivitiesDialogProps) {
                         )}
                       />
                     </Grid>
+                    <Grid item xs={1.5}>
+                      <Controller
+                        control={methods.control}
+                        name="qtyMaxMinutes"
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            label="Duração Máxima"
+                            variant="outlined"
+                            placeholder="max"
+                            type="number"
+                            onChange={(e) => {
+                              if (Number(e.target.value) < 0) return;
+                              field.onChange(Number(e.target.value));
+                            }}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={1.5}>
+                      <Controller
+                        control={methods.control}
+                        name="qtyBlockBefore"
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            label="Bloqueio Antes"
+                            variant="outlined"
+                            placeholder="min."
+                            type="number"
+                            onChange={(e) => {
+                              if (Number(e.target.value) < 0) return;
+                              field.onChange(Number(e.target.value));
+                            }}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={1.5}>
+                      <Controller
+                        control={methods.control}
+                        name="qtyBlockAfter"
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            label="Bloqueio Depois"
+                            variant="outlined"
+                            placeholder="min."
+                            type="number"
+                            onChange={(e) => {
+                              if (Number(e.target.value) < 0) return;
+                              field.onChange(Number(e.target.value));
+                            }}
+                          />
+                        )}
+                      />
+                    </Grid>
                     <Grid
                       item
                       xs={3}
@@ -362,6 +419,44 @@ export function ActivitiesDialog({ open, onClose }: ActivitiesDialogProps) {
                                 />
                               }
                               label="Pedido"
+                            />
+                          );
+                        }}
+                      />
+                      <Controller
+                        control={methods.control}
+                        name={"flgAllowTimeChange"}
+                        render={({ field }) => {
+                          return (
+                            <FormControlLabel
+                              componentsProps={{
+                                typography: {
+                                  sx: {
+                                    fontSize: "12px",
+                                    color: grey[600],
+                                    textOverflow: "ellipsis",
+                                    overflow: "hidden",
+                                    whiteSpace: "nowrap",
+                                  },
+                                },
+                              }}
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column-reverse",
+                                margin: "0",
+                                alignItems: "center",
+                              }}
+                              control={
+                                <Checkbox
+                                  size="small"
+                                  sx={{
+                                    padding: "0",
+                                  }}
+                                  {...field}
+                                  checked={field.value}
+                                />
+                              }
+                              label="Alt. Horário"
                             />
                           );
                         }}

@@ -10,6 +10,7 @@ export const useLines = (options?: SWRConfiguration) => {
     fleetGroupId: searchParams.get("fleetGroupId"),
     locationDestId: searchParams.get("locationDestId"),
     locationOrigId: searchParams.get("locationOrigId"),
+    tripTypeId: searchParams.get("tripTypeId"),
     code: searchParams.get("code"),
     submitted: searchParams.get("submitted"),
   };

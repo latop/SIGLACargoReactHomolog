@@ -1,9 +1,15 @@
 import { Scenario, ScenarioResponse } from "@/interfaces/planning";
 import axios from "axios";
+import api from "./configs/api";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 export type FetchScenariosParams = {
+  pageSize?: number;
+  pageNumber?: number;
+};
+
+export type FetchPlanningModelListParams = {
   pageSize?: number;
   pageNumber?: number;
 };
@@ -76,3 +82,30 @@ export async function createScenario(scenario: Scenario) {
     throw new Error();
   }
 }
+
+export const fetchPlanningModelList = async (
+  args: FetchPlanningModelListParams,
+) => {
+  try {
+    const response = await api.get(`/PlanningModel`, {
+      params: {
+        pageSize: args.pageSize,
+        pageNumber: args.pageNumber,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error();
+  }
+};
+
+export const fetchPlanningModelById = async ({ id }: { id: string }) => {
+  try {
+    const response = await api.get(`/PlanningModel/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error();
+  }
+};

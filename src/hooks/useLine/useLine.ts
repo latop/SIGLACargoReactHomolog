@@ -7,7 +7,7 @@ export const useLine = (
   params?: FetchLineParams,
   options?: SWRConfiguration,
 ) => {
-  const [deleteLine] = useFetch();
+  const [deleteLine, { loading: isLoadingDelete }] = useFetch();
   const { addToast } = useToast();
   const getKey = (params: FetchLineParams) => {
     if (!params) return null;
@@ -33,5 +33,6 @@ export const useLine = (
     error,
     isLoading,
     handleDeleteLine,
+    isLoadingDelete,
   };
 };

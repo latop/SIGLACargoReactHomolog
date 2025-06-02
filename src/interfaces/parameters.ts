@@ -132,6 +132,10 @@ export interface Activity {
   flgLunch: boolean;
   flgRest: boolean;
   flgRequest: boolean;
+  flgAllowTimeChange: boolean;
+  qtyMaxMinutes: number;
+  qtyBlockBefore: number;
+  qtyBlockAfter: number;
 }
 
 export interface ActivityeResponse {

@@ -8,6 +8,8 @@ import {
   IconButton,
   Icon,
   Tooltip,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -31,7 +33,7 @@ export const UpdateLineSectionForm = ({ seq }: { seq: number }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updatedSteps = steps.map((step: any, index: number) => ({
       ...step,
-      section: { ...step.section, seq: index },
+      section: index + 1,
     }));
     setValue("lineSections", updatedSteps);
   };
@@ -84,19 +86,22 @@ export const UpdateLineSectionForm = ({ seq }: { seq: number }) => {
           </Grid>
           <Grid item xs={3}>
             <AutocompleteLocation
-              name={`lineSections.${seq}.locationOrig`}
+              name={`lineSections.${seq}.locationOrig.code`}
               label="Origem"
               onChange={(value) => {
                 setValue(`lineSections.${seq}.locationOrigId`, value?.id || "");
+                setValue(`lineSections.${seq}.locationOrig`, value || "");
               }}
             />
           </Grid>
           <Grid item xs={3}>
             <AutocompleteLocation
               label="Destino"
-              name={`lineSections.${seq}.locationDest`}
+              name={`lineSections.${seq}.locationDest.code`}
               onChange={(value) => {
+                console.log(value);
                 setValue(`lineSections.${seq}.locationDestId`, value?.id || "");
+                setValue(`lineSections.${seq}.locationDest`, value || "");
               }}
             />
           </Grid>
@@ -105,11 +110,11 @@ export const UpdateLineSectionForm = ({ seq }: { seq: number }) => {
               label="Base vinculada"
               name={`lineSections.${seq}.locationGroup.code`}
               onChange={(value) => {
+                console.log(value);
                 setValue(
                   `lineSections.${seq}.locationGroupId`,
                   value?.id || "",
                 );
-                setValue(`lineSections.${seq}.locationGroup`, value || "");
               }}
             />
           </Grid>
@@ -118,6 +123,41 @@ export const UpdateLineSectionForm = ({ seq }: { seq: number }) => {
               name={`lineSections.${seq}.stopType.stopTypeCode`}
               onChange={(value) => {
                 setValue(`lineSections.${seq}.stopTypeId`, value?.id);
+                setValue(`lineSections.${seq}.stopType`, value || "");
+              }}
+            />
+          </Grid>
+          <Grid item xs={1}>
+            <Controller
+              name={`lineSections.${seq}.logisticHub`}
+              control={control}
+              render={({ field }) => {
+                return (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={field.value}
+                        {...field}
+                        sx={{ padding: "0" }}
+                      />
+                    }
+                    label="Ponto de troca"
+                    componentsProps={{
+                      typography: {
+                        sx: {
+                          fontSize: "12px",
+                          color: colors.grey[600],
+                        },
+                      },
+                    }}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column-reverse",
+                      margin: "0",
+                      alignItems: "center",
+                    }}
+                  />
+                );
               }}
             />
           </Grid>

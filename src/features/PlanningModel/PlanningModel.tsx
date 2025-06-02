@@ -4,19 +4,19 @@ import React from "react";
 import { MainContainer } from "@/components/MainContainer";
 import { AppBar } from "@/components/AppBar";
 import { HeaderTitle } from "@/components/HeaderTitle/HeaderTitle";
-import { Box, Card } from "@mui/material";
+import { Box, Button, Card } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useActivity } from "./useActivity";
+import { usePlanningModel } from "./usePlanningModel";
 import { ErrorResult } from "@/components/ErrorResult";
 import { useDialog } from "@/hooks/useDialog/useDialog";
 import { EmptyResult } from "@/components/EmptyResult";
 import LoadingTableSkeleton from "@/components/LoadingTableSkeleton/LoadingTableSkeleton";
-import { columnsConfig } from "./columnsConfig";
-import { ActivitiesDialog } from "@/components/ActivitiesDialog";
-import { ActivityFilterBar } from "@/components/ActivityFilterBar/ActivityFilterBar";
+import { columnsConfig } from "./configColumn";
+import { PlanningModelDialog } from "@/components/PlanningModelDialog";
 
-export function Activity() {
+export function PlanningModel() {
   const {
+    planningModels,
     loadMore,
     isLoading,
     error: isError,
@@ -25,27 +25,27 @@ export function Activity() {
     isLoadingDelete,
     isEmpty,
     totalCount,
-    activities,
-    activityId,
-    handleDeleteActivity,
-    handleEditActivity,
-    isToAddActivity,
+    handleDeletePlanningModel,
+    handleAddPlanningModel,
+    handleEditPlanningModel,
+    isToAddPlanningModel,
+    planningModelId,
     handleClose,
     isLoadingMore,
-  } = useActivity();
-
+  } = usePlanningModel();
   const { openDialog, closeDialog } = useDialog();
+
   const columns = columnsConfig({
     closeDialog,
     openDialog,
-    handleDeleteActivity,
+    handleDelete: handleDeletePlanningModel,
     isLoadingDelete,
   });
 
   return (
     <MainContainer>
       <AppBar>
-        <HeaderTitle>Atividades</HeaderTitle>
+        <HeaderTitle>Planejamento de viagens</HeaderTitle>
       </AppBar>
       <Box
         sx={{
@@ -58,7 +58,16 @@ export function Activity() {
           gap: "16px",
         }}
       >
-        <ActivityFilterBar />
+        <Button
+          onClick={handleAddPlanningModel}
+          variant="outlined"
+          sx={{
+            width: "170px",
+            alignSelf: "flex-end",
+          }}
+        >
+          Adicionar
+        </Button>
         <Card
           sx={{
             width: "100%",
@@ -77,11 +86,18 @@ export function Activity() {
             <div style={{ height: "100%", width: "100%" }}>
               <DataGrid
                 key={totalCount}
+                sx={{
+                  width: "100%",
+                  "& .blueColumnHeaders ": {
+                    backgroundColor: "#24438F",
+                    color: "white",
+                  },
+                }}
                 slots={{
                   noRowsOverlay: EmptyResult,
                 }}
                 loading={isLoadingMore}
-                rows={activities || []}
+                rows={planningModels || []}
                 getRowId={(row) => row.id}
                 localeText={{
                   noRowsLabel: "Nenhum registro encontrado",
@@ -91,7 +107,6 @@ export function Activity() {
                   MuiTablePagination: {
                     labelRowsPerPage: "Registros por página",
                     labelDisplayedRows: ({ from, to, count }) =>
-                      // eslint-disable-next-line prettier/prettier
                       `${from}-${to} de ${
                         count !== -1 ? count : `mais de ${to}`
                       }`,
@@ -101,7 +116,7 @@ export function Activity() {
                 rowCount={totalCount}
                 columns={columns}
                 onRowDoubleClick={(params) => {
-                  handleEditActivity(params.id as string);
+                  handleEditPlanningModel(params.id as string);
                 }}
                 initialState={{
                   pagination: {
@@ -118,8 +133,11 @@ export function Activity() {
           )}
         </Card>
       </Box>
-      <ActivitiesDialog open={!!activityId} onClose={handleClose} />
-      <ActivitiesDialog open={!!isToAddActivity} onClose={handleClose} />
+      <PlanningModelDialog open={!!planningModelId} onClose={handleClose} />
+      <PlanningModelDialog
+        open={!!isToAddPlanningModel}
+        onClose={handleClose}
+      />
     </MainContainer>
   );
 }

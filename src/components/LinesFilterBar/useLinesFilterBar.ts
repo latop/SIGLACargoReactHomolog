@@ -11,6 +11,8 @@ interface FormFields {
   locationOrigId: string;
   locationOrigCode: string;
   code: string;
+  tripTypeId: string;
+  tripTypeCode: string;
   submitted?: boolean;
 }
 
@@ -21,6 +23,8 @@ const schema = z.object({
   locationOrigCode: z.string().optional(),
   locationDestId: z.string().optional(),
   locationDestCode: z.string().optional(),
+  tripTypeId: z.string().optional(),
+  tripTypeCode: z.string().optional(),
   code: z.string().optional(),
 });
 
@@ -36,6 +40,8 @@ export function useLinesFilterBar() {
       locationOrigId: params.get("locationOrigId") || "",
       locationDestCode: params.get("locationDestCode") || "",
       locationOrigCode: params.get("locationOrigCode") || "",
+      tripTypeId: params.get("tripTypeId") || "",
+      tripTypeCode: params.get("tripTypeCode") || "",
       code: params.get("code")?.toLocaleUpperCase() || "",
     },
   });
