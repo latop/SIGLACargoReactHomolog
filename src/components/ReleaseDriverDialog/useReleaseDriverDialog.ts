@@ -12,14 +12,11 @@ export function useReleaseDriverDialog() {
 
   const match = (hash as string)?.match(/#releaseDriverId-(.+)/);
   const releaseDriverId = match?.[1];
-
-  const { drivers, isLoading, error, mutate } = useReleaseDriver();
+  const { drivers, driversMap, isLoading, error, mutate } = useReleaseDriver();
 
   const loading = isLoading && !error;
 
-  const driverAndTruckToRelase = drivers.find(
-    (driver) => driver.dailyTripSectionId === releaseDriverId,
-  );
+  const driverAndTruckToRelase = driversMap.get(`${releaseDriverId}`);
 
   const methods = useForm();
 
@@ -58,6 +55,7 @@ export function useReleaseDriverDialog() {
       productInvoice: data?.productInvoice,
       isReturnLoaded: data?.isReturnLoaded,
       licensePlateTrailer: data?.licensePlateTrailer,
+      justificationId: data?.justificationId,
     };
     return defaultValues;
   };

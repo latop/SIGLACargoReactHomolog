@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../configs/api";
-import { FetchBasicParams } from "./types";
 import dayjs from "dayjs";
 import { PaginationResponse } from "@/interfaces/pagination";
+import { FetchBasicParams } from "./trips";
 
 const resource = "/Drivers";
 

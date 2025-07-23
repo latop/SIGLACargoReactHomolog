@@ -1,6 +1,15 @@
 import { GridDeleteForeverIcon } from "@mui/x-data-grid";
-import { Box, IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, styled, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { ReactNode } from "react";
+
+interface CustomAction {
+  icon: ReactNode;
+  onClick: () => void;
+  tooltip: string;
+  color?: string;
+  isLoading?: boolean;
+}
 
 interface ActionsColumnProps {
   onDelete: () => void;
@@ -8,7 +17,12 @@ interface ActionsColumnProps {
   tooltipEdit?: string;
   tooltipDelete?: string;
   isLoadingDelete?: boolean;
+  additionalActions?: CustomAction[];
 }
+
+const CustomIcon = styled(IconButton)(() => ({
+  padding: "2px",
+}));
 
 export const ActionsColumn = ({
   onDelete,
@@ -16,19 +30,19 @@ export const ActionsColumn = ({
   isLoadingDelete = false,
   tooltipEdit = "Editar",
   tooltipDelete = "Apagar",
+  additionalActions = [],
 }: ActionsColumnProps) => {
   return (
     <Box
       sx={{
         display: "flex",
-        gap: "4px",
         alignItems: "center",
         justifyContent: "center",
-        padding: "4px 0",
+        height: "100%",
       }}
     >
       {onEdit && (
-        <IconButton onClick={onEdit}>
+        <CustomIcon onClick={onEdit}>
           <Tooltip title={tooltipEdit}>
             <EditIcon
               sx={{
@@ -37,10 +51,28 @@ export const ActionsColumn = ({
               onClick={onEdit}
             />
           </Tooltip>
-        </IconButton>
+        </CustomIcon>
+      )}
+
+      {additionalActions.map(
+        ({ icon, onClick, tooltip, color, isLoading }, index) => (
+          <CustomIcon
+            sx={{
+              color: color,
+              opacity: isLoading ? 0.5 : 1,
+              pointerEvents: isLoading ? "none" : "auto",
+            }}
+            key={index}
+            onClick={onClick}
+          >
+            <Tooltip title={tooltip}>
+              <>{icon}</>
+            </Tooltip>
+          </CustomIcon>
+        ),
       )}
       {onDelete && (
-        <IconButton onClick={onDelete}>
+        <CustomIcon onClick={onDelete}>
           <Tooltip title={tooltipDelete}>
             <GridDeleteForeverIcon
               sx={{
@@ -53,7 +85,7 @@ export const ActionsColumn = ({
               }}
             />
           </Tooltip>
-        </IconButton>
+        </CustomIcon>
       )}
     </Box>
   );

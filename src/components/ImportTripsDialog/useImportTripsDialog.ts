@@ -1,7 +1,7 @@
 "use client";
 
 import { useHash } from "@/hooks/useHash";
-import { fetchGtmById } from "@/services/import-trips";
+import { fetchGtmById } from "@/services/trips";
 import React from "react";
 import useSWR from "swr";
 

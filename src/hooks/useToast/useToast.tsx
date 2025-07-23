@@ -8,7 +8,7 @@ interface SnackbarMessage {
   message: string;
   options?: {
     autoHideDuration?: number;
-    type?: "success" | "error";
+    type?: "success" | "error" | "info";
     vertical?: "top" | "bottom";
     horizontal?: "center" | "left" | "right";
   };

@@ -139,16 +139,16 @@ export function useUpdateLineDialog() {
       lineSections: data?.lineSections?.map(
         (lineSection: LineSection): LineSection => {
           return {
-            id: isToAddLine ? undefined : lineSection.id,
+            id: lineSection.id || undefined,
             section: lineSection.section,
             lineId: lineSection.lineId,
             locationOrigId: lineSection.locationOrigId,
             locationDestId: lineSection.locationDestId,
             locationGroupId: lineSection.locationGroupId,
-            locationOrig: lineSection.locationOrig,
-            locationDest: lineSection.locationDest,
+            locationOrig: !isToAddLine ? undefined : lineSection.locationOrig,
+            locationDest: !isToAddLine ? undefined : lineSection.locationDest,
             stopTypeId: lineSection.stopTypeId,
-            stopType: lineSection.stopType,
+            stopType: !isToAddLine ? undefined : lineSection.stopType,
             logisticHub: lineSection.logisticHub,
             duration: lineSection.duration,
           };

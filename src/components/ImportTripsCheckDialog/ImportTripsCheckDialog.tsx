@@ -48,11 +48,13 @@ const schema = z.object({
 interface ImportTripsCheckDialogProps {
   open: boolean;
   onClose: () => void;
+  onRefreshItems: () => void;
 }
 
 export const ImportTripsCheckDialog: React.FC<ImportTripsCheckDialogProps> = ({
   open,
   onClose,
+  onRefreshItems,
 }) => {
   const [file, setFile] = useState<File | null>(null);
   const [stopErrors, setStopErrors] = useState<
@@ -96,17 +98,18 @@ export const ImportTripsCheckDialog: React.FC<ImportTripsCheckDialogProps> = ({
     setValue("locationGroupCode", "");
     setStopErrors([]);
   };
-
   const onSubmit = async (data: FieldValues) => {
     if (!file) {
       addToast("Selecione um arquivo.", { type: "error" });
       return;
     }
+
     const payload = {
       File: file,
       Locationcode: data.locationGroupCode,
     };
     console.log(payload);
+
     try {
       setIsLoading(true);
       const response = await api.post("/importGTMSCheck", payload, {
@@ -119,34 +122,41 @@ export const ImportTripsCheckDialog: React.FC<ImportTripsCheckDialogProps> = ({
         addToast("Arquivo enviado com sucesso!", { type: "success" });
         onClearFile();
         onClose();
+        onRefreshItems();
+        return;
       }
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        const errorData = error.response.data.tripGTMSDetails;
-        if (Array.isArray(errorData)) {
-          const extractedErrors = errorData.map(
-            (error: { sto: string; erro: string }) => ({
-              sto: error.sto || "Vazio",
-              error:
-                error.erro !== null || error.erro !== undefined
-                  ? error.erro
-                  : "Vazio",
-            }),
-          );
-          setStopErrors(extractedErrors);
-        } else {
-          const errorMessage =
-            errorData?.message || "Error ao processar o arquivo.";
-          addToast(errorMessage, { type: "error" });
-        }
-      } else {
-        const errorMessage = "Error ao processar o arquivo.";
-        addToast(errorMessage, { type: "error" });
+      if (!axios.isAxiosError(error)) {
+        addToast("Erro ao processar o arquivo.", { type: "error" });
+        return;
       }
+
+      const errorData = error.response?.data?.tripGTMSDetails;
+
+      if (!errorData) {
+        addToast("Erro ao processar o arquivo.", { type: "error" });
+        return;
+      }
+
+      if (Array.isArray(errorData)) {
+        const extractedErrors = errorData.map(
+          (error: { sto: string; erro: string }) => ({
+            sto: error.sto || "Vazio",
+            error: error.erro || "Vazio",
+          }),
+        );
+        setStopErrors(extractedErrors);
+        return;
+      }
+
+      addToast(errorData.message || "Erro ao processar o arquivo.", {
+        type: "error",
+      });
     } finally {
       setIsLoading(false);
     }
   };
+
   const handleOnClose = () => {
     onClose();
     onClearFile();
@@ -299,7 +309,6 @@ export const ImportTripsCheckDialog: React.FC<ImportTripsCheckDialogProps> = ({
                           error.error !== undefined && error.error !== null,
                       )
                       .map((error, index) => {
-                        console.log(error);
                         return (
                           <TableRow key={index}>
                             <TableCell>{error.sto}</TableCell>

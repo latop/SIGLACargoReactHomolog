@@ -67,12 +67,13 @@ export function TimelineDailyTrips() {
       backgroundColor = currentTrip?.colorRGB || "#4663ab";
     }
     const borderColor = itemContext.resizing ? red[500] : "transparent";
-    const style = {
+    const style: React.CSSProperties = {
       ...itemProps.style,
-      top:
-        currentTrip?.tripType === "TRIP EXEC"
-          ? `calc(${itemProps.style.top})`
-          : `calc(${itemProps.style.top} - 15px)`,
+      display: currentTrip?.tripType === "TRIP EXEC" ? "none" : "flex",
+      // top:
+      //   currentTrip?.tripType === "TRIP EXEC"
+      //     ? `calc(${itemProps.style.top})`
+      //     : `calc(${itemProps.style.top} - 15px)`,
     };
     return (
       <TimelineItem

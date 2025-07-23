@@ -1,5 +1,4 @@
 import useSWRImmutable from "swr/immutable";
-import { fetchAllGtms } from "@/services/import-trips";
 import { useSearchParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -8,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFetch } from "../../hooks/useFetch";
 import { useToast } from "../../hooks/useToast";
 import { useHash } from "../../hooks/useHash";
+import { fetchAllGtms, fetchExportGtm } from "@/services/trips";
 
 const schema = z.object({
   Locationcode: z.string().min(1, {
@@ -135,6 +135,32 @@ export const useImportTrips = () => {
     }
   };
 
+  const formatFilename = (filename: string): string =>
+    filename.split(".")[0].replace(/\s+/g, "_");
+
+  const downloadFile = async (id: string) => {
+    const { file } = await fetchExportGtm({ id });
+    return file;
+  };
+
+  const downloadFileToUser = (file: Blob, filename: string) => {
+    const url = URL.createObjectURL(file);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportTrip = async (id: string, filename: string) => {
+    const newFilename = formatFilename(filename);
+    const fileToDownload = await downloadFile(id);
+    downloadFileToUser(fileToDownload, newFilename);
+  };
+
   return {
     data,
     error,
@@ -153,5 +179,6 @@ export const useImportTrips = () => {
     importedTripId,
     handleImportedTrip,
     handleCloseDialog,
+    handleExportTrip,
   };
 };

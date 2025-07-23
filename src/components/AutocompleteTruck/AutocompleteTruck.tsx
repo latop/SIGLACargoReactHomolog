@@ -14,6 +14,7 @@ export function AutocompleteTruck({
   disabled = false,
   onChange,
   isUpperCase = false,
+  sx,
 }: {
   name?: string;
   label?: string;
@@ -21,6 +22,10 @@ export function AutocompleteTruck({
   disabled?: boolean;
   onChange?: (value: Truck | null) => void;
   isUpperCase?: boolean;
+  sx?: Record<
+    string,
+    React.CSSProperties | Record<string, React.CSSProperties>
+  >;
 }) {
   const {
     control,
@@ -79,6 +84,7 @@ export function AutocompleteTruck({
                       textTransform: "uppercase",
                     },
                   }),
+                  ...sx,
                 }}
                 onChange={debounce((event) => {
                   setLocalValue(event.target.value);

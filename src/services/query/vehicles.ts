@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import api from "../configs/api";
-import { FetchBasicParams } from "./types";
+import { FetchBasicParams } from "./trips";
 import { Truck } from "@/interfaces/vehicle";
 
 export const useGetFleetGroupQuery = ({

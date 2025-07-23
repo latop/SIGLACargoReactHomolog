@@ -88,7 +88,6 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
       body: "Deseja salvar as alterações?",
       onConfirm: () => {
         handleSubmit(onSubmit)();
-        onClose();
       },
     });
   };
@@ -102,6 +101,7 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
     >
       <FormProvider {...methods}>
         <form
+          onSubmit={handleSubmit(onSubmit)}
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
         >
           <DialogTitle sx={{ m: 0, p: 2 }}>
@@ -138,26 +138,26 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
 
             {!loading && <ReleaseDriverForm />}
           </DialogContent>
+          <DialogActions>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              padding="10px"
+              width="100%"
+            >
+              <Button type="button" variant="contained" onClick={handleClose}>
+                {isSubmitting && (
+                  <CircularProgress
+                    color="inherit"
+                    size={20}
+                    sx={{ margin: "2px 11.45px" }}
+                  />
+                )}
+                {!isSubmitting && `Liberar`}
+              </Button>
+            </Box>
+          </DialogActions>
         </form>
-        <DialogActions>
-          <Box
-            display="flex"
-            justifyContent="flex-end"
-            padding="10px"
-            width="100%"
-          >
-            <Button type="submit" variant="contained" onClick={handleClose}>
-              {isSubmitting && (
-                <CircularProgress
-                  color="inherit"
-                  size={20}
-                  sx={{ margin: "2px 11.45px" }}
-                />
-              )}
-              {!isSubmitting && `Salvar`}
-            </Button>
-          </Box>
-        </DialogActions>
       </FormProvider>
     </Dialog>
   );

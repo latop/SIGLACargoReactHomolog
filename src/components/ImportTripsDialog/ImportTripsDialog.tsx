@@ -15,8 +15,8 @@ import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { ImportGtm, ImportGtms } from "@/interfaces/import-trips";
 import LoadingTableSkeleton from "../LoadingTableSkeleton/LoadingTableSkeleton";
+import { ImportGtm, ImportGtms } from "@/interfaces/trip";
 
 dayjs.extend(customParseFormat);
 
