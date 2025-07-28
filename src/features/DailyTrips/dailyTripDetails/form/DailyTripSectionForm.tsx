@@ -142,9 +142,7 @@ export const DailyTripSectionForm = ({ seq, id }: Params) => {
                   {...field}
                   value={field.value ? dayjs(field.value) : null}
                   onChange={(date) => {
-                    console.log("estimatedDate", date);
                     field.onChange(date?.format());
-                    console.log("estimatedDate1", field.value);
                   }}
                 />
               )}

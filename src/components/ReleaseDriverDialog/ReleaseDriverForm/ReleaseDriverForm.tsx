@@ -206,7 +206,7 @@ export const ReleaseDriverForm = () => {
           </Box>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography fontWeight={500}>Mains informações</Typography>
+              <Typography fontWeight={500}>Mais informações</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container gap={1}>
@@ -374,12 +374,6 @@ export const ReleaseDriverForm = () => {
                               partials.push(matchs[0][4]);
                               e.target.value = partials.join("").toUpperCase();
                             }
-
-                            console.log(
-                              !RegExp(/[A-z]{3}-*\d[A-j0-9]\d{2}/).exec(
-                                e.target.value,
-                              ),
-                            );
                           }}
                         />
                       );

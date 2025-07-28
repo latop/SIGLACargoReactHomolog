@@ -89,13 +89,10 @@ const ModalBatchAlterDatesTrip = ({
       deliveryTime: dayjs(data.deliveryTime).format("1970-01-01THH:mm:ss.sss"),
       requestDate: dayjs(data.requestDate).format("YYYY-MM-DD"),
     };
-    console.log(newData);
     handleConfirm(newData);
     methods.reset();
     handleClose();
   };
-
-  console.log(methods.getValues());
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">

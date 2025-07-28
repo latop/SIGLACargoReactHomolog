@@ -34,6 +34,7 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
     driverAndTruckToRelase,
     updateReleaseDriver,
     mutate,
+    hasBeenReleased,
   } = useReleaseDriverDialog();
   const { openDialog } = useDialog();
   const {
@@ -79,7 +80,7 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
         },
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -91,7 +92,7 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
       },
     });
   };
-
+  const submitButtonText = hasBeenReleased ? "Liberado" : "Liberar";
   return (
     <Dialog
       onClose={onClose}
@@ -106,7 +107,11 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
         >
           <DialogTitle sx={{ m: 0, p: 2 }}>
             <Box display="flex" justifyContent="space-between">
-              Motorista para liberar
+              {hasBeenReleased
+                ? `Motorista Liberado em: ${dayjs(hasBeenReleased).format(
+                    "DD/MM/YYYY HH:mm",
+                  )}`
+                : " Motorista para liberar"}
             </Box>
           </DialogTitle>
 
@@ -145,7 +150,12 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
               padding="10px"
               width="100%"
             >
-              <Button type="button" variant="contained" onClick={handleClose}>
+              <Button
+                type="button"
+                variant="contained"
+                onClick={handleClose}
+                disabled={!!hasBeenReleased}
+              >
                 {isSubmitting && (
                   <CircularProgress
                     color="inherit"
@@ -153,7 +163,7 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
                     sx={{ margin: "2px 11.45px" }}
                   />
                 )}
-                {!isSubmitting && `Liberar`}
+                {!isSubmitting && submitButtonText}
               </Button>
             </Box>
           </DialogActions>

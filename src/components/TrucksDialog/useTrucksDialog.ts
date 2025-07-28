@@ -52,7 +52,6 @@ export const useTrucksDialog = () => {
 
   const dialogTitle = isAdd ? "Adicionar Caminhão" : "Editar Caminhão";
 
-  console.log(methods.formState.errors);
   const handleErrors = useCallback(
     (data: TruckFormType) => {
       Object.keys(data).forEach((key) => {

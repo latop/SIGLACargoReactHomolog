@@ -151,7 +151,6 @@ export const useActivityTypeDialog = () => {
       methods.reset();
     }
   }, [methods.reset, isToAddActivity]);
-  console.log(methods.formState.errors);
   return {
     isToAddActivityType: isToAddActivity,
     activityTypeId: activityId,

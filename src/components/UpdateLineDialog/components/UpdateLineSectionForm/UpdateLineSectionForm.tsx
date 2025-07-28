@@ -99,7 +99,6 @@ export const UpdateLineSectionForm = ({ seq }: { seq: number }) => {
               label="Destino"
               name={`lineSections.${seq}.locationDest.code`}
               onChange={(value) => {
-                console.log(value);
                 setValue(`lineSections.${seq}.locationDestId`, value?.id || "");
                 setValue(`lineSections.${seq}.locationDest`, value || "");
               }}
@@ -110,7 +109,6 @@ export const UpdateLineSectionForm = ({ seq }: { seq: number }) => {
               label="Base vinculada"
               name={`lineSections.${seq}.locationGroup.code`}
               onChange={(value) => {
-                console.log(value);
                 setValue(
                   `lineSections.${seq}.locationGroupId`,
                   value?.id || "",

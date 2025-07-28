@@ -23,7 +23,6 @@ interface Params {
 }
 export const DailyTripFormDetail = ({ initialValues, handleClose }: Params) => {
   const { mutateAsync, isError, error } = useDailyTripMutation();
-  console.log(initialValues);
   const methods = useForm({
     defaultValues: initialValues,
   });

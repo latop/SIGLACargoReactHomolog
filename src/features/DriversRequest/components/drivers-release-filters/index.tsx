@@ -22,7 +22,6 @@ const DriverReleaseFilters = ({ onApplySearch, ...props }: Params) => {
   const { control, handleSubmit, watch } = methods;
 
   const onSubmit = (values: object) => {
-    console.log("values", values);
     onApplySearch(values as DriverReleaseFilterPayload);
   };
 

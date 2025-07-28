@@ -68,7 +68,6 @@ export const useGetDailyTripsQuery = ({
         const response = await api.get("/DailyTrip", {
           params,
         });
-        console.log("response", response);
         return response.data;
       } catch (error) {
         console.error(error);
@@ -95,7 +94,6 @@ export const useGetDailyTripDetailQuery = (
         const response = await api.get("/DailyTrip/getdailytripdetail", {
           params,
         });
-        console.log("response", response);
         return response.data;
       } catch (error) {
         console.error(error);

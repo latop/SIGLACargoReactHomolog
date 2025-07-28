@@ -17,7 +17,7 @@ export function useReleaseDriverDialog() {
   const loading = isLoading && !error;
 
   const driverAndTruckToRelase = driversMap.get(`${releaseDriverId}`);
-
+  const hasBeenReleased = driverAndTruckToRelase?.dtLiberacao;
   const methods = useForm();
 
   const updateReleaseDriver = (
@@ -76,5 +76,6 @@ export function useReleaseDriverDialog() {
     updateReleaseDriver,
     mutate,
     drivers,
+    hasBeenReleased,
   };
 }

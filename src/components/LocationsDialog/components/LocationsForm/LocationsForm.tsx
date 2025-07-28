@@ -126,7 +126,6 @@ export const LocationsForm = () => {
             name="locationGroup.code"
             hasSkeleton
             onChange={(value) => {
-              console.log(value);
               methods.setValue("locationGroupId", value?.id || null);
               methods.setValue("locationGroup", value || {});
             }}
@@ -142,7 +141,6 @@ export const LocationsForm = () => {
             label="Tipo de Localização"
             optionKey="description"
             onChange={(value) => {
-              console.log(value);
               methods.setValue("locationTypeId", value?.id || "");
               methods.setValue("locationType", value || {});
             }}

@@ -108,7 +108,6 @@ export const ImportTripsCheckDialog: React.FC<ImportTripsCheckDialogProps> = ({
       File: file,
       Locationcode: data.locationGroupCode,
     };
-    console.log(payload);
 
     try {
       setIsLoading(true);

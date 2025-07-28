@@ -21,7 +21,6 @@ const DriverReleaseGrid = ({
   isLoading,
 }: Params) => {
   const columns = config.columns({ handleChangeStatus });
-  console.log("data", data);
   return (
     <>
       <DataGrid

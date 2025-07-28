@@ -44,7 +44,6 @@ export const useFleetType = () => {
       addToast("Erro ao carregar registros.", { type: "error" });
     },
   });
-  console.log(data);
 
   const fleetTypes = data?.map((page) => page.data).flat() || [];
   const hasNext = data?.[0].hasNext;

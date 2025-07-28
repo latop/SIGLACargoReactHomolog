@@ -8,7 +8,6 @@ export const useDailyTripMutation = () => {
   return useMutation({
     mutationKey: ["daily-trips"],
     mutationFn: async (payload: DailyTrip) => {
-      console.log(payload);
       const normalizedPayload = {
         dailyTrip: {
           tripNumber: payload.tripNumber || "0000",
@@ -64,12 +63,10 @@ export const useDailyTripMutation = () => {
         })),
       };
 
-      console.log(normalizedPayload);
       try {
         const response = await api.post("/DailyTrip/updatedailyTrip", {
           ...normalizedPayload,
         });
-        console.log("response", response);
         return response.data;
       } catch (error) {
         console.error(error);
@@ -107,7 +104,6 @@ export const useDailyTripBatchChange = () => {
         const response = await api.post("/DailyTrip/dailytripbatchchange", {
           ...payload,
         });
-        console.log("response", response);
         return response.data;
       } catch (error) {
         console.error(error);

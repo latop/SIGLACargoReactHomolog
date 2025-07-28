@@ -78,7 +78,7 @@ export function usePublishJourneyFilterBar() {
         });
       },
       onError: (error) => {
-        console.log(error);
+        console.error(error);
         closeDialog();
         addToast("Erro ao publicar viagem", { type: "error" });
       },

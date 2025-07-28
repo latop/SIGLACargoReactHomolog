@@ -34,9 +34,6 @@ const DriversRequestTemplate = () => {
     : ([] as DriverRequestResponse[]);
 
   const openModal = async (id: string, status: string) => {
-    console.log("id", id);
-    console.log("status", status);
-
     setModalData({ id, status });
     setIsOpen(true);
   };
@@ -58,14 +55,11 @@ const DriversRequestTemplate = () => {
   };
   const isLoading = isPending || isLoadingQuery;
 
-  // console.log(data);
-  // console.log(isLoading);
   const handleApplyFilter = (values: DriverReleaseFilterPayload) => {
     setFilters({
       ...values,
       page,
     });
-    // console.log("handleApplyFilter", values);
   };
 
   return (

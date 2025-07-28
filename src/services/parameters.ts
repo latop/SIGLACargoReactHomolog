@@ -206,7 +206,6 @@ export async function fetchCities({
 }: {
   args: FetchCitiesParams;
 }) {
-  console.log("fetchCities", params);
   try {
     const citiesParams = {
       PageSize: params.pageSize,
