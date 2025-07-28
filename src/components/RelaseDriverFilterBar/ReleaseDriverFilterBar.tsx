@@ -86,7 +86,6 @@ export function ReleaseDriverFilterBar(
                     {...field}
                     select
                     onChange={(value) => {
-                      console.log(value?.target);
                       methods.setValue("releaseStatus", value?.target.value);
                     }}
                   >

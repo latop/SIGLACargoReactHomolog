@@ -20,12 +20,13 @@ export interface ReleaseDriverInterface {
   productInvoice: string;
   isReturnLoaded: boolean;
   licensePlateTrailer: string;
+  justificationId?: string;
 }
 
 export interface ReleaseDriverResponse {
   hasNext: boolean;
   currentPage: number;
-  drivers: ReleaseDriverInterface;
+  drivers: ReleaseDriverInterface[];
   pageSize: number;
   totalPages: number;
   totalCount: number;

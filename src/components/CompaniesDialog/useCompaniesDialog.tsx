@@ -164,7 +164,6 @@ export const useCompaniesDialog = () => {
       methods.reset();
     }
   }, [methods.reset, isToAddCompany]);
-  console.log(methods.formState.errors);
   return {
     isToAddCompany,
     companyId,

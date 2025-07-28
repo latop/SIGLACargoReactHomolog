@@ -13,11 +13,16 @@ export function AutocompleteDriver({
   label = "Motorista",
   disabled = false,
   onChange,
+  sx,
 }: {
   name?: string;
   keyCode?: keyof Driver;
   label?: string;
   disabled?: boolean;
+  sx?: Record<
+    string,
+    React.CSSProperties | Record<string, React.CSSProperties>
+  >;
   onChange?: (value: Driver | null) => void;
 }) {
   const {
@@ -79,6 +84,7 @@ export function AutocompleteDriver({
                 "& .MuiInputBase-input": {
                   textTransform: "uppercase",
                 },
+                ...sx,
               }}
               onChange={debounce((e) => {
                 setLocalValue(e.target.value);

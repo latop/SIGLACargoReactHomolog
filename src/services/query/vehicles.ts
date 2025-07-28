@@ -1,8 +1,7 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import api from "../configs/api";
-
-import { Truck } from "@/interfaces/vehicle";
 import { FetchBasicParams } from "./trips";
+import { Truck } from "@/interfaces/vehicle";
 
 export const useGetFleetGroupQuery = ({
   pageSize = 20,

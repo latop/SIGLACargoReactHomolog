@@ -32,7 +32,6 @@ export function AutocompleteResponsibleSector({
     pageNumber: 0,
     pageSize: 0,
   });
-  console.log(errors);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (_: any, value: ResponsibleSectorType | null) => {

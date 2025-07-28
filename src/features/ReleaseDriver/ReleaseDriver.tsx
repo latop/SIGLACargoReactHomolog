@@ -8,120 +8,14 @@ import { ReleaseDriverFilterBar } from "@/components/RelaseDriverFilterBar";
 import { ReleaseDriverDialog } from "@/components/ReleaseDriverDialog/ReleaseDriverDialog";
 import { useHash } from "@/hooks/useHash";
 import { useReleaseDriver } from "@/hooks/useReleaseDriver/useReleaseDriver";
-import { ReleaseDriverInterface } from "@/interfaces/release-driver";
-import { Box, Card, CircularProgress, IconButton } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { Box, Card, CircularProgress } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { FaEdit } from "react-icons/fa";
+import { columnsConfig } from "./configColumn";
 
 export function ReleaseDriver() {
-  const columns: GridColDef[] = [
-    {
-      field: "saida",
-      headerName: "SAÍDA",
-      width: 140,
-      valueGetter: (_, data: ReleaseDriverInterface) => {
-        return data.saida ? data.saida : "";
-      },
-    },
-    {
-      field: "entrega",
-      headerName: "ENTREGA",
-      width: 140,
-      valueGetter: (_, data: ReleaseDriverInterface) => {
-        return data.entrega ? data.entrega : "";
-      },
-    },
-    {
-      field: "demanda",
-      headerName: "DEMANDA",
-      width: 150,
-
-      valueGetter: (_, data: ReleaseDriverInterface) => {
-        return data.demanda ? data.demanda : "";
-      },
-    },
-    {
-      field: "destino",
-      headerName: "DESTINO",
-      width: 110,
-      valueGetter: (_, data: ReleaseDriverInterface) => {
-        return data.destino ? data.destino : "";
-      },
-    },
-    {
-      field: "motoristaPlan",
-      headerName: "MOT.PLAN.",
-      width: 140,
-      valueGetter: (_, data: ReleaseDriverInterface) => {
-        return data.motoristaPlan ? data.motoristaPlan : "";
-      },
-    },
-    {
-      field: "veiculoPlan",
-      headerName: "VEÍCULO PLAN.",
-      width: 140,
-      valueGetter: (_, data: ReleaseDriverInterface) => {
-        return data.veiculoPlan ? data.veiculoPlan : "";
-      },
-    },
-    {
-      field: "dtCheckList",
-      headerName: "CHECK-LIST",
-      width: 140,
-      renderCell: (params) => {
-        if (
-          params.row.dtCheckList === null ||
-          params.row.dtCheckList === undefined
-        )
-          return (
-            <IconButton
-              onClick={() => handleOpenDialog(params.row.dailyTripSectionId)}
-              style={{
-                background: "transparent",
-                border: "none",
-                outline: "none",
-                color: "#24438f",
-                cursor: "pointer",
-              }}
-            >
-              <FaEdit />
-            </IconButton>
-          );
-        return params.row.dtCheckList;
-      },
-    },
-
-    {
-      field: "motoristaLiberado",
-      headerName: "MOT.REAL.",
-      width: 140,
-      valueGetter: (_, data: ReleaseDriverInterface) => {
-        return data.motoristaLiberado ? data.motoristaLiberado : "";
-      },
-    },
-    {
-      field: "veiculoLiberado",
-      headerName: "VEÍCULO.REAL.",
-      width: 150,
-      valueGetter: (_, data: ReleaseDriverInterface) => {
-        return data.veiculoLiberado ? data.veiculoLiberado : "";
-      },
-    },
-    {
-      field: "dtLiberacao",
-      headerName: "LIBERAÇÃO",
-      width: 140,
-      renderCell: (params) => {
-        return params.row.dtLiberacao
-          ? dayjs(params.row.dtLiberacao).format("DD/MM/YYYY HH:mm")
-          : "";
-      },
-    },
-  ];
-
   const {
     showContent,
     drivers,
@@ -142,8 +36,11 @@ export function ReleaseDriver() {
     setHash(`#releaseDriverId-${id}`);
   };
 
+  const columns = columnsConfig({
+    handleOpenDialog,
+  });
+
   const handleCloseDialog = () => {
-    console.log("handleClose");
     setHash("");
   };
 
@@ -209,8 +106,7 @@ export function ReleaseDriver() {
         <Card
           sx={{
             width: "100%",
-            height: "90%",
-            margin: "10px auto 20px",
+            height: "634px",
             position: "relative",
             display: "flex",
             flexDirection: "column",
@@ -219,7 +115,9 @@ export function ReleaseDriver() {
           }}
         >
           {isLoading && <CircularProgress />}
-          {drivers.length === 0 && !isLoading && <EmptyResult />}
+          {!showContent && drivers.length === 0 && !isLoading && (
+            <EmptyResult />
+          )}
           {showContent && !isLoading && (
             <Box sx={{ height: "100%", width: "100%", overflowY: "auto" }}>
               <DataGrid
@@ -239,7 +137,8 @@ export function ReleaseDriver() {
                     labelRowsPerPage: "Registros por página",
                     labelDisplayedRows: ({ from, to, count }) =>
                       // eslint-disable-next-line prettier/prettier
-                      `${from}-${to} de ${count !== -1 ? count : `mais de ${to}`
+                      `${from}-${to} de ${
+                        count !== -1 ? count : `mais de ${to}`
                       }`,
                   },
                 }}
@@ -251,7 +150,8 @@ export function ReleaseDriver() {
                     paginationModel: { page: size - 1, pageSize: 100 },
                   },
                 }}
-                pageSizeOptions={[10]}
+                density="compact"
+                pageSizeOptions={[15]}
               />
             </Box>
           )}

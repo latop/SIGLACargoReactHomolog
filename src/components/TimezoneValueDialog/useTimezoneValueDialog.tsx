@@ -115,7 +115,6 @@ export const useTimezoneValueDialog = () => {
         timezoneId: data?.timezone?.id,
         value: data?.value,
       };
-      console.log(body);
       await handleTimezoneValue("/TimezoneValue", body, {
         method: "post",
         onSuccess: () => {

@@ -26,7 +26,7 @@ export const useReleaseDriver = (options?: SWRConfiguration) => {
     if (previousPageData && !previousPageData.hasNext) return null;
     return {
       url: "/release-driver",
-      args: { ...searchParams, pageSize: 10, pageNumber: pageIndex + 1 },
+      args: { ...searchParams, pageSize: 15, pageNumber: pageIndex + 1 },
     };
   };
 
@@ -38,8 +38,8 @@ export const useReleaseDriver = (options?: SWRConfiguration) => {
       ...options,
     });
 
-  const hasContent = data?.[0].drivers && Object.keys(data?.[0].drivers).length;
-  const isEmpty = !isLoading && !hasContent && !params.get("locOrigin")?.length;
+  const hasContent = data?.[0]?.drivers && data?.[0]?.drivers.length > 0;
+  const isEmpty = !isLoading && !hasContent && !params.get("locOrig")?.length;
   const hasNext = data?.[data.length - 1]?.hasNext;
   const isReachingEnd = !hasNext && !isEmpty;
   const isLoadingMore = isValidating;
@@ -52,10 +52,14 @@ export const useReleaseDriver = (options?: SWRConfiguration) => {
   };
   const totalCount = data?.[0]?.totalCount || 0;
   const drivers = data?.map((page) => page.drivers).flat() || [];
+  const driversMap = new Map(
+    drivers.map((driver) => [driver.dailyTripSectionId, driver]),
+  );
 
   return {
     showContent,
     drivers,
+    driversMap,
     error,
     isEmpty,
     isLoading: isLoadingMore || isLoading,

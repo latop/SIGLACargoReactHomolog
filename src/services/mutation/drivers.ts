@@ -11,14 +11,11 @@ interface DriverReleaseMutationPayload {
 export const useDriverReleaseMutation = () => {
   return useMutation({
     mutationFn: async (payload: DriverReleaseMutationPayload) => {
-      console.log(payload);
-
       try {
         const response = await api.post(`${resource}/driverrequeststatus`, {
           driverRequestId: payload.driverRequestId,
           flgStatus: payload.flgStatus,
         });
-        console.log("response", response);
         return response.data;
       } catch (error) {
         console.error(error);

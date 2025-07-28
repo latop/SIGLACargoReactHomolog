@@ -46,7 +46,7 @@ export const useReportDynamicForm = (data: ReportsResponse) => {
       if (blobFile) return;
       addToast("Relatório pronto para download", { type: "success" });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       addToast(`${(error as Error).message}`, { type: "error" });
       setDownloadAvailable(false);
     } finally {

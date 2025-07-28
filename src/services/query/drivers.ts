@@ -130,11 +130,9 @@ export const useDriverRequestQuery = (props?: DriverReleaseFilterPayload) => {
           Page: 1,
           PageSize: 3000,
         };
-        console.log("params", params);
         const response = await api.get(`${resource}/driverrequest`, {
           params,
         });
-        console.log("response", response);
         return response.data;
       } catch (error) {
         console.error(error);
