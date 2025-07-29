@@ -151,7 +151,6 @@ export const useActivityTypeDialog = () => {
       methods.reset();
     }
   }, [methods.reset, isToAddActivity]);
-
   return {
     isToAddActivityType: isToAddActivity,
     activityTypeId: activityId,

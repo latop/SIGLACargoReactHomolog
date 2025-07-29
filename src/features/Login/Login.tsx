@@ -55,9 +55,8 @@ export function Login() {
   };
 
   const handleSSO = () => {
-  	window.location.href = "https://apicargodev.azurewebsites.net/Auth/Login?returnUrl=/dashboard";
+    
   };
-  
   const handleWhoAmI = () => {
     getAuth(
       "/Auth/whoami",
