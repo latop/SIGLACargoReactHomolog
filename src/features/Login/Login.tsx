@@ -55,10 +55,10 @@ export function Login() {
   };
 
   const handleSSO = () => {
-    if (typeof window !== "undefined") {
-      window.location.href =
-        "https://apicargodev.azurewebsites.net/Auth/Login?returnUrl=https%3A%2F%2Fhomologpepsicobrasil.sigla.app%2Fhome";
-    }
+    const returnUrl = encodeURIComponent(
+      "https://homologpepsicobrasil.sigla.app/home",
+    );
+    window.location.href = `https://apicargodev.azurewebsites.net/Auth/Login?returnUrl=${returnUrl}`;
   };
   const handleWhoAmI = () => {
     getAuth(
