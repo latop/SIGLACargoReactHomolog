@@ -53,8 +53,10 @@ export function Login() {
   const handleAuthetication = (body: object) => {
     getAuth("/api/Login", body);
   };
-
-  const handleSSO = () => {
+const handleSSO = () => {
+  window.location.href = "https://apicargodev.azurewebsites.net/Auth/Login?returnUrl=/dashboard";
+};
+  /*const handleSSO = () => {
     getAuth(
       "/Auth/Login",
       {},
@@ -62,7 +64,7 @@ export function Login() {
         method: "get",
       },
     );
-  };
+  };*/
   const handleWhoAmI = () => {
     getAuth(
       "/Auth/whoami",
