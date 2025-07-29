@@ -55,13 +55,10 @@ export function Login() {
   };
 
   const handleSSO = () => {
-    getAuth(
-      "/Auth/Login",
-      {},
-      {
-        method: "get",
-      },
-    );
+   
+    if (typeof window !== "undefined") {
+      window.location.href = "https://apicargodev.azurewebsites.net/Auth/Login?returnUrl=/dashboard";
+    }
   };
   const handleWhoAmI = () => {
     getAuth(
