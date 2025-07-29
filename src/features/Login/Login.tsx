@@ -55,7 +55,13 @@ export function Login() {
   };
 
   const handleSSO = () => {
-    
+    getAuth(
+      "/Auth/Login",
+      {},
+      {
+        method: "get",
+      },
+    );
   };
   const handleWhoAmI = () => {
     getAuth(
