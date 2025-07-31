@@ -46,12 +46,12 @@ export const GianttProvider = ({ children }: { children: ReactNode }) => {
     setStartDate(startDate),
   );
   const [visibleTimeEnd, setVisibleTimeEnd] = useState<Date>(
-    setEndDate(startDate, Zoom.SevenDays),
+    setEndDate(startDate, Zoom.ThreeDays),
   );
 
   useEffect(() => {
     setVisibleTimeStart(setStartDate(startDate));
-    setVisibleTimeEnd(setEndDate(startDate, Zoom.SevenDays));
+    setVisibleTimeEnd(setEndDate(startDate, Zoom.ThreeDays));
   }, [startDate]);
 
   return (

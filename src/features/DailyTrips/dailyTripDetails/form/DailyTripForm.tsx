@@ -161,6 +161,7 @@ export const DailyTripForm = () => {
               <Controller
                 name="startPlanned"
                 control={control}
+                disabled
                 render={({ field, fieldState: { error } }) => (
                   <DateTimePicker
                     disabled={false}
@@ -176,6 +177,7 @@ export const DailyTripForm = () => {
             <Grid item xs={2}>
               <Controller
                 name="endPlanned"
+                disabled
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <DateTimePicker
@@ -241,7 +243,11 @@ export const DailyTripForm = () => {
 
         <Box gap="8px" display="flex" flexDirection="column">
           {dailyTripSections?.map((dailytrip: DailyTrip, index: number) => (
-            <DailyTripSectionForm key={index} seq={index} id={dailytrip.id} />
+            <DailyTripSectionForm
+              key={dailytrip.id}
+              seq={index}
+              id={dailytrip.id}
+            />
           ))}
         </Box>
       </Box>

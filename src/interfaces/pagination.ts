@@ -8,7 +8,7 @@ export interface PaginationResponse {
 }
 
 export interface PaginatedResponse<T> {
-  currentPage?: number;
+  currentPage: number;
   hasNext?: boolean;
   hasPrevious?: boolean;
   pageSize?: number;

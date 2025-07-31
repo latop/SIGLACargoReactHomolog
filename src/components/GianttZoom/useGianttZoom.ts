@@ -24,7 +24,7 @@ const setStartDate = (startDate: Date | null) => {
 };
 
 export function useGianttZoom() {
-  const [currentZoom, setCurrentZoom] = React.useState<Zoom>(Zoom.SevenDays);
+  const [currentZoom, setCurrentZoom] = React.useState<Zoom>(Zoom.ThreeDays);
   const {
     visibleTimeEnd,
     visibleTimeStart,
