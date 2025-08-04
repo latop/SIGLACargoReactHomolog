@@ -6,6 +6,7 @@ export type JourneysByPeriodParams = {
   startDate: string;
   endDate: string;
   nickName?: string;
+  nickNames?: string[];
   gpId?: string;
   locationGroupId?: string;
   demand?: string;
@@ -19,9 +20,7 @@ export async function fetchJourneysByPeriod({
   args: JourneysByPeriodParams;
 }) {
   try {
-    const response = await axios.get(`/gantt/GetJourneysByPeriod`, {
-      params,
-    });
+    const response = await axios.get(`/gantt/GetJourneysByPeriod`, { params });
     const data = response.data;
     return data;
   } catch (error) {

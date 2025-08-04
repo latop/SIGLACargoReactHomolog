@@ -11,6 +11,7 @@ interface JourneySearchParams {
   fleetGroupCode?: string;
   locationGroupCode?: string;
   positionCode?: string;
+  nickNames?: string;
 }
 
 export function useDriverSchedule() {
@@ -24,6 +25,7 @@ export function useDriverSchedule() {
       "fleetGroupCode",
       "locationGroupCode",
       "positionCode",
+      "nickNames",
     ];
 
     paramKeys.forEach((key) => {

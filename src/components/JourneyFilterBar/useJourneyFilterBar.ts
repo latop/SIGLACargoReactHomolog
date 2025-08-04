@@ -19,7 +19,7 @@ interface FormFields {
   locationDestCode?: string;
   demandAvailable?: string;
   activityCode?: string;
-  nickName?: string;
+  nickNames?: string[];
   fleetGroupCode?: string;
   locationGroupCode?: string;
   positionCode?: string;
@@ -40,7 +40,7 @@ const schema = z
     locationOrigCode: z.string().optional(),
     locationDestCode: z.string().optional(),
     demandAvailable: z.string().optional(),
-    nickName: z.string().optional(),
+    nickNames: z.array(z.string()).optional(),
     activityCode: z.string().optional(),
     fleetGroupCode: z.string().optional(),
     locationGroupCode: z.string().optional(),
@@ -85,7 +85,7 @@ export function useJourneyFilterBar() {
       locationDestCode: params.get("locationDestCode") || "",
       demandAvailable: params.get("demandAvailable") || "",
       activityCode: params.get("activityCode") || "",
-      nickName: params.get("nickName") || "",
+      nickNames: params.get("nickNames")?.split(",").filter(Boolean) || [],
       fleetGroupCode: params.get("fleetGroupCode") || "",
       locationGroupCode: params.get("locationGroupCode") || "",
       positionCode: params.get("positionCode") || "",

@@ -57,9 +57,9 @@ export function Login() {
   const handleSSO = () => {
     const targetUrl =
       "https://apicargodev.azurewebsites.net/Auth/Login?returnUrl=https%3A%2F%2Fhomologpepsicobrasil.sigla.app%2Fhome";
-    console.log("Redirecionando para:", targetUrl);
     window.location.href = targetUrl;
   };
+
   const handleWhoAmI = () => {
     getAuth(
       "/Auth/whoami",

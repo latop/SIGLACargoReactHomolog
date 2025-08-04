@@ -15,6 +15,7 @@ export const useJourneysByPeriod = (options?: SWRConfiguration) => {
       ? dayjs(params.get("endDate")).format("YYYY-MM-DD")
       : null,
     nickName: params.get("nickName"),
+    nickNames: params.get("nickNames"),
     fleetGroupCode: params.get("fleetGroupCode"),
     locationGroupCode: params.get("locationGroupCode"),
     positionCode: params.get("positionCode"),
@@ -31,6 +32,7 @@ export const useJourneysByPeriod = (options?: SWRConfiguration) => {
   ) => {
     if (!Object.values(searchParams).some(Boolean)) return null;
     if (previousPageData && !previousPageData.hasNext) return null;
+
     return {
       url: "/journeys-by-period",
       args: { ...searchParams, pageSize: 10, pageNumber: pageIndex + 1 },

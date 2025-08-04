@@ -7,7 +7,14 @@ import { FetchDailyTripsParams } from "@/services/daily-trips";
 import { formatPlate } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, Grid, MenuItem, TextField } from "@mui/material";
+import {
+  Button,
+  colors,
+  Grid,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
@@ -38,7 +45,7 @@ const schema = z.object({
 });
 
 // eslint-disable-next-line prettier/prettier
-interface FormFields extends FetchDailyTripsParams { }
+interface FormFields extends FetchDailyTripsParams {}
 
 interface Params {
   onChange: (value: FormFields) => void;
@@ -90,6 +97,9 @@ export function DailyTripsFilterBar({ onChange }: Params) {
                   />
                 )}
               />
+              <Typography variant="caption" color={colors.grey[500]}>
+                Obrigatório*
+              </Typography>
             </Grid>
             <Grid item xs={1.3} paddingLeft="0">
               <Controller

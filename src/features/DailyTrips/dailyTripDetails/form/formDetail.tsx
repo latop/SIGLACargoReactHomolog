@@ -33,7 +33,6 @@ export const DailyTripFormDetail = ({ initialValues, handleClose }: Params) => {
       handleClose();
     }
   };
-  console.log("formData", methods.getValues());
   return (
     <FormProvider {...methods}>
       <form

@@ -1,13 +1,12 @@
 import axios from "axios";
 import api from "../configs/api";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { PaginatedResponse } from "@/interfaces/pagination";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 export type FetchDailyTripsParams = {
-  startDate: string;
-  endDate: string;
   fleetGroupId?: string;
   locationDestId?: string;
   locationOrigId?: string;
@@ -16,8 +15,25 @@ export type FetchDailyTripsParams = {
   flgStatus?: string;
   licensePlate?: string;
   tripTypeId?: string;
+  companyId?: string;
+  nickName?: string;
+  lineId?: string;
   pageSize?: number;
   pageNumber?: number;
+};
+
+export type FetchDailyTrips = {
+  dailyTripId: string;
+  tripDate: string;
+  sto: string;
+  status: string;
+  origin: string;
+  destination: string;
+  startPlanned: string;
+  endPlanned: string;
+  tripType: string;
+  licensePlate: string;
+  drivers: string;
 };
 
 export const initialDataDailyTripsParams = {
@@ -43,13 +59,20 @@ export const useGetDailyTripsQuery = ({
   licensePlate,
   tripTypeId,
   pageNumber,
+  lineId,
+  companyId,
   pageSize = 15,
-}: FetchDailyTripsParams) => {
+}: FetchDailyTripsParams): UseQueryResult<
+  PaginatedResponse<FetchDailyTrips>,
+  Error
+> => {
   const params = {
     filter1Id: fleetGroupId || undefined,
     filter2Id: locationOrigId || undefined,
     filter3Id: locationDestId || undefined,
     Filter4Id: tripTypeId || undefined,
+    Filter5Id: companyId || undefined,
+    filter6Id: lineId || undefined,
     filter1String: sto || undefined,
     filter2String:
       dayjs(tripDate?.toString()).format("ddd, MMM D, YYYY") + " 03:00:00 GMT",
@@ -65,9 +88,10 @@ export const useGetDailyTripsQuery = ({
     queryKey: ["daily-trips", { params }],
     queryFn: async () => {
       try {
-        const response = await api.get("/DailyTrip", {
+        const response = await api.get("/DailyTrip/getdailytrips", {
           params,
         });
+
         return response.data;
       } catch (error) {
         console.error(error);

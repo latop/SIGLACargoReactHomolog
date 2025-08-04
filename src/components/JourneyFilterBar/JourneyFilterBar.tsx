@@ -5,7 +5,6 @@ import { Button, Grid, TextField } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@/components/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { AutocompleteDriver } from "@/components/AutocompleteDriver";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { AutocompleteLocationGroup } from "@/components/AutocompleteLocationGroup";
 import { AutocompleteFleetGroup } from "@/components/AutocompleteFleetGroup";
@@ -15,6 +14,7 @@ import { useJourneyFilterBar } from "./useJourneyFilterBar";
 import { AutocompleteActivity } from "../AutocompleteActivity";
 import SearchIcon from "@mui/icons-material/Search";
 import "dayjs/locale/pt-br";
+import { DriverSelector } from "../DriverSelector";
 
 dayjs.extend(customParseFormat);
 
@@ -63,11 +63,7 @@ export function JourneyFilterBar(props: React.HTMLProps<HTMLFormElement>) {
             </Grid>
 
             <Grid item xs={1.1}>
-              <AutocompleteDriver
-                onChange={(value) => {
-                  methods.setValue("nickName", value?.nickName || "");
-                }}
-              />
+              <DriverSelector />
             </Grid>
 
             <Grid item xs={1.1}>
