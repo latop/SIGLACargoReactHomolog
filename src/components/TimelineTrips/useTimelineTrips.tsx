@@ -293,6 +293,7 @@ export function useTimelineTrips() {
       startDate: newCircuit.startDate,
       endDate: newCircuit.endDate,
       tasksDriver: newTrips.map((trip: Trip, i) => ({
+        idTask: trip.id || generateRandomID(),
         seq: i,
         demand: trip.code,
         lineCode: trip.code,
