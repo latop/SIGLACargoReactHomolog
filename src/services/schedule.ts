@@ -124,6 +124,7 @@ export type FetchDailyTripJourneyDetailParams = {
   demand?: string;
   lineCode?: string;
   isReturn?: boolean;
+  idTask?: number;
 };
 
 export async function fetchDailyTripJourneyDetails({
