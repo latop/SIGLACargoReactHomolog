@@ -6,7 +6,6 @@ export interface DailyTripDetailsParams {
   demand?: string;
   lineCode?: string;
   isReturn?: boolean;
-  idTask?: number;
 }
 
 export const useDailyTripJourneyDetails = (options?: SWRConfiguration) => {

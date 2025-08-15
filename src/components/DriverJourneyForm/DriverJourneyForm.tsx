@@ -130,7 +130,6 @@ export const DriverJourneyForm = ({
     fetchReturn({
       lineCode: getValues(`tasksDriver.${seq}.lineCode`),
       isReturn: true,
-      idTask: getValues(`tasksDriver.${seq}.idTask`),
     });
   };
 

@@ -24,7 +24,6 @@ export interface Trip {
 }
 
 export interface TaskDriver {
-  idTask: string;
   seq: number;
   demand?: string;
   lineCode?: string;
