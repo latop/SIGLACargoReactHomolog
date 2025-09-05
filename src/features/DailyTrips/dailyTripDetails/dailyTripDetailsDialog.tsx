@@ -1,7 +1,7 @@
 import { useGetDailyTripDetailQuery } from "@/services/query/daily-trips";
 import Dialog from "@mui/material/Dialog";
-import IsLoadingTable from "../isLoadindCard";
 import { DailyTripFormDetail } from "./form/formDetail";
+import LoadingTableSkeleton from "@/components/LoadingTableSkeleton/LoadingTableSkeleton";
 
 interface DailyTripDetailsProps {
   isOpen: boolean;
@@ -39,13 +39,18 @@ export function DailyTripDetailsDialog({
     stopType: "",
     companyId: "",
     id: "",
+    justification: { description: "" },
+    justificationId: "",
     dailyTripSections: [],
   };
   const initialValues =
     id && data
       ? {
           ...data.dailyTrip,
-          dailyTripSections: data.dailyTripSections,
+          dailyTripSections: data.dailyTripSections.map((section: object) => ({
+            nickname: data.nickName,
+            ...section,
+          })),
         }
       : defaultValues;
 
@@ -56,7 +61,7 @@ export function DailyTripDetailsDialog({
       fullWidth
       PaperProps={{ sx: { height: "100%", maxWidth: "1400px" } }}
     >
-      {id && isLoading && <IsLoadingTable />}
+      {id && isLoading && <LoadingTableSkeleton length={15} />}
       {!isLoading && (
         <div>
           <DailyTripFormDetail

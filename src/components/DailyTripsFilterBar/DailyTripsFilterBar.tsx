@@ -1,60 +1,55 @@
 "use client";
 
-import React from "react";
-import dayjs from "dayjs";
-import { Controller, FormProvider } from "react-hook-form";
-import { Button, Grid } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { AutocompleteCompany } from "@/components/AutocompleteCompany";
+import { AutocompleteDriver } from "@/components/AutocompleteDriver";
+import { AutocompleteFleetGroup } from "@/components/AutocompleteFleetGroup";
+import { AutocompleteLocation } from "@/components/AutocompleteLocation";
+import { AutocompleteTripType } from "@/components/AutocompleteTripType";
+import { AutocompleteTruck } from "@/components/AutocompleteTruck";
 import { DatePicker } from "@/components/DatePicker";
-import { TextField, MenuItem } from "@mui/material";
-import { useDailyTripsFilterBar } from "./useDailyTripsFilterBar";
+import {
+  CollapseButton,
+  FiltersCollapsable,
+  useFiltersCollapse,
+} from "@/components/FiltersCollapsable";
 import SearchIcon from "@mui/icons-material/Search";
-import customParseFormat from "dayjs/plugin/customParseFormat";
+import { Box, Button, Grid, MenuItem, TextField } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
-import { AutocompleteFleetGroup } from "../AutocompleteFleetGroup";
-import { AutocompleteLocation } from "../AutocompleteLocation";
-import { FleetGroup } from "@/interfaces/vehicle";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { Controller, FormProvider } from "react-hook-form";
+import { useDailyTripsFilterBar } from "./useDailyTripsFilterBar";
 
 dayjs.extend(customParseFormat);
 
-export function DailyTripsFilterBar(props: React.HTMLProps<HTMLFormElement>) {
-  const { methods, onSubmit } = useDailyTripsFilterBar();
-  const { control, handleSubmit, setValue } = methods;
+export function DailyTripsFilterBar() {
+  const { methods, onSubmit, onClearParams } = useDailyTripsFilterBar();
+  const { showMoreFilters, toggleMoreFilters } =
+    useFiltersCollapse("daily-trips-filter");
+  const { control, handleSubmit } = methods;
 
-  const handleChangeFleetGroup = (value: FleetGroup | null) => {
-    setValue("fleetGroupId", value?.id || "");
-    setValue("fleetGroupCode", value?.code || "");
-  };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} {...props}>
-          <Grid
-            container
-            alignItems="center"
-            justifyContent="center"
-            width="100%"
-            gap="16px"
-          >
-            <Grid item xs={1.6}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container alignItems="flex-start" width="100%" gap={0.5}>
+            <Grid item xs={1.5}>
               <Controller
                 name="tripDate"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <DatePicker
-                    label="Data da viagem"
+                    label="Data da viagem *"
                     error={error?.message}
                     {...field}
+                    value={field.value ? dayjs(field.value) : undefined}
                   />
                 )}
               />
             </Grid>
-
-            <Grid item xs={2} paddingLeft="0">
-              <AutocompleteFleetGroup onChange={handleChangeFleetGroup} />
-            </Grid>
-            <Grid item xs={1.6} paddingLeft="0">
+            <Grid item xs={1.5}>
               <Controller
                 name="sto"
                 control={control}
@@ -70,21 +65,7 @@ export function DailyTripsFilterBar(props: React.HTMLProps<HTMLFormElement>) {
                 )}
               />
             </Grid>
-            <Grid item xs={1.7} paddingLeft="0">
-              <AutocompleteLocation
-                name="locationOrigId"
-                label="Origem"
-                keyCode="id"
-              />
-            </Grid>
-            <Grid item xs={1.6} paddingLeft="0">
-              <AutocompleteLocation
-                name="locationDestId"
-                label="Destino"
-                keyCode="id"
-              />
-            </Grid>
-            <Grid item xs={1.6} paddingLeft="0">
+            <Grid item xs={1.5}>
               <Controller
                 name="flgStatus"
                 control={control}
@@ -98,14 +79,40 @@ export function DailyTripsFilterBar(props: React.HTMLProps<HTMLFormElement>) {
                     error={!!error?.message}
                     helperText={error?.message?.toString()}
                   >
-                    <MenuItem value="C">Cancelado</MenuItem>
                     <MenuItem value="N">Ativo</MenuItem>
+                    <MenuItem value="C">Cancelado</MenuItem>
                   </TextField>
                 )}
               />
             </Grid>
+            <Grid item xs={1.5}>
+              <AutocompleteDriver
+                onChange={(value) => {
+                  methods.setValue("nickName", value?.nickName);
+                }}
+              />
+            </Grid>
+            <Grid item xs={1.5}>
+              <AutocompleteTruck
+                onChange={(value) => {
+                  methods.setValue("licensePlate", value?.licensePlate);
+                }}
+              />
+            </Grid>
 
             <Grid item xs={1}>
+              <Button
+                type="reset"
+                size="large"
+                variant="outlined"
+                color="primary"
+                fullWidth
+                onClick={onClearParams}
+              >
+                Limpar
+              </Button>
+            </Grid>
+            <Grid item xs={0.5}>
               <Button
                 type="submit"
                 size="large"
@@ -116,7 +123,45 @@ export function DailyTripsFilterBar(props: React.HTMLProps<HTMLFormElement>) {
                 <SearchIcon />
               </Button>
             </Grid>
+            <Grid item xs={1.5}>
+              <CollapseButton
+                isOpen={showMoreFilters}
+                onClick={toggleMoreFilters}
+              />
+            </Grid>
           </Grid>
+          <Box pt={1}>
+            <FiltersCollapsable isOpen={showMoreFilters}>
+              <Grid item xs={1.5}>
+                <AutocompleteFleetGroup />
+              </Grid>
+              <Grid item xs={1.5}>
+                <AutocompleteLocation
+                  name="locationOrigId"
+                  label="Origem"
+                  keyCode="id"
+                />
+              </Grid>
+              <Grid item xs={1.5}>
+                <AutocompleteLocation
+                  //       ref={locationOrigRef}
+                  name="locationDestId"
+                  label="Destino"
+                  keyCode="id"
+                />
+              </Grid>
+              <Grid item xs={1.5}>
+                <AutocompleteTripType
+                  name="tripTypeId"
+                  label="Tipo da viagem"
+                  keyCode="id"
+                />
+              </Grid>
+              <Grid item xs={1.5}>
+                <AutocompleteCompany />
+              </Grid>
+            </FiltersCollapsable>
+          </Box>
         </form>
       </FormProvider>
     </LocalizationProvider>

@@ -34,7 +34,9 @@ export const useJourneysByPeriod = (options?: SWRConfiguration) => {
     if (previousPageData && !previousPageData.hasNext) return null;
 
     return {
-      url: "/journeys-by-period",
+      url: searchParams.nickNames
+        ? `"/journeys-by-period-${searchParams.nickNames}`
+        : "/journeys-by-period",
       args: { ...searchParams, pageSize: 10, pageNumber: pageIndex + 1 },
     };
   };
@@ -43,6 +45,8 @@ export const useJourneysByPeriod = (options?: SWRConfiguration) => {
       revalidateFirstPage: false,
       revalidateIfStale: false,
       revalidateOnFocus: false,
+
+      refreshInterval: 30 * 60 * 1000, // 30min
       ...options,
     });
 
@@ -70,16 +74,16 @@ export const useJourneysByPeriod = (options?: SWRConfiguration) => {
   const updateCircuit = (newCircuit: Circuit) => {
     const circuitToUpdate = data?.find((page) =>
       page.circuits.find(
-        (circuit) => circuit.ciruictCode === newCircuit.ciruictCode,
+        (circuit) => circuit.circuitCode === newCircuit.circuitCode,
       ),
     );
     if (!circuitToUpdate) return;
     const updatedCircuits = circuitToUpdate.circuits.map((circuit) =>
-      circuit.ciruictCode === newCircuit.ciruictCode ? newCircuit : circuit,
+      circuit.circuitCode === newCircuit.circuitCode ? newCircuit : circuit,
     );
     const updatedData = data?.map((page) =>
       page.circuits.find(
-        (circuit) => circuit.ciruictCode === newCircuit.ciruictCode,
+        (circuit) => circuit.circuitCode === newCircuit.circuitCode,
       )
         ? { ...page, circuits: updatedCircuits }
         : page,

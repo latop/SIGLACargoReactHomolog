@@ -8,10 +8,15 @@ import { AutocompleteFleetGroup } from "../AutocompleteFleetGroup";
 import { AutocompleteLocationRelease } from "../AutocompleteLocationRelease";
 import { useReleaseDriverFilterBar } from "./useRealeseDriverFilterBar";
 
-export function ReleaseDriverFilterBar(
-  props: React.HTMLProps<HTMLFormElement>,
-) {
-  const { methods, onSubmit } = useReleaseDriverFilterBar();
+interface ReleaseDriverFilterBarProps {
+  refetch?: () => void;
+}
+
+export function ReleaseDriverFilterBar({
+  refetch,
+  ...props
+}: ReleaseDriverFilterBarProps) {
+  const { methods, onSubmit } = useReleaseDriverFilterBar(refetch);
   const { control, handleSubmit } = methods;
 
   return (

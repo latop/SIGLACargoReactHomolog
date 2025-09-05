@@ -45,7 +45,7 @@ export const columnsConfig = ({
     {
       field: "destino",
       headerName: "DESTINO",
-      width: 110,
+      width: 200,
       sortable: false,
       filterable: false,
       valueGetter: (_, data: ReleaseDriverInterface) => {
@@ -65,7 +65,7 @@ export const columnsConfig = ({
     {
       field: "veiculoPlan",
       headerName: "VEÍCULO PLAN.",
-      width: 140,
+      width: 120,
       sortable: false,
       filterable: false,
       valueGetter: (_, data: ReleaseDriverInterface) => {
@@ -75,7 +75,7 @@ export const columnsConfig = ({
     {
       field: "dtCheckList",
       headerName: "CHECK-LIST",
-      width: 140,
+      width: 120,
       sortable: false,
       filterable: false,
       renderCell: (params) => {
@@ -113,7 +113,7 @@ export const columnsConfig = ({
     {
       field: "veiculoLiberado",
       headerName: "VEÍCULO.REAL.",
-      width: 150,
+      width: 120,
       sortable: false,
       filterable: false,
       valueGetter: (_, data: ReleaseDriverInterface) => {

@@ -36,6 +36,7 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
     mutate,
     hasBeenReleased,
   } = useReleaseDriverDialog();
+
   const { openDialog } = useDialog();
   const {
     formState: { isSubmitting },
@@ -57,13 +58,14 @@ export const ReleaseDriverDialog: FC<ReleaseDriverDialogProps> = ({
       mdfe: data?.mdfe,
       cte: data?.cte,
       obs: data?.obs,
-      presentationDate: data?.presentationDate,
+      presentationDate: dayjs(data?.presentationDate).format(),
       issueDate: data?.issueDate,
       issueResponsible: data?.issueResponsible,
       palletInvoice: data?.palletInvoice,
       productInvoice: data?.productInvoice,
       isReturnLoaded: data?.isReturnLoaded,
       licensePlateTrailer: data?.licensePlateTrailer,
+      justificationCode: data?.justificationCode,
     };
 
     try {

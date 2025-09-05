@@ -23,6 +23,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { DailyTripSectionForm } from "./DailyTripSectionForm";
+import { AutocompleteJustification } from "@/components/AutocompleteJustification";
 const TextArea = styled(TextField)`
   && {
     height: 100%;
@@ -46,7 +47,7 @@ export const DailyTripForm = () => {
       <Box display="flex" flexDirection="column" gap="20px" mt="5px">
         <Box display="flex" gap="20px">
           <Grid container spacing={1}>
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <Controller
                 name="sto"
                 control={control}
@@ -82,7 +83,25 @@ export const DailyTripForm = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={4}>
+
+            {/* <Grid item xs={4}>
+              Açoes
+            </Grid> */}
+
+            <Grid item xs={2}>
+              <AutocompleteLine
+                name="line.code"
+                isRequired
+                onChange={(value) => {
+                  setValue("lineId", value?.id);
+                  setValue("line", value);
+                }}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <AutocompleteTripType name="tripType.code" isRequired />
+            </Grid>
+            <Grid item xs={2}>
               <AutocompleteCompany name="company.name" />
             </Grid>
             <Grid item xs={2}>
@@ -105,44 +124,6 @@ export const DailyTripForm = () => {
                 )}
               />
             </Grid>
-            {/* <Grid item xs={4}>
-              Açoes
-            </Grid> */}
-
-            <Grid item xs={4}>
-              <AutocompleteLine
-                name="line.code"
-                isRequired
-                onChange={(value) => {
-                  setValue("lineId", value?.id);
-                  setValue("line", value);
-                }}
-              />
-            </Grid>
-            <Grid item xs={2}>
-              <AutocompleteTripType name="tripType.code" isRequired />
-            </Grid>
-            <Grid item xs={2}>
-              <AutocompleteFleetGroup name="fleetGroup.code" isRequired />
-            </Grid>
-            <Grid item xs={4}>
-              <Controller
-                name="notes"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextArea
-                    {...field}
-                    disabled={false}
-                    label="Observações"
-                    variant="outlined"
-                    error={!!error?.message}
-                    fullWidth
-                    maxRows={3}
-                  />
-                )}
-              />
-            </Grid>
-
             <Grid item xs={2}>
               <AutocompleteLocation
                 name="locationOrig.code"
@@ -219,6 +200,34 @@ export const DailyTripForm = () => {
                     {...field}
                     value={field.value ? dayjs(field.value) : null}
                     onChange={(date) => field.onChange(date?.format())}
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid item xs={2}>
+              <AutocompleteFleetGroup name="fleetGroup.code" isRequired />
+            </Grid>
+            <Grid item xs={4}>
+              <AutocompleteJustification
+                hasSkeleton
+                name="justification.description"
+                keyCode="description"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Controller
+                name="notes"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <TextArea
+                    {...field}
+                    disabled={false}
+                    label="Observações"
+                    variant="outlined"
+                    error={!!error?.message}
+                    fullWidth
+                    maxRows={3}
                   />
                 )}
               />

@@ -138,27 +138,24 @@ export const ImportTripsCheckDialog: React.FC<ImportTripsCheckDialogProps> = ({
       }
 
       if (Array.isArray(errorData)) {
-        const extractedErrors = errorData.map(
-          (error: { sto: string; erro: string }) => ({
-            sto: error.sto || "Vazio",
-            error: error.erro || "Vazio",
-          }),
-        );
+        const extractedErrors = errorData
+          .filter((error: { sto: string; erro: string }) => error.erro)
+          .map((error: { sto: string; erro: string }) => ({
+            sto: error.sto,
+            error: error.erro,
+          }));
         setStopErrors(extractedErrors);
         return;
       }
-
-      addToast(errorData.message || "Erro ao processar o arquivo.", {
-        type: "error",
-      });
     } finally {
       setIsLoading(false);
+      onRefreshItems();
     }
   };
 
   const handleOnClose = () => {
-    onClose();
     onClearFile();
+    onClose();
   };
 
   return (
@@ -185,7 +182,7 @@ export const ImportTripsCheckDialog: React.FC<ImportTripsCheckDialogProps> = ({
           </IconButton>
           <IconButton
             aria-label="close"
-            onClick={onClose}
+            onClick={handleOnClose}
             sx={{
               color: (theme) => theme.palette.grey[500],
             }}
@@ -305,7 +302,10 @@ export const ImportTripsCheckDialog: React.FC<ImportTripsCheckDialogProps> = ({
                     {stopErrors
                       .filter(
                         (error) =>
-                          error.error !== undefined && error.error !== null,
+                          error.error !== undefined &&
+                          error.error !== null &&
+                          error.error !== "Vazio" &&
+                          error.error.trim() !== "",
                       )
                       .map((error, index) => {
                         return (
@@ -337,7 +337,7 @@ export const ImportTripsCheckDialog: React.FC<ImportTripsCheckDialogProps> = ({
               </Button>
 
               <Box display={"flex"} gap="8px">
-                <Button onClick={onClose}>Fechar</Button>
+                <Button onClick={handleOnClose}>Fechar</Button>
                 <Button
                   type="submit"
                   variant="contained"

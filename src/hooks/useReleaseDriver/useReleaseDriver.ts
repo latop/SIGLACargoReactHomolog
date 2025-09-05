@@ -25,16 +25,20 @@ export const useReleaseDriver = (options?: SWRConfiguration) => {
     if (!searchParams.dtRef && !searchParams.locOrig) return null;
     if (previousPageData && !previousPageData.hasNext) return null;
     return {
-      url: "/release-driver",
-      args: { ...searchParams, pageSize: 15, pageNumber: pageIndex + 1 },
+      url: `/release-driver`,
+      args: {
+        ...searchParams,
+        pageSize: 15,
+        pageNumber: pageIndex + 1,
+      },
     };
   };
 
   const { data, error, isLoading, size, setSize, isValidating, mutate } =
     useSWRInfinite<ReleaseDriverResponse>(getKey, fetchReleaseDriver, {
       revalidateFirstPage: false,
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
+      revalidateOnFocus: true,
+      refreshInterval: 10 * 60 * 1000, // 10 minutes
       ...options,
     });
 
@@ -56,6 +60,10 @@ export const useReleaseDriver = (options?: SWRConfiguration) => {
     drivers.map((driver) => [driver.dailyTripSectionId, driver]),
   );
 
+  const refetch = () => {
+    mutate();
+  };
+
   return {
     showContent,
     drivers,
@@ -70,5 +78,6 @@ export const useReleaseDriver = (options?: SWRConfiguration) => {
     totalCount,
     hasNext,
     mutate,
+    refetch,
   };
 };

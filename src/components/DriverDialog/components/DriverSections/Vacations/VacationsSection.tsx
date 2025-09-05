@@ -42,7 +42,7 @@ export const DriverSectionVacations = ({ seq }: { seq: number }) => {
                   error={error?.message}
                   {...field}
                   value={field.value ? dayjs(field.value) : null}
-                  onChange={(date) => field.onChange(date?.format())}
+                  onChange={(date) => field.onChange(date)}
                 />
               )}
             />
@@ -58,7 +58,7 @@ export const DriverSectionVacations = ({ seq }: { seq: number }) => {
                   error={error?.message}
                   {...field}
                   value={field.value ? dayjs(field.value) : null}
-                  onChange={(date) => field.onChange(date?.format())}
+                  onChange={(date) => field.onChange(date)}
                 />
               )}
             />

@@ -28,7 +28,7 @@ export const useDailyTripsByPeriod = (options?: SWRConfiguration) => {
     if (previousPageData && !previousPageData.hasNext) return null;
     return {
       url: "/journeys-by-period",
-      args: { ...searchParams, pageSize: 10, pageNumber: pageIndex + 1 },
+      args: { ...searchParams, pageSize: 50, pageNumber: pageIndex + 1 },
     };
   };
   const { data, error, isLoading, mutate, size, setSize, isValidating } =
@@ -36,9 +36,7 @@ export const useDailyTripsByPeriod = (options?: SWRConfiguration) => {
       getKey,
       fetchDailyTripsByPeriod,
       {
-        revalidateFirstPage: false,
-        revalidateIfStale: false,
-        revalidateOnFocus: false,
+        refreshInterval: 30 * 60 * 1000, // 30min
         ...options,
       },
     );

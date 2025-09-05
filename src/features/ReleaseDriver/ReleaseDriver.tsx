@@ -26,6 +26,7 @@ export function ReleaseDriver() {
     // error,
     size,
     loadMore,
+    refetch,
   } = useReleaseDriver();
   const router = useRouter();
   const params = useSearchParams();
@@ -93,7 +94,7 @@ export function ReleaseDriver() {
           flexDirection: "column",
         }}
       >
-        <ReleaseDriverFilterBar />
+        <ReleaseDriverFilterBar refetch={refetch} />
         <Box
           sx={{
             width: "100%",

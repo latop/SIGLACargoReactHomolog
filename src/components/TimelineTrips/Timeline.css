@@ -5,6 +5,7 @@
 .react-calendar-timeline .rct-header-root {
   background-color: #778098;
   border-radius: 4px 4px 0 0;
+  
 }
 
 .react-calendar-timeline .rct-horizontal-lines .rct-hl-odd, .react-calendar-timeline .rct-horizontal-lines .rct-hl-even, .react-calendar-timeline .rct-sidebar .rct-sidebar-row {
@@ -26,6 +27,7 @@
 
 .rct-sidebar {
   border-right-color: #b0bec5;
+  font-weight: bold;
 }
 
 .rct-item {

@@ -5,6 +5,7 @@ import MapIcon from "@mui/icons-material/Map";
 import { ImportGtms } from "@/interfaces/trip";
 import { ReactNode } from "react";
 import { ActionsColumn } from "@/components/ActionsColumn";
+import { CircularProgress } from "@mui/material";
 
 interface DialogConfig {
   body?: ReactNode;
@@ -18,7 +19,7 @@ interface ColumnsConfigProps {
   openDialog: (config: DialogConfig) => void;
   handleDelete: (id: string) => Promise<void>;
   handleExport: (id: string, filename: string) => Promise<void>;
-  isLoadingExport?: boolean;
+  isLoading?: boolean;
 }
 
 export const columnsConfig = ({
@@ -27,6 +28,7 @@ export const columnsConfig = ({
   closeDialog,
   openDialog,
   handleExport,
+  isLoading,
 }: ColumnsConfigProps): GridColDef[] => [
   {
     field: "FileName",
@@ -54,34 +56,45 @@ export const columnsConfig = ({
     headerName: "Ações",
     width: 100,
     renderCell: (params) => (
-      <ActionsColumn
-        onDelete={() => {
-          openDialog({
-            body: "Deseja apagar este registro?",
-            onConfirm: async () => {
-              await handleDelete(params.id as string).then(() => {
-                closeDialog();
+      <>
+        {isLoading ? (
+          <CircularProgress size={20} />
+        ) : (
+          <ActionsColumn
+            onDelete={() => {
+              openDialog({
+                body: "Deseja apagar este registro?",
+                onConfirm: async () => {
+                  await handleDelete(params.id as string).then(() => {
+                    closeDialog();
+                  });
+                },
+                onCancel: () => {
+                  closeDialog();
+                },
               });
-            },
-            onCancel: () => {
-              closeDialog();
-            },
-          });
-        }}
-        additionalActions={[
-          {
-            icon: <ListAltIcon color="success" />,
-            onClick: () => handleImportedTrip(params.id as string),
-            tooltip: "Listar",
-          },
-          {
-            icon: <MapIcon color="primary" />,
-            onClick: () =>
-              handleExport(params.id as string, params.row.FileName as string),
-            tooltip: "Baixar arquivo",
-          },
-        ]}
-      />
+            }}
+            additionalActions={[
+              {
+                icon: <ListAltIcon color="success" />,
+                onClick: () => handleImportedTrip(params.id as string),
+                tooltip: "Listar",
+                isLoading,
+              },
+              {
+                icon: <MapIcon color="primary" />,
+                onClick: () =>
+                  handleExport(
+                    params.id as string,
+                    params.row.FileName as string,
+                  ),
+                tooltip: "Baixar arquivo",
+                isLoading,
+              },
+            ]}
+          />
+        )}
+      </>
     ),
   },
 ];

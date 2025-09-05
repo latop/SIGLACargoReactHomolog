@@ -192,7 +192,7 @@ export const DriverForm = () => {
                       {...field}
                       label="Data de nasc."
                       value={field.value ? dayjs(field.value) : null}
-                      onChange={(date) => field.onChange(date?.format())}
+                      onChange={(date) => field.onChange(date)}
                     />
                   );
                 }}
@@ -208,7 +208,7 @@ export const DriverForm = () => {
                       {...field}
                       label="Admissão"
                       value={field.value ? dayjs(field.value) : null}
-                      onChange={(date) => field.onChange(date?.format())}
+                      onChange={(date) => field.onChange(date)}
                     />
                   );
                 }}
@@ -224,7 +224,7 @@ export const DriverForm = () => {
                       {...field}
                       label="Demissão"
                       value={field.value ? dayjs(field.value) : null}
-                      onChange={(date) => field.onChange(date?.format())}
+                      onChange={(date) => field.onChange(date)}
                     />
                   );
                 }}

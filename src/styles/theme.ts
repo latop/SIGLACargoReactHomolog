@@ -44,6 +44,20 @@ const theme = createTheme({
         input: {
           padding: "11.5px 14px",
           fontSize: "13px",
+          "&.Mui-disabled": {
+            color: grey[700],
+            WebkitTextFillColor: grey[700],
+            cursor: "not-allowed",
+          },
+        },
+        root: {
+          "&.Mui-disabled": {
+            backgroundColor: grey[100],
+            cursor: "not-allowed",
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: grey[300],
+            },
+          },
         },
       },
     },
@@ -52,11 +66,21 @@ const theme = createTheme({
         input: {
           padding: "11.5px 14px",
           fontSize: "13px",
+          "&.Mui-disabled": {
+            color: grey[700],
+            WebkitTextFillColor: grey[700],
+            cursor: "not-allowed",
+          },
         },
         root: {
           fontSize: "13px",
           backgroundColor: "#ffffff",
           fontFamily: "var(--font-openSans)",
+          "&.Mui-disabled": {
+            backgroundColor: grey[100],
+            color: grey[700],
+            cursor: "not-allowed",
+          },
           "& input:-webkit-autofill": {
             WebkitTextFillColor: grey[800],
             WebkitBoxShadow: "0 0 0 100px #ffffff inset",
@@ -126,13 +150,33 @@ const theme = createTheme({
           color: grey[800],
           fontFamily: "var(--font-openSans)",
           padding: "5.5px 4px 5.5px 5px !important",
+          "&.Mui-disabled": {
+            color: grey[700],
+            WebkitTextFillColor: grey[700],
+            cursor: "not-allowed",
+          },
         },
         inputRoot: {
           padding: "6px",
+          "&.Mui-disabled": {
+            backgroundColor: grey[100],
+            color: grey[700],
+            cursor: "not-allowed",
+          },
         },
         root: {
           color: grey[800],
           fontFamily: "var(--font-openSans)",
+          "&.Mui-disabled": {
+            cursor: "not-allowed",
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: grey[100],
+              cursor: "not-allowed",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: grey[300],
+              },
+            },
+          },
         },
         popper: {
           marginTop: "10px !important",
@@ -188,6 +232,22 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           minHeight: "55px",
+        },
+      },
+    },
+    MuiDatePicker: {
+      styleOverrides: {
+        root: {
+          "& .MuiInputBase-input.Mui-disabled": {
+            backgroundColor: grey[100],
+            color: grey[700],
+            WebkitTextFillColor: grey[700],
+            cursor: "not-allowed",
+          },
+          "& .MuiInputBase-root.Mui-disabled": {
+            backgroundColor: grey[100],
+            cursor: "not-allowed",
+          },
         },
       },
     },

@@ -54,6 +54,7 @@ export interface DailyTrip {
   userIdCreate: string | null;
   userIdUpdate: string | null;
   dailyTripSections: DailyTrip[];
+  justificationId?: string | null;
 }
 
 export interface DailyTripResponse {

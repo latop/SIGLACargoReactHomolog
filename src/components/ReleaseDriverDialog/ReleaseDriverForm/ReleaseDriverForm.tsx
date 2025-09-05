@@ -185,7 +185,13 @@ export const ReleaseDriverForm = () => {
                 />
               </Grid>
               <Grid item xs={2}>
-                <AutocompleteJustification />
+                <AutocompleteJustification
+                  name="justificationCode"
+                  hasSkeleton
+                  onChange={(value) => {
+                    methods.setValue("justificationCode", value?.code);
+                  }}
+                />
               </Grid>
               <Grid item xs={2}>
                 <Controller
@@ -196,7 +202,10 @@ export const ReleaseDriverForm = () => {
                       <DateTimePicker
                         label="Data da Apresentação"
                         {...field}
-                        value={field.value}
+                        value={field.value ? dayjs(field.value) : null}
+                        onChange={(newValue) => {
+                          field.onChange(newValue);
+                        }}
                       />
                     );
                   }}
@@ -416,7 +425,10 @@ export const ReleaseDriverForm = () => {
                         <DateTimePicker
                           label="Data da emissão da NF"
                           {...field}
-                          value={field.value}
+                          value={field.value ? dayjs(field.value) : null}
+                          onChange={(newValue) => {
+                            field.onChange(newValue);
+                          }}
                         />
                       );
                     }}

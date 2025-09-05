@@ -83,7 +83,7 @@ export function useTimelineTrips() {
 
   const handleDoubleClick = (itemId: string) => {
     const isACircuit = circuits?.some(
-      (circuit) => circuit.ciruictCode === itemId,
+      (circuit) => circuit.circuitCode === itemId,
     );
 
     if (isACircuit) {
@@ -141,10 +141,10 @@ export function useTimelineTrips() {
     });
 
     circuits?.forEach((circuit: Circuit) => {
-      itemsMap.set(circuit.ciruictCode, {
-        id: circuit.ciruictCode,
+      itemsMap.set(circuit.circuitCode, {
+        id: circuit.circuitCode,
         group: circuit.driverId,
-        title: circuit.ciruictCode,
+        title: circuit.circuitCode,
         start_time: dayjs(circuit.startDate, "YYYY-MM-DDTHH:mm:ss"),
         end_time: dayjs(circuit.endDate, "YYYY-MM-DDTHH:mm:ss"),
       });
@@ -168,7 +168,7 @@ export function useTimelineTrips() {
   const handleConfirmMoveItem = (newCircuit: Circuit, itemId: string) => {
     updateCircuit(newCircuit);
     const newCircuitJourney: CircuitJourney = {
-      ciruictCode: itemId,
+      circuitCode: itemId,
       driverId: newCircuit.driverId,
       nickName: newCircuit.driverName || "",
       startDate: newCircuit.startDate,
@@ -198,7 +198,7 @@ export function useTimelineTrips() {
     )?.driverName;
 
     const circuitIndex = circuits?.findIndex(
-      (trip) => trip.ciruictCode === itemId,
+      (trip) => trip.circuitCode === itemId,
     );
     if (circuitIndex !== undefined && circuitIndex >= 0) {
       let currentCircuit: Circuit = circuits[circuitIndex];
@@ -222,7 +222,7 @@ export function useTimelineTrips() {
       if (newDriver?.driverId === currentCircuit.driverId) {
         newCircuit = {
           ...currentCircuit,
-          ciruictCode: itemId,
+          circuitCode: itemId,
           startDate: newStartDate,
           endDate: newEndDate,
         };
@@ -232,7 +232,7 @@ export function useTimelineTrips() {
       } else if (newDriver && newDriver?.driverId !== currentCircuit.driverId) {
         newCircuit = {
           ...currentCircuit,
-          ciruictCode: itemId,
+          circuitCode: itemId,
           driverId: newDriver.driverId,
           driverName: newDriver.driverName,
         };
@@ -270,7 +270,7 @@ export function useTimelineTrips() {
     );
 
     const newCircuit = {
-      ciruictCode: generateRandomID(),
+      circuitCode: generateRandomID(),
       driverId,
       driverName,
       startDate: dayjs(selectedDailyTrip.startPlanned)
@@ -293,6 +293,7 @@ export function useTimelineTrips() {
       startDate: newCircuit.startDate,
       endDate: newCircuit.endDate,
       tasksDriver: newTrips.map((trip: Trip, i) => ({
+        idTask: trip.id || "",
         seq: i,
         demand: trip.code,
         lineCode: trip.code,

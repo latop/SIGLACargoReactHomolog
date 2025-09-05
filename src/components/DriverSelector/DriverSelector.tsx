@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { useDrivers } from "@/hooks/useDrivers";
 import { Driver } from "@/interfaces/driver";
-import debounce from "debounce";
 
 interface DriverSelectorProps {
   name?: string;
@@ -39,14 +38,9 @@ export function DriverSelector({
   const [isOpen, setIsOpen] = useState(false);
   const selectedDrivers = watch(name) || [];
 
-  const debouncedSearch = useMemo(
-    () => debounce((value: string) => setSearchValue(value), 300),
-    [],
-  );
-
   const { drivers } = useDrivers({
     pageSize: 50,
-    nickName: searchValue,
+    nickName: searchValue.length >= 3 ? searchValue : "",
   });
 
   const sortedDrivers = useMemo(() => {
@@ -94,10 +88,10 @@ export function DriverSelector({
   const handleInputChange = useCallback(
     (value: string) => {
       if (isOpen) {
-        debouncedSearch(value);
+        setSearchValue(value);
       }
     },
-    [isOpen, debouncedSearch],
+    [isOpen, setSearchValue],
   );
 
   const handleFocus = useCallback(() => {

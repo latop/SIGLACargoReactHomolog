@@ -5,7 +5,6 @@ import "dayjs/locale/pt-br";
 
 export function GianttZoom() {
   const { zoom, handleChangeZoom } = useGianttZoom();
-  console.log(zoom);
 
   return (
     <ToggleButtonGroup

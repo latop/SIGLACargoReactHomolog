@@ -6,12 +6,13 @@ export interface DailyTripDetailsParams {
   demand?: string;
   lineCode?: string;
   isReturn?: boolean;
+  idTask?: number;
 }
 
 export const useDailyTripJourneyDetails = (options?: SWRConfiguration) => {
   const [params, setParams] = useState<DailyTripDetailsParams>({});
   const { data, error, isLoading } = useSWR(
-    params.demand || params.lineCode
+    params.demand || params.lineCode || params.idTask
       ? { url: "/daily-trip-journey-detail", args: params }
       : null,
     fetchDailyTripJourneyDetails,
@@ -27,7 +28,7 @@ export const useDailyTripJourneyDetails = (options?: SWRConfiguration) => {
   );
 
   const fetchDailyTrip = (params: DailyTripDetailsParams) => {
-    if (params.demand || params.lineCode) {
+    if (params.demand || params.lineCode || params.idTask) {
       setParams(params);
     }
   };

@@ -39,6 +39,7 @@ export const DailyTripSectionForm = ({ seq, id }: Params) => {
   };
 
   const steps = getValues("dailyTripSections");
+  console.log(steps);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
@@ -92,8 +93,8 @@ export const DailyTripSectionForm = ({ seq, id }: Params) => {
           </Grid>
           <Grid item xs={4}>
             <AutocompleteDriver
-              name={`dailyTripSections.${seq}.driverId`}
-              disabled={!insertMode}
+              name={`dailyTripSections.${seq}.nickname`}
+              disabled
             />
           </Grid>
 

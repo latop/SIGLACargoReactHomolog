@@ -5,22 +5,22 @@ const headerClass = "blueColumnHeaders";
 export const columns: GridColDef[] = [
   {
     field: "tripDate",
-    headerName: "Data da viagem",
-    width: 150,
+    headerName: "Dt. Viagem",
+    width: 120,
     sortable: false,
     filterable: false,
   },
   {
     field: "sto",
     headerName: "Sto",
-    width: 200,
+    width: 140,
     sortable: false,
     filterable: false,
   },
   {
     field: "status",
     headerName: "Status",
-    width: 70,
+    width: 90,
     sortable: false,
     filterable: false,
   },
@@ -54,8 +54,8 @@ export const columns: GridColDef[] = [
   },
   {
     field: "tripType",
-    headerName: "Tipo de viagem",
-    width: 120,
+    headerName: "Tipo",
+    width: 80,
     sortable: false,
     filterable: false,
   },
@@ -70,7 +70,7 @@ export const columns: GridColDef[] = [
   {
     field: "drivers",
     headerName: "Motoristas",
-    width: 120,
+    width: 200,
     sortable: false,
     filterable: false,
   },

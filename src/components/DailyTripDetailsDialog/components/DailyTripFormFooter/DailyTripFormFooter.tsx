@@ -22,60 +22,26 @@ export function DailyTripFormFooter() {
     <DialogActions>
       <Box
         display="flex"
-        justifyContent="space-between"
+        justifyContent="end"
+        gap={1}
         padding="10px"
         width="100%"
       >
-        <Box display="flex" gap="10px">
-          <Button
-            variant="outlined"
-            onClick={handleAddStep}
-            color="primary"
-            size="small"
+        <Button
+          variant="outlined"
+          onClick={handleAddStep}
+          color="primary"
+          size="small"
+        >
+          <Icon component={AddIcon} fontSize="small" />
+          <Typography
+            variant="body2"
+            ml="5px"
+            color={theme.palette.primary.main}
           >
-            <Icon component={AddIcon} fontSize="small" />
-            <Typography
-              variant="body2"
-              ml="5px"
-              color={theme.palette.primary.main}
-            >
-              Etapa
-            </Typography>
-          </Button>
-          <Button disabled variant="outlined">
-            {isSubmitting && (
-              <CircularProgress
-                color="inherit"
-                size={20}
-                sx={{ margin: "2px 11.45px" }}
-              />
-            )}
-            Horários Planejados
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => setModalOpen({ ...modalOpen, justifyModal: true })}
-          >
-            {isSubmitting && (
-              <CircularProgress
-                color="inherit"
-                size={20}
-                sx={{ margin: "2px 11.45px" }}
-              />
-            )}
-            Justificativas
-          </Button>
-          <Button disabled variant="outlined">
-            {isSubmitting && (
-              <CircularProgress
-                color="inherit"
-                size={20}
-                sx={{ margin: "2px 11.45px" }}
-              />
-            )}
-            Auditoria
-          </Button>
-        </Box>
+            Etapa
+          </Typography>
+        </Button>
         <Box display="flex" gap="10px">
           <Button type="submit" variant="contained">
             {isSubmitting && (
