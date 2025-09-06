@@ -38,6 +38,7 @@ export const useDailyTripMutation = () => {
           stopType: null,
           companyId: payload.companyId || null,
           id: payload.id || "00000000-0000-0000-0000-000000000000",
+          justificationId: payload.justificationId || null,
         },
         dailyTripSections: payload.dailyTripSections.map((section) => ({
           ...section,

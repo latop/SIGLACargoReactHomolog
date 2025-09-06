@@ -14,7 +14,9 @@ export const useTruckAssignmentDialog = () => {
   const truckAssignmentId = match?.[1];
 
   const { data, isLoading } = useSWR(
-    { url: "/truck-assignmet", args: { id: truckAssignmentId } },
+    truckAssignmentId
+      ? { url: "/truck-assignmet", args: { id: truckAssignmentId } }
+      : null,
     fetchTruckAssignment,
   );
 

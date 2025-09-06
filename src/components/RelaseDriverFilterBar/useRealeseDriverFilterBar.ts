@@ -38,7 +38,7 @@ const schema = z.object({
   releaseStatus: z.string().optional(),
 });
 
-export function useReleaseDriverFilterBar() {
+export function useReleaseDriverFilterBar(refetch?: () => void) {
   const params = useSearchParams();
   const router = useRouter();
 
@@ -72,6 +72,12 @@ export function useReleaseDriverFilterBar() {
       }
     });
     router.push(`/release-driver?${params.toString()}`);
+
+    if (refetch) {
+      setTimeout(() => {
+        refetch();
+      }, 100);
+    }
   };
 
   return {

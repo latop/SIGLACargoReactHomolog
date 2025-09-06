@@ -40,8 +40,8 @@ export function TimelineTrips() {
   const handleItemSelect = (itemId: string) => {
     let circuit;
     if (itemId) {
-      circuit = circuits?.find((circuit) => circuit.ciruictCode === itemId)
-        ?.ciruictCode;
+      circuit = circuits?.find((circuit) => circuit.circuitCode === itemId)
+        ?.circuitCode;
     }
     if (circuit) {
       setSelectedTrip(String(itemId));
@@ -91,7 +91,7 @@ export function TimelineTrips() {
     }
 
     const isCircuit = circuits?.some(
-      (circuit) => circuit.ciruictCode === itemContext.title,
+      (circuit) => circuit.circuitCode === itemContext.title,
     );
     const itemProps = getItemProps({});
 

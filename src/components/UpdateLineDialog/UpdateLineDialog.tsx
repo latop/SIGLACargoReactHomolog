@@ -172,9 +172,7 @@ export function UpdateLineDialog({ open, onClose }: DailyTripDetailsProps) {
                               label="Início"
                               {...field}
                               value={field.value ? dayjs(field.value) : null}
-                              onChange={(date) =>
-                                field.onChange(date?.format())
-                              }
+                              onChange={(date) => field.onChange(date)}
                             />
                           )}
                         />
@@ -190,9 +188,7 @@ export function UpdateLineDialog({ open, onClose }: DailyTripDetailsProps) {
                               sx={{ width: "100%" }}
                               {...field}
                               value={field.value ? dayjs(field.value) : null}
-                              onChange={(date) =>
-                                field.onChange(date?.format())
-                              }
+                              onChange={(date) => field.onChange(date)}
                               slotProps={{
                                 textField: {
                                   error: false,

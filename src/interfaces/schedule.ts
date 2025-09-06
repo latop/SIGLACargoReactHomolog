@@ -42,7 +42,7 @@ export interface TaskDriver {
 }
 
 export interface Circuit {
-  ciruictCode?: string | null;
+  circuitCode?: string | null;
   endDate: string;
   startDate: string;
   trips: Trip[];
@@ -86,7 +86,7 @@ export interface DriverJourneySchedule {
 
 export interface CircuitJourney {
   circuitJourneyId?: string | null;
-  ciruictCode?: string;
+  circuitCode?: string;
   driverId: string;
   nickName: string;
   driverBase?: string;
@@ -135,6 +135,7 @@ export interface DailyTripUnallocated {
   selected?: boolean;
   startPlanned?: string;
   endPlanned?: string;
+  lineCode?: string | null;
 }
 
 export interface DeparturesArrivals {
@@ -162,4 +163,5 @@ export interface DailyTrip {
   startPlanned: string;
   endPlanned: string;
   sectionsReturn: DailyTripSection[];
+  demand?: string;
 }

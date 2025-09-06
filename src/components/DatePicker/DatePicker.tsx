@@ -20,7 +20,13 @@ interface DatePickerProps extends DatePickerBaseProps<Dayjs> {
 export const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
   ({ error, ...props }, ref: Ref<HTMLDivElement>) => (
     <Container>
-      <DatePickerBase {...props} ref={ref as Ref<HTMLDivElement>} />
+      <DatePickerBase
+        {...props}
+        ref={ref as Ref<HTMLDivElement>}
+        slots={{
+          ...props.slots,
+        }}
+      />
       {!!error && (
         <Typography fontSize="12px" color={red[700]}>
           {error}
@@ -37,7 +43,13 @@ interface DateTimePickerProps extends DateTimePickerPropsBase<Dayjs> {
 export const DateTimePicker = forwardRef<HTMLDivElement, DateTimePickerProps>(
   ({ error, ...props }, ref: Ref<HTMLDivElement>) => (
     <Container>
-      <DateTimePickerBase {...props} ref={ref as Ref<HTMLDivElement>} />
+      <DateTimePickerBase
+        {...props}
+        ref={ref as Ref<HTMLDivElement>}
+        slots={{
+          ...props.slots,
+        }}
+      />
       {!!error && (
         <Typography fontSize="12px" color={red[700]}>
           {error}

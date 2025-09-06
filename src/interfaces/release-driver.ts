@@ -20,7 +20,7 @@ export interface ReleaseDriverInterface {
   productInvoice: string;
   isReturnLoaded: boolean;
   licensePlateTrailer: string;
-  justificationId?: string;
+  justificationCode?: string;
 }
 
 export interface ReleaseDriverResponse {

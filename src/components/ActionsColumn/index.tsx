@@ -56,19 +56,19 @@ export const ActionsColumn = ({
 
       {additionalActions.map(
         ({ icon, onClick, tooltip, color, isLoading }, index) => (
-          <CustomIcon
-            sx={{
-              color: color,
-              opacity: isLoading ? 0.5 : 1,
-              pointerEvents: isLoading ? "none" : "auto",
-            }}
-            key={index}
-            onClick={onClick}
-          >
-            <Tooltip title={tooltip}>
-              <>{icon}</>
-            </Tooltip>
-          </CustomIcon>
+          <Tooltip title={tooltip} key={index}>
+            <CustomIcon
+              sx={{
+                color: color,
+                opacity: isLoading ? 0.5 : 1,
+                pointerEvents: isLoading ? "none" : "auto",
+                cursor: isLoading ? "progress" : "pointer",
+              }}
+              onClick={onClick}
+            >
+              {icon}
+            </CustomIcon>
+          </Tooltip>
         ),
       )}
       {onDelete && (

@@ -7,17 +7,22 @@ import { PaginatedResponse } from "@/interfaces/pagination";
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 export type FetchDailyTripsParams = {
-  fleetGroupId?: string;
-  locationDestId?: string;
-  locationOrigId?: string;
-  tripDate?: string;
-  sto?: string;
-  flgStatus?: string;
-  licensePlate?: string;
-  tripTypeId?: string;
-  companyId?: string;
-  nickName?: string;
-  lineId?: string;
+  // Filter IDs
+  fleetGroupId?: string; // filter1Id
+  locationOrigId?: string; // filter2Id
+  locationDestId?: string; // filter3Id
+  tripTypeId?: string; // filter4Id
+  companyId?: string; // filter5Id
+  lineId?: string; // filter6Id
+
+  // Filter Strings
+  sto?: string; // filter1String
+  tripDate?: string; // filter2String
+  flgStatus?: string; // filter3String
+  licensePlate?: string; // filter4String
+  nickName?: string; // filter5String
+
+  // Pagination
   pageSize?: number;
   pageNumber?: number;
 };
@@ -61,28 +66,30 @@ export const useGetDailyTripsQuery = ({
   pageNumber,
   lineId,
   companyId,
+  nickName,
   pageSize = 15,
 }: FetchDailyTripsParams): UseQueryResult<
   PaginatedResponse<FetchDailyTrips>,
   Error
 > => {
+  // Transform the params to match the API's expected format
   const params = {
     filter1Id: fleetGroupId || undefined,
     filter2Id: locationOrigId || undefined,
     filter3Id: locationDestId || undefined,
-    Filter4Id: tripTypeId || undefined,
-    Filter5Id: companyId || undefined,
+    filter4Id: tripTypeId || undefined,
+    filter5Id: companyId || undefined,
     filter6Id: lineId || undefined,
     filter1String: sto || undefined,
-    filter2String:
-      dayjs(tripDate?.toString()).format("ddd, MMM D, YYYY") + " 03:00:00 GMT",
-    filter3String: flgStatus,
-    Filter4String: licensePlate?.replace(/-/gm, ""),
+    filter2String: tripDate
+      ? dayjs(tripDate?.toString()).format("ddd, MMM D, YYYY") + " 03:00:00 GMT"
+      : undefined,
+    filter3String: flgStatus || undefined,
+    filter4String: licensePlate ? licensePlate.replace(/-/gm, "") : undefined,
+    filter5String: nickName || undefined,
     pageSize,
     pageNumber,
   };
-
-  const runQuery = !tripDate;
 
   return useQuery({
     queryKey: ["daily-trips", { params }],
@@ -98,7 +105,6 @@ export const useGetDailyTripsQuery = ({
         return error;
       }
     },
-    enabled: !runQuery,
     staleTime: 0,
   });
 };

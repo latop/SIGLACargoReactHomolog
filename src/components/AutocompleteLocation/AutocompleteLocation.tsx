@@ -11,6 +11,7 @@ export interface AutocompleteLocationProps {
   name?: string;
   label?: string;
   isRequired?: boolean;
+  disabled?: boolean;
   keyCode?: keyof Location;
   onChange?: (value?: Location | null) => void;
 }
@@ -19,6 +20,7 @@ export function AutocompleteLocation({
   name = "locationCode",
   label = "Cód. localização",
   keyCode = "code",
+  disabled = false,
   isRequired = false,
   onChange,
 }: AutocompleteLocationProps) {
@@ -64,6 +66,7 @@ export function AutocompleteLocation({
           isOptionEqualToValue={(option: Location, value: Location) =>
             option.id === value.id
           }
+          disabled={disabled}
           onChange={handleChange}
           noOptionsText={
             !field.value
@@ -83,11 +86,14 @@ export function AutocompleteLocation({
               label={label}
               required={isRequired}
               error={!!errors[field.name]}
+              disabled={disabled}
               helperText={errors[field.name]?.message?.toString()}
               InputProps={{
+                disabled,
                 ...params.InputProps,
                 inputProps: {
                   ...params.inputProps,
+
                   style: { textTransform: "uppercase" }, // Apply uppercase style
                 },
               }}

@@ -220,6 +220,12 @@ const routes: RouteItem[] = [
     group: "coordination",
   },
   {
+    text: "Associação de Veículos",
+    icon: <TbSteeringWheel />,
+    path: "/vehicle-link",
+    group: "coordination",
+  },
+  {
     text: "Partidas e chegadas",
     icon: <SwapVertIcon />,
     path: "/departures-and-arrivals",

@@ -1,6 +1,15 @@
 "use client";
 
-import { Box, Button, CircularProgress, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  FormControl,
+} from "@mui/material";
 import { Controller, FormProvider } from "react-hook-form";
 import { AutocompleteFleetGroup } from "@/components/AutocompleteFleetGroup";
 import { AutocompleteTruck } from "@/components/AutocompleteTruck";
@@ -28,8 +37,15 @@ export function ReportDynamicForm({
   parameterName: string[];
   item: ReportsResponse;
 }) {
-  const { methods, onSubmit, handleDownload, isFileAvailable, isLoading } =
-    useReportDynamicForm(item);
+  const {
+    methods,
+    onSubmit,
+    handleDownload,
+    isFileAvailable,
+    isLoading,
+    fileType,
+    setFileType,
+  } = useReportDynamicForm(item);
   const { handleSubmit } = methods;
 
   const RenderField = () =>
@@ -124,35 +140,63 @@ export function ReportDynamicForm({
             </Grid>
           </Box>
           <Grid container gap={1} mt={1}>
-            <Button
-              disabled={isLoading}
-              type="submit"
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                methods.setValue("reportCode", reportCode);
-              }}
-            >
-              {!isLoading ? (
-                "Enviar"
-              ) : (
-                <CircularProgress size={"16px"} color="inherit" />
+            <Grid container spacing={1}>
+              <Grid item>
+                <Button
+                  disabled={isLoading}
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    methods.setValue("reportCode", reportCode);
+                  }}
+                >
+                  {!isLoading ? (
+                    "Enviar"
+                  ) : (
+                    <CircularProgress size={"16px"} color="inherit" />
+                  )}
+                </Button>
+              </Grid>
+              {isFileAvailable && (
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      display: "flex",
+                      gap: 0.5,
+                    }}
+                    id="downloadReport"
+                    onClick={() => handleDownload(reportCode)}
+                  >
+                    Baixar <DownloadIcon fontSize="inherit" />
+                  </Button>
+                </Grid>
               )}
-            </Button>
-            {isFileAvailable && (
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{
-                  display: "flex",
-                  gap: 0.5,
-                }}
-                id="downloadReport"
-                onClick={() => handleDownload(reportCode)}
-              >
-                Baixar <DownloadIcon fontSize="inherit" />
-              </Button>
-            )}
+              <Grid item>
+                <FormControl>
+                  <RadioGroup
+                    row
+                    value={fileType}
+                    onChange={(e) =>
+                      setFileType(e.target.value as "XLS" | "PDF")
+                    }
+                  >
+                    <FormControlLabel
+                      value="XLS"
+                      control={<Radio size="small" />}
+                      label="XLS"
+                    />
+                    <FormControlLabel
+                      value="PDF"
+                      control={<Radio size="small" />}
+                      label="PDF"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+            </Grid>
           </Grid>
         </form>
       </FormProvider>

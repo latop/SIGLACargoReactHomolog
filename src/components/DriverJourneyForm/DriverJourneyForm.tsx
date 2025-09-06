@@ -27,8 +27,8 @@ import { useDailyTripJourneyDetails } from "@/hooks/useDailyTripJourneyDetails";
 import { DailyTrip, TaskDriver } from "@/interfaces/schedule";
 import { useToast } from "@/hooks/useToast";
 import { SectionsReturnForm } from "@/components/SectionsReturnForm";
-import SectinReturnTimeline from "../SectionReturnTimeline/SectionReturnTimeline";
 import { AutocompleteLocation } from "@/components/AutocompleteLocation";
+import { SearchLineModal } from "../SearchLineDialog";
 
 dayjs.extend(customParseFormat);
 
@@ -42,8 +42,10 @@ export const DriverJourneyForm = ({
   seq,
 }: DriverJourneyFormProps) => {
   const [showDemandDetails, setShowDemandDetails] = React.useState(false);
+  const [isSearchLineOpen, setSearchLineOpen] = React.useState(false);
   const { addToast } = useToast();
   const { control, getValues, setValue, watch } = useFormContext();
+  // const [selectedTab, setSelectedTab] = useRecoilState(tabState);
 
   const handleSuccessDemand = (data: DailyTrip) => {
     if (data.sto) {
@@ -70,7 +72,7 @@ export const DriverJourneyForm = ({
       tasksDriver.push({
         seq: tasksDriver.length + 1,
         type: "V",
-        demand: data.lineCode,
+        demand: data.demand,
         locOrig: data.locationOrigCode,
         locDest: data.locationDestCode,
         lineCode: data.lineCode,
@@ -135,17 +137,19 @@ export const DriverJourneyForm = ({
   };
 
   const handleShowDemandDetails = () => {
-    if (!showDemandDetails) {
-      fetchDemandSections({
-        demand: getValues(`tasksDriver.${seq}.demand`),
-      });
-    } else {
-      setShowDemandDetails(false);
-    }
+    setShowDemandDetails((prev) => !prev);
+    fetchDemandSections({
+      demand: getValues(`tasksDriver.${seq}.demand`),
+      idTask: getValues(`tasksDriver.${seq}.idTask`),
+    });
+  };
+
+  const handleSearchLineModal = () => {
+    setSearchLineOpen((prev) => !prev);
   };
 
   const renderTravelFields = () => (
-    <Grid container spacing={1}>
+    <Grid container spacing={0.5}>
       <Grid item xs={1.5}>
         <Controller
           name={`tasksDriver.${seq}.demand`}
@@ -189,20 +193,35 @@ export const DriverJourneyForm = ({
               label="Cód. Rota"
               InputLabelProps={{ shrink: !!field.value }}
               fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Tooltip title="Buscar Rota" arrow>
+                      <SearchIcon
+                        fontSize="small"
+                        onClick={handleSearchLineModal}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </Tooltip>
+                  </InputAdornment>
+                ),
+              }}
             />
           )}
         />
       </Grid>
-      <Grid item xs={1.2}>
+      <Grid item xs={1.3}>
         <AutocompleteLocation
           name={`tasksDriver.${seq}.locOrig`}
           label="Origem"
+          disabled
         />
       </Grid>
-      <Grid item xs={1.2}>
+      <Grid item xs={1.3}>
         <AutocompleteLocation
           name={`tasksDriver.${seq}.locDest`}
           label="Destino"
+          disabled
         />
       </Grid>
       <Grid item xs={1.7}>
@@ -236,22 +255,24 @@ export const DriverJourneyForm = ({
           )}
         />
       </Grid>
-      <Grid item xs={1.6}>
+      <Grid item xs={1.5}>
         <Controller
           name={`tasksDriver.${seq}.startActual`}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <DateTimePicker
               label="Início realizado"
+              disableOpenPicker
               error={error?.message}
               {...field}
+              disabled
               value={field.value ? dayjs(field.value) : null}
               onChange={(date) => field.onChange(date?.format())}
             />
           )}
         />
       </Grid>
-      <Grid item xs={1.6}>
+      <Grid item xs={1.5}>
         <Controller
           name={`tasksDriver.${seq}.endActual`}
           control={control}
@@ -259,6 +280,8 @@ export const DriverJourneyForm = ({
             <DateTimePicker
               label="Fim realizado"
               error={error?.message}
+              disabled
+              disableOpenPicker
               {...field}
               value={field.value ? dayjs(field.value) : null}
               onChange={(date) => field.onChange(date?.format())}
@@ -314,11 +337,13 @@ export const DriverJourneyForm = ({
         <Controller
           name={`tasksDriver.${seq}.startActual`}
           control={control}
+          disabled
           render={({ field, fieldState: { error } }) => (
             <DateTimePicker
               label="Início realizado"
               error={error?.message}
               {...field}
+              disabled={true}
               value={field.value ? dayjs(field.value) : null}
               onChange={(date) => field.onChange(date?.format())}
             />
@@ -329,10 +354,12 @@ export const DriverJourneyForm = ({
         <Controller
           name={`tasksDriver.${seq}.endActual`}
           control={control}
+          disabled
           render={({ field, fieldState: { error } }) => (
             <DateTimePicker
               label="Fim realizado"
               error={error?.message}
+              disabled={true}
               {...field}
               value={field.value ? dayjs(field.value) : null}
               onChange={(date) => field.onChange(date?.format())}
@@ -410,16 +437,6 @@ export const DriverJourneyForm = ({
           <Box display="flex" alignItems="center" sx={{ position: "relative" }}>
             {sectionsReturn?.length && (
               <>
-                <SectinReturnTimeline
-                  size={sectionsReturn?.length}
-                  sx={{
-                    position: "absolute",
-                    top: 0,
-                    left: "-30px",
-                    zIndex: 2,
-                    marginTop: "20px",
-                  }}
-                />
                 <Box display="flex" flexDirection="column" gap="15px" mt="10px">
                   {sectionsReturn?.map((section: TaskDriver, index: number) => (
                     <SectionsReturnForm
@@ -441,6 +458,11 @@ export const DriverJourneyForm = ({
           </Box>
         )}
       </Box>
+      <SearchLineModal
+        seq={seq}
+        open={isSearchLineOpen}
+        onClose={handleSearchLineModal}
+      />
     </LocalizationProvider>
   );
 };

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 "use client";
 
 import { AppBar } from "@/components/AppBar";
@@ -7,88 +6,47 @@ import { ErrorResult } from "@/components/ErrorResult";
 import { GenerateDailyTripDialog } from "@/components/GenerateDailyTripDialog";
 import { HeaderTitle } from "@/components/HeaderTitle/HeaderTitle";
 import { MainContainer } from "@/components/MainContainer";
-import {
-  FetchDailyTripsParams,
-  initialDataDailyTripsParams,
-  useGetDailyTripsQuery,
-} from "@/services/query/daily-trips";
+
 import { Box, Button, Card, Menu, MenuItem } from "@mui/material";
 import { DataGrid, GridRowSelectionModel } from "@mui/x-data-grid";
-import { useState } from "react";
-import { DailyTripDetailsDialog } from "./dailyTripDetails/dailyTripDetailsDialog";
-import { DailyTripsFilterBar } from "./DailyTripsFilterBar";
-import IsLoadingTable from "./isLoadindCard";
-
+import ModalBatchAlterCompanyTrip from "./batch/change-company";
+import ModalBatchAlterDatesTrip from "./batch/change-dates";
+import ModalBatchAlterFleetTrip from "./batch/change-fleet";
 import ModalBatchCancelTrip from "./batch/cancel-trip";
 import { columns } from "./configs";
-import { FieldValues } from "react-hook-form";
-import ModalBatchAlterCompanyTrip from "./batch/change-company";
-import ModalBatchAlterFleetTrip from "./batch/change-fleet";
-import ModalBatchAlterDatesTrip from "./batch/change-dates";
-import {
-  DailyTripBatchChangePayload,
-  useDailyTripBatchChange,
-} from "@/services/mutation/daily-trips";
-import { useToast } from "@/hooks/useToast";
+import { DailyTripDetailsDialog } from "./dailyTripDetails/dailyTripDetailsDialog";
+import { DailyTripsFilterBar } from "@/components/DailyTripsFilterBar/DailyTripsFilterBar";
+import { useDailyTrips } from "./useDailyTrips";
+import LoadingTableSkeleton from "@/components/LoadingTableSkeleton/LoadingTableSkeleton";
 
 export function DailyTrips() {
-  const [filters, setFilters] = useState<FetchDailyTripsParams>(
-    initialDataDailyTripsParams,
-  );
-  const [dailyTripModalIsOpen, setDailyTripModalIsOpen] = useState(false);
-  const [batchCancelModal, setBatchCancelModal] = useState(false);
-  const [batchChangeCompanyModal, setBatchChangeCompanyModal] = useState(false);
-  const [batchChangeFleetModal, setBatchChangeFleetModal] = useState(false);
-  const [batchChangeDatesModal, setBatchChangeDatesModal] = useState(false);
-  const [tripId, setTripId] = useState();
-  const [generateDailyTripModalIsOpen, setGenerateDailyTripModalIsOpen] =
-    useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const { addToast } = useToast();
-
-  const open = Boolean(anchorEl);
-
-  const [currentPage, setCurrentPage] = useState(0);
-  const [rowSelectionModel, setRowSelectionModel] =
-    useState<GridRowSelectionModel>([]);
-
   const {
+    anchorEl,
+    batchCancelModal,
+    batchChangeCompanyModal,
+    batchChangeDatesModal,
+    batchChangeFleetModal,
+    dailyTripModalIsOpen,
     data,
-    isLoading: queryIsLoading,
-    refetch,
     error,
-  } = useGetDailyTripsQuery({ ...filters, pageNumber: currentPage + 1 });
-  const { mutateAsync, isPending: mutationIsLoading } =
-    useDailyTripBatchChange();
-
-  const isLoading: boolean = queryIsLoading || mutationIsLoading;
-
-  const handleFilters = (filtersData: FetchDailyTripsParams) => {
-    setFilters(filtersData);
-    refetch();
-  };
-
-  const handleOpenBulkActions = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleBulkTripAction = async (values: FieldValues) => {
-    const payload = {
-      ...values,
-      dailyTripId: rowSelectionModel,
-    };
-
-    const response = await mutateAsync(payload as DailyTripBatchChangePayload);
-    if (response === "Ok") {
-      setRowSelectionModel([]);
-      addToast("Alteração salva com sucesso");
-    } else {
-      addToast("Erro ao salvar alteração", { type: "error" });
-    }
-  };
+    generateDailyTripModalIsOpen,
+    handleBulkTripAction,
+    handleClose,
+    handleOpenBulkActions,
+    isLoading,
+    open,
+    rowSelectionModel,
+    setBatchCancelModal,
+    setBatchChangeCompanyModal,
+    setBatchChangeDatesModal,
+    setBatchChangeFleetModal,
+    setCurrentPage,
+    setDailyTripModalIsOpen,
+    setGenerateDailyTripModalIsOpen,
+    setRowSelectionModel,
+    setTripId,
+    tripId,
+  } = useDailyTrips();
 
   return (
     <MainContainer>
@@ -105,7 +63,7 @@ export function DailyTrips() {
           flexDirection: "column",
         }}
       >
-        <DailyTripsFilterBar onChange={handleFilters} />
+        <DailyTripsFilterBar />
         <Box
           display="flex"
           justifyContent="space-between"
@@ -113,26 +71,6 @@ export function DailyTrips() {
           mb="10px"
           gap={1}
         >
-          {/* <div>
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={() => setGenerateDailyTripModalIsOpen(true)}
-              sx={{ marginRight: 1 }}
-            >
-              Gerar viagem diária
-            </Button>
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={() => {
-                setTripId(undefined);
-                setDailyTripModalIsOpen(true);
-              }}
-            >
-              Adicionar viagem
-            </Button>
-          </div> */}
           <div>
             {rowSelectionModel.length > 0 && (
               <>
@@ -212,7 +150,7 @@ export function DailyTrips() {
             <EmptyResult />
           )}
           {error && <ErrorResult />}
-          {isLoading && <IsLoadingTable />}
+          {isLoading && <LoadingTableSkeleton length={15} />}
           {data && data.data?.length > 0 && (
             <div style={{ height: "100%", width: "100%" }}>
               <DataGrid

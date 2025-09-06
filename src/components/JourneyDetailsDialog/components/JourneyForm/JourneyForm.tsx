@@ -52,18 +52,20 @@ export const JourneyForm = () => {
               <Controller
                 name={`otmProcess`}
                 control={control}
+                disabled
                 render={({ field }) => (
                   <TextField {...field} label="Circuito" fullWidth />
                 )}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={1.5}>
               <Controller
                 name="startDate"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <DateTimePicker
-                    disabled={false}
+                    disabled
+                    disableOpenPicker
                     label="Início planejado"
                     error={error?.message}
                     {...field}
@@ -73,13 +75,14 @@ export const JourneyForm = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={1.5}>
               <Controller
                 name="endDate"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <DateTimePicker
-                    disabled={false}
+                    disableOpenPicker
+                    disabled
                     label="Fim planejado"
                     error={error?.message}
                     {...field}
@@ -89,7 +92,7 @@ export const JourneyForm = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={5}>
               <Controller
                 name="notes"
                 control={control}
@@ -126,7 +129,7 @@ export const JourneyForm = () => {
             {tasksDriver?.map((taskDriver: TaskDriver, index: number) => (
               <DriverJourneyForm
                 onDelete={() => handleDeleteDriverSchedule(index)}
-                key={index}
+                key={taskDriver.idTask}
                 seq={index}
               />
             ))}

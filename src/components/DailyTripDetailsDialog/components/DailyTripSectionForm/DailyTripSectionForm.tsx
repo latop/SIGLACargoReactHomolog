@@ -13,9 +13,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { AutocompleteDriver } from "@/components/AutocompleteDriver";
 import { AutocompleteLocation } from "@/components/AutocompleteLocation";
 import { AutocompleteStopType } from "@/components/AutocompleteStopType";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ImageSearchOutlinedIcon from "@mui/icons-material/ImageSearchOutlined";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
@@ -33,7 +31,8 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
     setValue("dailyTripSections", steps);
   };
 
-  const steps = getValues("dailyTripSections");
+  // TODO: Resolve Steps
+  // const steps = getValues("dailyTripSections");
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
@@ -46,14 +45,13 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
       >
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <h5>
-              Seção {seq + 1} - {steps[seq].locationOrig.code}
-            </h5>
+            <h5>Seção {seq + 1}</h5>
           </Grid>
           <Grid item xs={2}>
             <Controller
               name={`dailyTripSections.${seq}.truck.licensePlate`}
               control={control}
+              disabled={true}
               render={({ field, fieldState: { error } }) => (
                 <TextField
                   {...field}
@@ -79,12 +77,15 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
             />
           </Grid>
           <Grid item xs={2}>
-            <AutocompleteDriver />
-          </Grid>
-          <Grid item xs={4}>
             <AutocompleteStopType
               name={`dailyTripSections.${seq}.stopType.stopTypeCode`}
               label="Parada"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <AutocompleteDriver
+              name={`dailyTripSections.${seq}.driverId`}
+              disabled
             />
           </Grid>
 
@@ -126,12 +127,14 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <DateTimePicker
-                  disabled={false}
+                  disabled
                   label="Início estimado"
                   error={error?.message}
                   {...field}
                   value={field.value ? dayjs(field.value) : null}
-                  onChange={(date) => field.onChange(date?.format())}
+                  onChange={(date) => {
+                    field.onChange(date?.format());
+                  }}
                 />
               )}
             />
@@ -140,6 +143,7 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
             <Controller
               name={`dailyTripSections.${seq}.endEstimated`}
               control={control}
+              disabled
               render={({ field, fieldState: { error } }) => (
                 <DateTimePicker
                   disabled={false}
@@ -156,6 +160,7 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
             <Controller
               name={`dailyTripSections.${seq}.startActual`}
               control={control}
+              disabled
               render={({ field, fieldState: { error } }) => (
                 <DateTimePicker
                   disabled={false}
@@ -172,6 +177,7 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
             <Controller
               name={`dailyTripSections.${seq}.endActual`}
               control={control}
+              disabled
               render={({ field, fieldState: { error } }) => (
                 <DateTimePicker
                   disabled={false}
@@ -196,7 +202,7 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
               <Icon component={DeleteIcon} fontSize="small" color="warning" />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Horários Planejados" arrow>
+          {/* <Tooltip title="Horários Planejados" arrow>
             <IconButton size="small">
               <Icon
                 component={AccessTimeIcon}
@@ -213,7 +219,7 @@ export const DailyTripSectionForm = ({ seq }: { seq: number }) => {
                 color="action"
               />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Box>
       </Box>
     </LocalizationProvider>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "./configs/api";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -55,17 +56,17 @@ export async function fetchDailyTripsByPeriod({
 }
 
 export type FetchCircuitParams = {
-  ciruictCode: string;
+  circuitCode: string;
 };
 
 export async function fetchCircuit({
-  args: { ciruictCode },
+  args: { circuitCode },
 }: {
   args: FetchCircuitParams;
 }) {
   try {
     const response = await axios.get(`/gantt/GetCircuit`, {
-      params: { circuitCode: ciruictCode },
+      params: { circuitCode },
     });
     const data = response.data;
     return data;
@@ -109,7 +110,7 @@ export async function fetchDeparturesArrivals({
   args: FetchDeparturesArrivalsParams;
 }) {
   try {
-    const response = await axios.get(`/gantt/GetArrivalDeparture`, {
+    const response = await api.get(`/gantt/GetArrivalDeparture`, {
       params,
     });
     const data = response.data;

@@ -17,6 +17,7 @@ export const useReportDynamicForm = (data: ReportsResponse) => {
     React.useState<boolean>(false);
   const [blobFile, setBlobFile] = React.useState<Blob>();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [fileType, setFileType] = React.useState<"XLS" | "PDF">("XLS");
 
   const methods = useForm();
 
@@ -30,7 +31,7 @@ export const useReportDynamicForm = (data: ReportsResponse) => {
     const body = {
       reportCode: data.reportCode,
       parameter,
-      fileType: "XLS",
+      fileType,
     };
     await getReport(body);
   };
@@ -59,7 +60,7 @@ export const useReportDynamicForm = (data: ReportsResponse) => {
 
     const filename = `Report_${data.code}_${dayjs().format(
       "YYYYMMDDHHmm",
-    )}.xlsx`;
+    )}.${fileType}`;
 
     link.setAttribute("download", filename as string);
     const downloadReport = document.getElementById(`downloadReport-${index}`);
@@ -76,5 +77,7 @@ export const useReportDynamicForm = (data: ReportsResponse) => {
     isFileAvailable,
     handleDownload,
     isLoading,
+    fileType,
+    setFileType,
   };
 };

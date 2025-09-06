@@ -85,7 +85,6 @@ export function useTimelineTripsUnallocated() {
   const { groups, items } = useMemo(() => {
     const groupsMap = new Map();
     const itemsMap = new Map();
-
     dailyTripsUnallocated?.forEach((trip: DailyTripUnallocated) => {
       if (!groupsMap.has(trip.dailyTripId)) {
         groupsMap.set(trip.dailyTripId, {

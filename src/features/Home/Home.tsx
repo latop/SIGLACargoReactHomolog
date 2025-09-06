@@ -48,7 +48,12 @@ interface GraphToShow {
 }
 
 export function Home() {
-  const { data, isLoading, isError } = useQuery(useGetDashboardQuery);
+  const { data, isLoading, isError } = useQuery({
+    ...useGetDashboardQuery,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: "always",
+    refetchInterval: 30 * 60 * 1000, // 30 minutes
+  });
   const [graphSelected, setGraphSelected] = useState<string[]>(graphNameList);
   const [graphBaseList, setGraphBaseList] = useState<GraphToShow[]>([]);
   const [graphToShow, setGraphToShow] = useState<GraphToShow[]>([]);
@@ -202,7 +207,6 @@ export function Home() {
               <Grid container rowSpacing={4} columnSpacing={4}>
                 {graphToShow.map((graph, index) => (
                   <Grid key={index} item xs={CalcGridColumns(index)}>
-                    {graph.name}
                     {graphSelected.includes(graph.name) && graph.data}
                   </Grid>
                 ))}

@@ -26,6 +26,7 @@ export function ImportTrips() {
     handleCloseDialog,
     mutate,
     handleExportTrip,
+    loadingPostFile,
   } = useImportTrips();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { openDialog, closeDialog } = useDialog();
@@ -44,6 +45,7 @@ export function ImportTrips() {
     openDialog,
     closeDialog,
     handleExport: handleExportTrip,
+    isLoading: loadingPostFile,
   });
 
   const Content = () => {

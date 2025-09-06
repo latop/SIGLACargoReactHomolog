@@ -23,7 +23,7 @@ export function useJourneyDetails() {
   });
   const { circuits } = useJourneysByPeriod();
   const currentCircuit = circuits?.find(
-    (circuit) => circuit.ciruictCode === journeyDetailId,
+    (circuit) => circuit.circuitCode === journeyDetailId,
   );
 
   const { circuit, isLoading } = useCircuit();

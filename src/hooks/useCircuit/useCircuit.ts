@@ -7,7 +7,7 @@ import { useFetch } from "@/hooks/useFetch";
 import { AxiosResponse, AxiosError } from "axios";
 
 interface useCircuitParams {
-  ciruictCode?: string;
+  circuitCode?: string;
 }
 export const useCircuit = (options?: SWRConfiguration) => {
   const [postCircuit, { loading }] = useFetch();
@@ -16,11 +16,11 @@ export const useCircuit = (options?: SWRConfiguration) => {
   const journeyDetailId = match?.[1];
 
   const params: useCircuitParams = {
-    ciruictCode: journeyDetailId,
+    circuitCode: journeyDetailId,
   };
 
   const { data, error, isLoading, mutate } = useSWR<CircuitJourney>(
-    params.ciruictCode ? { url: "/journey", args: params } : null,
+    params.circuitCode ? { url: "/journey", args: params } : null,
     fetchCircuit,
     {
       revalidateIfStale: false,

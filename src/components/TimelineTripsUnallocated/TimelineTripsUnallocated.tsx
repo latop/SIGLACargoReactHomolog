@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useDailyTripsUnallocated } from "@/hooks/useDailyTripsUnallocated";
 import { DailyTripSection } from "@/interfaces/schedule";
 import { useTimelineTripsUnallocated } from "./useTimelineTripsUnallocated";
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { red } from "@mui/material/colors";
 import {
@@ -41,18 +41,22 @@ export function TimelineTripsUnallocated() {
   } = useTimelineTripsUnallocated();
 
   function findSectionById(sectionId: string) {
-    if (dailyTripsUnallocated) {
-      for (const trip of dailyTripsUnallocated) {
-        const section = trip.sectionsUnallocated.find(
-          (section: DailyTripSection) =>
-            section.dailyTripSectionId === sectionId,
-        );
-        if (section) {
-          return section;
-        }
+    if (!dailyTripsUnallocated) return null;
+
+    for (const trip of dailyTripsUnallocated) {
+      const section = trip.sectionsUnallocated.find(
+        (section: DailyTripSection) => section.dailyTripSectionId === sectionId,
+      );
+
+      if (section) {
+        return {
+          lineCode: trip.lineCode,
+          ...section,
+        };
       }
-      return null;
     }
+
+    return null;
   }
 
   const itemRenderer = ({
@@ -78,28 +82,30 @@ export function TimelineTripsUnallocated() {
     const borderColor = itemContext.resizing ? red[500] : item.color;
 
     return (
-      <TimelineItem {...getItemProps({})} className="giantt-item">
-        {!!itemContext.useResizeHandle && <div {...leftResizeProps} />}
-        {itemContext.dimensions.width > 40 &&
-          currentTrip?.locDest &&
-          currentTrip?.locOrig && (
-            <TimelineItemSubtitle>
-              <TimelineItemOrigin>{currentTrip.locOrig}</TimelineItemOrigin>
-              <TimelineItemDestination>
-                {currentTrip.locDest}
-              </TimelineItemDestination>
-            </TimelineItemSubtitle>
-          )}
-        <TimelineItemTitle
-          style={{
-            height: `calc(${itemContext.dimensions.height} - 15px)`,
-            backgroundColor,
-            borderColor,
-          }}
-        />
+      <Tooltip title={currentTrip?.lineCode} arrow>
+        <TimelineItem {...getItemProps({})} className="giantt-item">
+          {!!itemContext.useResizeHandle && <div {...leftResizeProps} />}
+          {itemContext.dimensions.width > 40 &&
+            currentTrip?.locDest &&
+            currentTrip?.locOrig && (
+              <TimelineItemSubtitle>
+                <TimelineItemOrigin>{currentTrip.locOrig}</TimelineItemOrigin>
+                <TimelineItemDestination>
+                  {currentTrip.locDest}
+                </TimelineItemDestination>
+              </TimelineItemSubtitle>
+            )}
+          <TimelineItemTitle
+            style={{
+              height: `calc(${itemContext.dimensions.height} - 15px)`,
+              backgroundColor,
+              borderColor,
+            }}
+          />
 
-        {!!itemContext.useResizeHandle && <div {...rightResizeProps} />}
-      </TimelineItem>
+          {!!itemContext.useResizeHandle && <div {...rightResizeProps} />}
+        </TimelineItem>
+      </Tooltip>
     );
   };
 
