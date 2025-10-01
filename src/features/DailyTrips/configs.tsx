@@ -1,5 +1,7 @@
 import { GridColDef } from "@mui/x-data-grid";
 
+const headerClass = "blueColumnHeaders";
+
 export const columns: GridColDef[] = [
   {
     field: "tripDate",
@@ -72,4 +74,4 @@ export const columns: GridColDef[] = [
     sortable: false,
     filterable: false,
   },
-];
+].map((column) => ({ ...column, headerClassName: headerClass }));

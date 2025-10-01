@@ -14,7 +14,7 @@ import ModalBatchAlterDatesTrip from "./batch/change-dates";
 import ModalBatchAlterFleetTrip from "./batch/change-fleet";
 import ModalBatchCancelTrip from "./batch/cancel-trip";
 import { columns } from "./configs";
-import { DailyTripDetailsDialog } from "../../components/DailyTripsDetailsDialog/DailyTripDetailsDialog";
+import { DailyTripDetailsDialog } from "./dailyTripDetails/dailyTripDetailsDialog";
 import { DailyTripsFilterBar } from "@/components/DailyTripsFilterBar/DailyTripsFilterBar";
 import { useDailyTrips } from "./useDailyTrips";
 import LoadingTableSkeleton from "@/components/LoadingTableSkeleton/LoadingTableSkeleton";
@@ -33,8 +33,6 @@ export function DailyTrips() {
     handleBulkTripAction,
     handleClose,
     handleOpenBulkActions,
-    handleEditDailyTrip,
-    handleCloseDailyTripModal,
     isLoading,
     open,
     rowSelectionModel,
@@ -43,8 +41,11 @@ export function DailyTrips() {
     setBatchChangeDatesModal,
     setBatchChangeFleetModal,
     setCurrentPage,
+    setDailyTripModalIsOpen,
     setGenerateDailyTripModalIsOpen,
     setRowSelectionModel,
+    setTripId,
+    tripId,
   } = useDailyTrips();
 
   return (
@@ -183,7 +184,8 @@ export function DailyTrips() {
                 }}
                 columns={columns}
                 onCellDoubleClick={(params) => {
-                  handleEditDailyTrip(params.row.dailyTripId);
+                  setTripId(params.row.dailyTripId);
+                  setDailyTripModalIsOpen(true);
                 }}
                 initialState={{
                   pagination: {
@@ -215,7 +217,8 @@ export function DailyTrips() {
       </Box>
       <DailyTripDetailsDialog
         isOpen={dailyTripModalIsOpen}
-        onClose={handleCloseDailyTripModal}
+        onClose={() => setDailyTripModalIsOpen(false)}
+        id={tripId}
       />
       <GenerateDailyTripDialog
         isOpen={generateDailyTripModalIsOpen}

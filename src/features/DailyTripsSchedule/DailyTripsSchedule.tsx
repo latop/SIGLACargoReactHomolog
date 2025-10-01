@@ -6,7 +6,7 @@ import { AppBar } from "@/components/AppBar";
 import { GianttTable } from "@/components/GianttTable";
 import { HeaderTitle } from "@/components/HeaderTitle/HeaderTitle";
 import { GianttZoom } from "@/components/GianttZoom";
-import { Old_DailyTripDetailsDialog } from "@/components/Old_DailyTripDetailsDialog";
+import { DailyTripDetailsDialog } from "@/components/DailyTripDetailsDialog";
 import { GianttProvider } from "@/hooks/useGiantt";
 import { useDailyTripsSchedule } from "./useDailyTripsSchedule";
 import { Box, Button } from "@mui/material";
@@ -92,7 +92,7 @@ export function DailyTripsSchedule() {
         </MainContainer.Content>
       )}
 
-      <Old_DailyTripDetailsDialog
+      <DailyTripDetailsDialog
         open={isDailyTripDialogOpen}
         onClose={handleCloseDialog}
       />
