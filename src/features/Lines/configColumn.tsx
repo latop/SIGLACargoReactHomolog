@@ -3,6 +3,8 @@ import { DailyTrip } from "@/interfaces/daily-trip";
 import { GridColDef } from "@mui/x-data-grid";
 import { ReactNode } from "react";
 
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+
 interface DialogConfig {
   title?: string;
   message?: string;
@@ -16,6 +18,8 @@ interface ColumnsConfigProps {
   openDialog: (config: DialogConfig) => void;
   handleDelete: (id: string, refetchLines: () => void) => Promise<void>;
   isLoadingDelete: boolean;
+  handleCopy: (id: string, refetchLines: () => void) => Promise<void>;
+  isLoadingCopy: boolean;
   refetchLines: () => void;
 }
 
@@ -24,6 +28,8 @@ export const columnsConfig = ({
   openDialog,
   handleDelete,
   isLoadingDelete,
+  handleCopy,
+  isLoadingCopy,
   refetchLines,
 }: ColumnsConfigProps): GridColDef[] => {
   return [
@@ -100,6 +106,25 @@ export const columnsConfig = ({
                 },
               });
             }}
+            additionalActions={[
+              {
+                icon: <ContentCopyIcon />,
+                onClick: () => {
+                  openDialog({
+                    body: "Deseja copiar esta rota?",
+                    onConfirm: async () => {
+                      await handleCopy(params.id as string, refetchLines);
+                      closeDialog();
+                    },
+                    onCancel: () => {
+                      closeDialog();
+                    },
+                  });
+                },
+                tooltip: "Copiar Rota",
+                isLoading: isLoadingCopy,
+              },
+            ]}
             isLoadingDelete={isLoadingDelete}
           />
         );

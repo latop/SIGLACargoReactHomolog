@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import api from "./configs/api";
 import {
@@ -413,6 +412,17 @@ export const fetchExportGtm = async ({ id }: { id: string }) => {
     };
   } catch (error) {
     console.error(error);
+    throw new Error((error as Error)?.message);
+  }
+};
+
+export const copyLineById = async ({ id }: { id: string }) => {
+  try {
+    const response = await api.post(`/copyline/${id}`);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error copyLineById:", error);
     throw new Error((error as Error)?.message);
   }
 };

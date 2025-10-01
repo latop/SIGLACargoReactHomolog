@@ -1,7 +1,6 @@
+import api from "@/services/configs/api";
 import { useState } from "react";
-import axios, { AxiosError, AxiosResponse } from "axios";
-
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL;
+import { AxiosError, AxiosResponse } from "axios";
 
 type useFetchOptions<T> = {
   onSuccess?: (response: AxiosResponse<T>) => void;
@@ -32,20 +31,25 @@ export function useFetch<T>() {
     try {
       let response: AxiosResponse<T>;
 
-      if (method === "post") {
-        response = await axios.post<T>(url, body, { headers, responseType });
-      } else if (method === "get") {
-        response = await axios.get<T>(url, {
-          headers,
-          params: body,
-          responseType,
-        });
-      } else if (method === "put") {
-        response = await axios.put<T>(url, body, { headers });
-      } else if (method === "delete") {
-        response = await axios.delete<T>(url, { data: body, headers });
-      } else {
-        throw new Error(`Unsupported method: ${method}`);
+      switch (method) {
+        case "post":
+          response = await api.post<T>(url, body, { headers, responseType });
+          break;
+        case "get":
+          response = await api.get<T>(url, {
+            headers,
+            params: body,
+            responseType,
+          });
+          break;
+        case "put":
+          response = await api.put<T>(url, body, { headers });
+          break;
+        case "delete":
+          response = await api.delete<T>(url, { data: body, headers });
+          break;
+        default:
+          throw new Error(`Unsupported method: ${method}`);
       }
 
       setData(response.data);

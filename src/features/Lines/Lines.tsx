@@ -14,6 +14,7 @@ import { LinesFilterBar } from "@/components/LinesFilterBar";
 import { UpdateLineDialog } from "@/components/UpdateLineDialog";
 
 import { useLine } from "@/hooks/useLine";
+import { useCopyLine } from "@/hooks/useCopyLine";
 import { useDialog } from "@/hooks/useDialog/useDialog";
 import { columnsConfig } from "./configColumn";
 import LoadingTableSkeleton from "@/components/LoadingTableSkeleton/LoadingTableSkeleton";
@@ -38,6 +39,7 @@ export function Lines() {
     isLoadingMore,
   } = useLines();
   const { handleDeleteLine, isLoadingDelete } = useLine();
+  const { handleCopyLine, isLoadingCopy } = useCopyLine();
 
   const handleCloseDialog = () => {
     setHash("");
@@ -51,6 +53,8 @@ export function Lines() {
     openDialog,
     handleDelete: handleDeleteLine,
     isLoadingDelete,
+    handleCopy: handleCopyLine,
+    isLoadingCopy,
     refetchLines,
   });
 

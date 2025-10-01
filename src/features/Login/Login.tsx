@@ -185,15 +185,6 @@ export function Login() {
                 >
                   Entrar com SSO
                 </Button>
-                <Button
-                  type="button"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3 }}
-                  onClick={handleWhoAmI}
-                >
-                  Who Am I
-                </Button>
               </>
             )}
           </Box>

@@ -11,7 +11,7 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
-import { DurationField } from "@/components/DurationField";
+// import { DurationField } from "@/components/DurationField";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -69,11 +69,17 @@ export const UpdateLineSectionForm = ({ seq }: { seq: number }) => {
               name={`lineSections.${seq}.duration`}
               control={control}
               render={({ field }) => (
-                <DurationField
+                <TextField
                   {...field}
-                  onChange={(value) => {
-                    setValue(`lineSections.${seq}.duration`, value);
-                    field.onChange(value);
+                  inputProps={{ maxLength: 3, inputMode: "numeric" }}
+                  variant="outlined"
+                  fullWidth
+                  label="Duração"
+                  onChange={(event) => {
+                    const inputValue = event.target.value;
+                    if (/^\d*$/.test(inputValue)) {
+                      setValue(`lineSections.${seq}.duration`, inputValue);
+                    }
                   }}
                 />
               )}

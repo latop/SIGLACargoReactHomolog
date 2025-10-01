@@ -1,0 +1,25 @@
+{
+  "name": "Sigla Cargo - Sistema de Gestão Logística",
+  "short_name": "Sigla Cargo",
+  "description": "Plataforma completa para gerenciamento de frotas e logística da Pepsico",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0066CC",
+  "theme_color": "#0066CC",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/pepsico-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["logistics", "business", "productivity"],
+  "lang": "pt-BR"
+}
