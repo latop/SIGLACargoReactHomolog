@@ -6,7 +6,7 @@ import { AppBar } from "@/components/AppBar";
 import { GianttTable } from "@/components/GianttTable";
 import { HeaderTitle } from "@/components/HeaderTitle/HeaderTitle";
 import { GianttZoom } from "@/components/GianttZoom";
-import { DailyTripDetailsDialog } from "@/components/DailyTripDetailsDialog";
+import { Old_DailyTripDetailsDialog } from "@/components/Old_DailyTripDetailsDialog";
 import { GianttProvider } from "@/hooks/useGiantt";
 import { useDailyTripsSchedule } from "./useDailyTripsSchedule";
 import { Box, Button } from "@mui/material";
@@ -87,7 +87,7 @@ export function VehicleLink() {
         </MainContainer.Content>
       )}
 
-      <DailyTripDetailsDialog
+      <Old_DailyTripDetailsDialog
         open={isDailyTripDialogOpen}
         onClose={handleCloseDialog}
       />

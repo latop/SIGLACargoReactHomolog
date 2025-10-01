@@ -9,14 +9,19 @@ import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
+import { useHash } from "@/hooks/useHash/useHash";
 
 export const useDailyTrips = () => {
-  const [dailyTripModalIsOpen, setDailyTripModalIsOpen] = useState(false);
+  const [hash, setHash] = useHash();
   const [batchCancelModal, setBatchCancelModal] = useState(false);
   const [batchChangeCompanyModal, setBatchChangeCompanyModal] = useState(false);
   const [batchChangeFleetModal, setBatchChangeFleetModal] = useState(false);
   const [batchChangeDatesModal, setBatchChangeDatesModal] = useState(false);
-  const [tripId, setTripId] = useState();
+
+  const isToAddDailyTrip = hash?.match(/#add-dailyTrip/);
+  const dailyTripId = hash?.match(/#dailyTrip-(.+)/)?.[1];
+
+  const dailyTripModalIsOpen = Boolean(isToAddDailyTrip || dailyTripId);
   const [generateDailyTripModalIsOpen, setGenerateDailyTripModalIsOpen] =
     useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -47,6 +52,7 @@ export const useDailyTrips = () => {
     data,
     isLoading: queryIsLoading,
     error,
+    refetch: refetchDailyTrips,
   } = useGetDailyTripsQuery({ ...params, pageNumber: currentPage + 1 });
 
   const { mutateAsync, isPending: mutationIsLoading } =
@@ -76,9 +82,25 @@ export const useDailyTrips = () => {
       addToast("Erro ao salvar alteração", { type: "error" });
     }
   };
+
+  const handleAddDailyTrip = () => {
+    setHash("#add-dailyTrip");
+  };
+
+  const handleEditDailyTrip = (id: string) => {
+    setHash(`#dailyTrip-${id}`);
+  };
+
+  const handleCloseDailyTripModal = () => {
+    setHash("");
+  };
+
   return {
     dailyTripModalIsOpen,
-    setDailyTripModalIsOpen,
+    dailyTripId,
+    handleAddDailyTrip,
+    handleEditDailyTrip,
+    handleCloseDailyTripModal,
     generateDailyTripModalIsOpen,
     setGenerateDailyTripModalIsOpen,
     batchCancelModal,
@@ -101,7 +123,6 @@ export const useDailyTrips = () => {
     handleOpenBulkActions,
     handleClose,
     handleBulkTripAction,
-    tripId,
-    setTripId,
+    refetchDailyTrips,
   };
 };
